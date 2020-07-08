@@ -1,0 +1,70 @@
+import mysql.connector
+
+class DatabaseZ:
+    """ Base de datos MySql
+        --------
+        Fomato general, crea un módulo de base de datos
+    """
+
+    def __init__(self):
+        self.params = {
+            "host":"localhost",
+            "user": "root",
+            "passwd": "12345",
+            "database": "hermes"
+        }
+        self.connection = self.createConnection()
+        self.cursor = self.createCurosor()
+    
+    def createConnection(self):
+        conn = mysql.connector.connect(
+            host = self.params["host"],
+            user = self.params["user"],
+            passwd = self.params["passwd"],
+            database = self.params["database"]
+        )
+        return conn
+    
+    def createCurosor(self):
+        cursor = None
+        if self.connection.is_connected():
+            cursor = self.connection.cursor()
+        return cursor
+    
+    def executeNonQueryBool(self, sql):
+        """ Ejecuta un código que afecta a las columnas
+            -----
+            Debuelve un boolean si las columnas afectadas son más que cero
+        """
+        cursor = self.cursor
+        success = False
+        if cursor is not None:
+            cursor.execute(sql)
+            self.connection.commit()
+            rows = cursor.rowcount
+            success = rows > 0
+        return success
+    
+    def executeNonQueryRows(self, sql):
+        """ Ejecuta un código que afecta a las columnas
+            -----
+            Debuelve el número de columnas afectadas
+        """
+        cursor = self.cursor
+        conn = self.connection
+        if cursor is not None:
+            cursor.execute(sql)
+            conn.commit()
+        return cursor.rowscount
+
+    def executeQuery(self, sql):
+        """ Ejecuta un código que debuelve datos
+            -----
+            Debuelve una lista de datos
+        """
+        cursor = self.cursor
+        data = None
+        if cursor is not None:
+            cursor.execute(sql)
+            data = cursor.fetchall()
+        return data
