@@ -68,3 +68,19 @@ class DatabaseZ:
             cursor.execute(sql)
             data = cursor.fetchall()
         return data
+
+    def executeMany(self, sql, val):
+        """ Ejecuta un código de tipo insert con %s en vez de valores
+            -----
+            La variable val requiere de una arreglo de datos ordenados que sustituirán los %s del código insert.
+            Devuelve True si la cantidad de columnas afectadas es mayor que cero
+        """
+        cursor = self.cursor
+        conn = self.connection
+        succes = False
+        if cursor is not None:
+            cursor.execute(sql, val)
+            conn.commit()
+            rows = cursor.rowcount
+            succes = rows > 0
+        return succes
