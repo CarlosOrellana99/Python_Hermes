@@ -1,51 +1,53 @@
 <!DOCTYPE html>
 <html>
-<body style="background-color:rgb(245, 245, 245);" >
-<center>
-    <div style="background-color:rgb(255, 255, 255);" >
-            <h2 style="font-size:50px;color:rgb(0, 0, 128);margin-top: 10px">HAMMER</h2>
-    </div>
-</center>
-    <div >
-        <h1>Crear Trabajador</h1>
-            <form action="/action_page.php" method="post">
-              <label for="idNuevoTrabajadorNombre" style="font-size:20px;font-style:Perpetua">Nombre</label><br>
-              <input type="text" id="idNuevoTrabajadorNombre" name="idNuevoTrabajadorNombre" size="100" required><br><br>
+    <body style="background-color:rgb(245, 245, 245);" >
+        <center>
+            <div style="background-color:rgb(255, 255, 255);" >
+                <h2 style="font-size:50px;color:rgb(0, 0, 128);margin-top: 10px">HAMMER</h2>
+            </div>
+        </center>
+        <div >
+            <h1>Crear Trabajador</h1>
+            <form action="/servlet/register/worker" method="post">
+                <label for="nombre" style="font-size:20px;font-style:Perpetua">Nombre</label><br>
+                <input type="text" id="nombre" name="nombre" size="100" required><br><br>
+                    
+                <label for="apellido" style="font-size:20px;font-style:Perpetua">Apellido</label><br>
+                <input type="text" id="apellido" name="apellido" size="100" required><br><br>
                 
-              <label for="idNuevoTrabajadorApellido" style="font-size:20px;font-style:Perpetua">Apellido</label><br>
-              <input type="text" id="idNuevoTrabajadorApellido" name="idNuevoTrabajadorApellido" size="100" required><br><br>
-              
-              <label for="idNuevoTrabajadorCorreo" style="font-size:20px;font-style:Perpetua">Correo electronico</label><br>
-              <input type="email" id="idNuevoTrabajadorCorreo" name="idNuevoTrabajadorCorreo" size="100" required><br><br>
-              
-              <label for="idNuevoTrabajadorContraseña" style="font-size:20px;font-style:Perpetua">Contraseña</label><br>
-              <input type="text" id="idNuevoTrabajadorContraseña" name="idNuevoTrabajadorContraseña" size="100" required><br><br>
-              
-              <label for="idNuevoTrabajadorDUI" style="font-size:20px;font-style:Perpetua">Numero de DUI</label><br>
-              <input type="text" id="idNuevoTrabajadorDUI" name="idNuevoTrabajadorDUI" size="100" required maxlength="9"><br><br>
-              
-              <label for="idNuevoTrabajadorTelefono" style="font-size:20px;font-style:Perpetua">Numero de Telefono Personal</label><br>
-              <input type="text" id="idNuevoTrabajadorTelefono" name="idNuevoTrabajadorTelefono" size="100" required><br><br>
-              
-              <label for="idNuevoTrabajadorDepartamento" style="font-size:20px;font-style:Perpetua">Departamento</label><br>
-              <input type="text" id="idNuevoTrabajadorDepartamento" name="idNuevoTrabajadorDepartamento" size="100" required><br><br>
-              
-              <label for="idNuevoTrabajadorMunicipio" style="font-size:20px;font-style:Perpetua">Municipio</label><br>
-              <input type="text" id="idNuevoTrabajadorMunicipio" name="idNuevoTrabajadorMunicipio" size="100" required><br><br>
-              
-              <label for="idNuevoTrabajadorDireccion" style="font-size:20px;font-style:Perpetua">Dirección</label><br>
-              <input type="text" id="idNuevoTrabajadorDireccion" name="idNuevoTrabajadorDireccion" size="100" required><br><br>
-              
-              <label for="idNuevoTrabajadorDescripcion" style="font-size:20px;font-style:Perpetua">Descripcion de servicios a ofrecer</label><br>
-              <input type="text" id="idNuevoTrabajadorDescripcion" name="idNuevoTrabajadorDescripcion" size="100" required><br><br>
-              
-              <label for="idNuevoTrabajadorImagen" style="font-size:20px;font-style:Perpetua">Foto de perfil</label><br>
-              <input type="file" id="idNuevoTrabajadorImagen" name="idNuevoTrabajadorImagen" size="100" ><br><br>
-              <input type="submit" value="Crear Usuario">
-               <input type="submit" value="Cancelar">
-            </form> <br><br>
-    </div>
+                <label for="correo" style="font-size:20px;font-style:Perpetua">Correo electronico</label><br>
+                <input type="email" id="correo" name="correo" size="100" required><br><br>
+                
+                <label for="contraseña" style="font-size:20px;font-style:Perpetua">Contraseña</label><br>
+                <input type="text" id="contraseña" name="contraseña" size="100" required><br><br>
+                
+                <label for="dui" style="font-size:20px;font-style:Perpetua">Numero de DUI</label><br>
+                <input type="text" id="dui" name="dui" size="100" required maxlength="9"><br><br>
+                
+                <label for="telefono" style="font-size:20px;font-style:Perpetua">Numero de Telefono Personal</label><br>
+                <input type="text" id="telefono" name="telefono" size="100" required><br><br>
 
-</body>
+                <label for="genero" style="font-size:20px;font-style:Perpetua">Género</label><br>
+                <input type="text" id="genero" name="genero" size="100" required><br><br>
+                
+                <label for="departamento" style="font-size:20px;font-style:Perpetua">Departamento</label><br>
+                <input type="text" id="departamento" name="departamento" size="100" required><br><br>
+                
+                <label for="municipio" style="font-size:20px;font-style:Perpetua">Municipio</label><br>
+                <input type="text" id="municipio" name="municipio" size="100" required><br><br>
+                
+                <label for="direccion" style="font-size:20px;font-style:Perpetua">Dirección</label><br>
+                <input type="text" id="direccion" name="direccion" size="100" required><br><br>
+                
+                <label for="descripcion" style="font-size:20px;font-style:Perpetua">Descripcion de servicios a ofrecer</label><br>
+                <input type="text" id="descripcion" name="descripcion" size="100" required><br><br>
+                
+                <label for="imagen" style="font-size:20px;font-style:Perpetua">Foto de perfil</label><br>
+                <input type="file" id="imagen" name="imagen" size="100" ><br><br>
+                <input type="submit" value="Crear Usuario">
+                <input type="submit" value="Cancelar">
+            </form> <br><br>
+        </div>
+    </body>
 </html>
 

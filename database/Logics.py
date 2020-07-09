@@ -37,19 +37,21 @@ class adminTrabajadores(DatabaseZ):
     def __init__(self):
         self.database = DatabaseZ()
 
-    def insert(self, dui, nombre, apellido, celular, direccion, correo, contrasena, departamento, municipio, genero, aceptado, membresia, categoria, foto = None):
+    def insert(self, dui, nombre, apellido, celular, direccion, correo, contrasena, descripcion, departamento, municipio, genero, aceptado, membresia, foto = None):
         """ Inserta los componentes de un cliente en la base de datos
         -------
         Devuelve True si se ejecutó con éxito y false si no se hicieron cambios"""
         success = False
         if foto == '':
-            sql = """INSERT INTO `hermes`.`trabajadores` (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Descripcion`, `Departamento`, `Municipio`, `Genero`, `Aceptado`, `Membresia`, `Categoria`) 
-            VALUES ('%s, '%s, '%s, '%s, '%s, '%s, '%s, '%s, '%s, '%s, '%s, '%s, '%s, '%s);"""
-            val = (dui, nombre, apellido, celular, direccion, correo, contrasena, departamento, municipio, genero, aceptado, membresia, categoria)
+            sql = """INSERT INTO `hermes`.`trabajadores` 
+            (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Descripcion`, `Departamento`, `Municipio`, `Genero`, `Aceptado`, `Membresia`) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
+            val = (dui, nombre, apellido, celular, direccion, correo, contrasena, descripcion, departamento, municipio, genero, aceptado, membresia)
         else:
-            sql = """INSERT INTO `hermes`.`trabajadores` (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Descripcion`, `Departamento`, `Municipio`, `Genero`, `Aceptado`, `Membresia`, `Categoria`, `Foto`) 
-            VALUES ('%s, '%s, '%s, '%s, '%s, '%s, '%s, '%s, '%s, '%s, '%s, '%s, '%s, '%s, '%s);"""
-            val = (dui, nombre, apellido, celular, direccion, correo, contrasena, departamento, municipio, genero, aceptado, membresia, categoria, foto)
+            sql = """INSERT INTO `hermes`.`trabajadores` 
+            (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Descripcion`, `Departamento`, `Municipio`, `Genero`, `Aceptado`, `Membresia`, `Foto`) 
+            VALUES (%s, s, %s, %s, %s, s, %s, %s, %s, %s, %s, %s, %s, %s );"""
+            val = (dui, nombre, apellido, celular, direccion, correo, contrasena, descripcion, departamento, municipio, genero, aceptado, membresia, foto)
 
         database = self.database
         success = database.executeMany(sql, val)
