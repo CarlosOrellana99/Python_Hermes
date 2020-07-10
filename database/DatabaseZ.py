@@ -63,7 +63,7 @@ class DatabaseZ:
             Debuelve una lista de datos
         """
         cursor = self.cursor
-        data = None
+        data = {}
         if cursor is not None:
             cursor.execute(sql)
             data = cursor.fetchall()

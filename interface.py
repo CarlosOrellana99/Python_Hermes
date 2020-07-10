@@ -95,7 +95,7 @@ def login(): # View function
         elif tipo == "user":
             return "Registrado como usuario"
     else:
-        redirect("/")
+        return redirect("/")
 
 
 if __name__=='__main__':

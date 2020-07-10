@@ -1,7 +1,7 @@
 from database.Logics import adminClientes, adminAdministrador, adminTrabajadores, adminOpciones
 
 # Escriba el número de test que desea correr
-test = '5'
+test = '6'
 
 if test == '1':
     admin = adminClientes()
@@ -46,5 +46,9 @@ elif test == '5':
     categorias = admin.getCategorias()
     print(categorias)
 
+elif test == '6':
+    admin = adminAdministrador()
+    dicti = admin.verify("moris32345@hotmail.es", "nocorrecta")
+    print(dicti)
 
 

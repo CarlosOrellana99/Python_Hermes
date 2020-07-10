@@ -25,8 +25,8 @@ class adminAdministrador(DatabaseZ):
         if len(lista) == 0:
             lista = self.adminTrabajadores.getWorkerbyCorreo(correo)
             if len(lista) == 0:
-                    lista = getAdminByCorreo(correo)
-                    if len(lista) == 0:
+                    lista = self.getAdminByCorreo(correo)
+                    if not len(lista) == 0:
                         encontrado = True
                         tipo = "admin"
             else:
@@ -53,7 +53,8 @@ class adminAdministrador(DatabaseZ):
         sql = f"SELECT * FROM hermes.administradoes where administradoes.Correo = '{correo}' limit 1;"
         data = database.executeQuery(sql)
         lista = {}
-        lista = self.convertTuplaToList(data[0])
+        if len(data) > 0:
+            lista = self.convertTuplaToList(data[0])
         return lista
     
     def checkContra(self, contra, lista):
@@ -61,7 +62,8 @@ class adminAdministrador(DatabaseZ):
         return valor
 
     def convertTuplaToList(self, tupla):
-        if tupla is None:
+        lista = {}
+        if tupla is not None:
             lista = {
                 "id": tupla[0],
                 "nombre": tupla[1],
@@ -70,6 +72,7 @@ class adminAdministrador(DatabaseZ):
                 "contra": tupla[4],
                 "foto": tupla[5]
             }
+        return lista
 
 class adminClientes(DatabaseZ):
     """Aministración de los clientes en la base de datos
@@ -109,7 +112,8 @@ class adminClientes(DatabaseZ):
                     where clientes.Correo = '{correo}' limit 1;"""
         data = database.executeQuery(sql)
         lista = {}
-        lista = self.convertTuplaToList(data[0])
+        if len(data) > 0:
+            lista = self.convertTuplaToList(data[0])
         return lista
 
     def convertTuplaToList(self, tupla):
@@ -168,7 +172,8 @@ class adminTrabajadores(DatabaseZ):
                 where trabajadores.Correo = '{correo}' limit 1;"""
         data = database.executeQuery(sql)
         lista = {}
-        lista = self.convertTuplaToList(data)
+        if len(data) > 0:
+            lista = self.convertTuplaToList(data)
         return lista
 
     def convertTuplaToList(self, tupla):
