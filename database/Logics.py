@@ -192,4 +192,37 @@ class adminTrabajadores(DatabaseZ):
             }
         return lista
 
+class adminDepAndMun(DatabaseZ):
+    def __init__(self):
+        self.database = DatabaseZ()
+    
+    def getMunicipios(self):
+        """Retorna una lista de diccionarios con los datos de los municipios (id, nombre)"""
+        database = self.database
+        sql = "SELECT idMunicipio, Nombre FROM hermes.municipios;"
+        data = database.executeQuery(sql)
+        lista = self.listToDicc(data)
+        return lista
+
+    def getDepartamentos(self):
+        """Retorna una lista de diccionarios con los datos de los municipios (id, nombre)"""
+        database = self.database
+        sql = "SELECT idDepartamento, Nombre FROM hermes.departamentos;"
+        data = database.executeQuery(sql)
+        lista = self.listToDicc(data)
+        return lista
+
+    def listToDicc(self, data):
+        """Convierte la lista de tuplas a una lista de diccionarios"""
+        lista = []
+        for x in data:
+            dicc = {
+                "id": x[0],
+                "nombre": x[1]
+            }
+            lista.append(dicc)
+        return lista
+
+
+        
 

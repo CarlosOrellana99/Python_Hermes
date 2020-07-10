@@ -28,11 +28,19 @@
                 <input type="text" id="telefono" name="telefono" size="100" required><br><br>
                 
                 <label for="departamento" style="font-size:20px;font-style:Perpetua">Departamento</label><br>
-                <input type="text" id="departamento" name="departamento" size="100" required><br><br>
+                <select id="departamento" name="departamento">
+                    {% for departamento in departamentos %}
+                    <option value="{{departamento['id']}}">{{ departamento['nombre'] }}</option>
+                    {% endfor %}
+                </select> <br><br>
                 
                 <label for="municipio" style="font-size:20px;font-style:Perpetua">Municipio</label><br>
-                <input type="text" id="municipio" name="municipio" size="100" required><br><br>
-                
+                <select id="municipio" name="municipio">
+                    {% for municipio in municipios %}
+                    <option value="{{municipio['id']}}">{{ municipio['nombre'] }}</option>
+                    {% endfor %}
+                </select> <br><br>
+
                 <label for="direccion" style="font-size:20px;font-style:Perpetua">Direccion</label><br>
                 <input type="text" id="direccion" name="direccion" size="100" required><br><br>
                 

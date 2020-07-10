@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, flash, session, url_for
 from flask_login import UserMixin
-from database.Logics import adminAdministrador, adminClientes, adminTrabajadores
+from database.Logics import adminAdministrador, adminClientes, adminTrabajadores, adminDepAndMun
 
 app = Flask(__name__) #Page 30
 app.secret_key = "Latrenge3456"
@@ -16,10 +16,15 @@ def index(): # View function
 
 @app.route("/register/<string:kind>")
 def register(kind): # View function
+
+    admin = adminDepAndMun()
+    ltsDepartamentos = admin.getDepartamentos()
+    ltsMunicipios = admin.getMunicipios()
+    
     if kind == "worker":
-        return render_template('registrotrabajador.html')
+        return render_template('registrotrabajador.html', departamentos = ltsDepartamentos, municipios = ltsMunicipios)
     elif kind == "user":
-        return render_template('registrousuario.html')
+        return render_template('registrousuario.html', departamentos = ltsDepartamentos, municipios = ltsMunicipios)
 
 # Servlets
 @app.route("/servlet/register/<kind>", methods=['POST'])
@@ -90,9 +95,6 @@ def login():
             return "Registrado como usuario"
     else:
         redirect("/")
-
-    
-
 
 
 if __name__=='__main__':

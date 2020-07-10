@@ -1,7 +1,7 @@
-from database.Logics import adminClientes, adminAdministrador, adminTrabajadores
+from database.Logics import adminClientes, adminAdministrador, adminTrabajadores, adminDepAndMun
 
 # Escriba el número de test que desea correr
-test = '4'
+test = '5'
 
 if test == '1':
     admin = adminClientes()
@@ -35,6 +35,14 @@ elif test == '4':
     print(lista)
     lista = admin.verify("moris32345@hotmail.es","moris32345")
     print(lista)
+
+elif test == '5':
+    admin = adminDepAndMun()
+    departamentos = admin.getDepartamentos()
+    print(departamentos)
+    print("-"*10)
+    municipios = admin.getMunicipios()
+    print(municipios)
 
 
 
