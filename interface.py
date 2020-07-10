@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, redirect, flash, session
+from flask import Flask, render_template, request, redirect, flash, session, url_for
 from flask_login import UserMixin
-from database.Logics import *
+from database.Logics import adminAdministrador, adminClientes, adminTrabajadores
 
 app = Flask(__name__) #Page 30
 app.secret_key = "Latrenge3456"
@@ -14,13 +14,14 @@ def index(): # View function
 
     return render_template('login.html')
 
-@app.route("/register/<kind>")
+@app.route("/register/<string:kind>")
 def register(kind): # View function
     if kind == "worker":
         return render_template('registrotrabajador.html')
     elif kind == "user":
         return render_template('registrousuario.html')
 
+# Servlets
 @app.route("/servlet/register/<kind>", methods=['POST'])
 def registerUser(kind):
 
@@ -56,7 +57,7 @@ def registerUser(kind):
         nombre = request.form.get('nombre')
         descripcion = request.form.get('descripcion')
         foto = request.form.get('imagen')
-        aceptado = 0
+        aceptado = 0 # Siempre se inicia sin estar aceptado
         membresia = 1 # La membresía 1 es una membresía siempre inactiva
 
         admin = adminTrabajadores()
@@ -70,6 +71,27 @@ def registerUser(kind):
         session['msg']  = "Error interno. No se pudo registrar el valor. Favor intente nuevamente"
         return redirect("/servlet/register/user")
         
+@app.route("/servlet/login", methods=['POST'])
+def login():
+    admin = adminAdministrador()
+    password = str(request.form.get('contra'))
+    mail = str(request.form.get('correo'))
+    dictionary = admin.verify(mail, password)
+    encontrado = dictionary['encontrado']
+    permitido = dictionary['permitido']
+    tipo = dictionary['tipo']
+
+    if encontrado and permitido:
+        if tipo == "admin":
+            return "Registrado como admin"
+        elif tipo == "worker":
+            return "Registrado como trabajador"
+        elif tipo == "user":
+            return "Registrado como usuario"
+    else:
+        redirect("/")
+
+    
 
 
 
