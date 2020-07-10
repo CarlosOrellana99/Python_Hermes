@@ -1,4 +1,4 @@
-from database.Logics import adminClientes, adminAdministrador, adminTrabajadores, adminDepAndMun
+from database.Logics import adminClientes, adminAdministrador, adminTrabajadores, adminOpciones
 
 # Escriba el número de test que desea correr
 test = '5'
@@ -37,12 +37,14 @@ elif test == '4':
     print(lista)
 
 elif test == '5':
-    admin = adminDepAndMun()
+    admin = adminOpciones()
     departamentos = admin.getDepartamentos()
     print(departamentos)
     print("-"*10)
     municipios = admin.getMunicipios()
     print(municipios)
+    categorias = admin.getCategorias()
+    print(categorias)
 
 
 

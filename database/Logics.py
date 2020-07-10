@@ -15,7 +15,7 @@ class adminAdministrador(DatabaseZ):
         """Verifica si el par Correo-Contraseña pertenece a algún usuario de cualquier clase
         ----
         Devuelve un diccionario que que contiene :
-        encontrado, contraseña_coincide, diccionario_user, tipo
+        {"encontrado": encontrado, "permitido": contraseña_coincide, "user": diccionario_datos_usuario, "tipo": string_tipo_usuario}
         """
         
         encontrado = False
@@ -192,7 +192,7 @@ class adminTrabajadores(DatabaseZ):
             }
         return lista
 
-class adminDepAndMun(DatabaseZ):
+class adminOpciones(DatabaseZ):
     def __init__(self):
         self.database = DatabaseZ()
     
@@ -212,8 +212,19 @@ class adminDepAndMun(DatabaseZ):
         lista = self.listToDicc(data)
         return lista
 
+    def getCategorias(self):
+        """Retorna una lista de diccionarios con los datos de las categorias (id, nombre)"""
+        database = self.database
+        sql = "SELECT idCategoria, Nombre FROM hermes.categoria;"
+        data = database.executeQuery(sql)
+        lista = self.listToDicc(data)
+        return lista
+
     def listToDicc(self, data):
-        """Convierte la lista de tuplas a una lista de diccionarios"""
+        """Convierte la lista de tuplas a una lista de diccionarios
+        -----
+        Advertencia: Solo aplicable a tuplas que contengan id, nombre
+        """
         lista = []
         for x in data:
             dicc = {

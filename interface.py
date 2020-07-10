@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, flash, session, url_for
 from flask_login import UserMixin
-from database.Logics import adminAdministrador, adminClientes, adminTrabajadores, adminDepAndMun
+from database.Logics import adminAdministrador, adminClientes, adminTrabajadores, adminOpciones
 
 app = Flask(__name__) #Page 30
 app.secret_key = "Latrenge3456"
@@ -17,7 +17,7 @@ def index(): # View function
 @app.route("/register/<string:kind>")
 def register(kind): # View function
 
-    admin = adminDepAndMun()
+    admin = adminOpciones()
     ltsDepartamentos = admin.getDepartamentos()
     ltsMunicipios = admin.getMunicipios()
     
@@ -28,7 +28,7 @@ def register(kind): # View function
 
 # Servlets
 @app.route("/servlet/register/<kind>", methods=['POST'])
-def registerUser(kind):
+def registerUser(kind): # View function
 
     if kind == "user":
         success = False
@@ -77,7 +77,7 @@ def registerUser(kind):
         return redirect("/servlet/register/user")
         
 @app.route("/servlet/login", methods=['POST'])
-def login():
+def login(): # View function
     admin = adminAdministrador()
     password = str(request.form.get('contra'))
     mail = str(request.form.get('correo'))
@@ -88,6 +88,7 @@ def login():
 
     if encontrado and permitido:
         if tipo == "admin":
+            session['user'] = dictionary['user']
             return "Registrado como admin"
         elif tipo == "worker":
             return "Registrado como trabajador"
