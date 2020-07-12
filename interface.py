@@ -97,6 +97,9 @@ def login(): # View function
     else:
         return redirect("/")
 
+@app.route("/test")
+def test():
+    return render_template("inicioadmin.html")
 
 if __name__=='__main__':
     app.run(debug=True)
