@@ -104,8 +104,15 @@ def paginaprincipalusuario():
     admincat = adminCategorias()
     listacategorias = admincat.getCategoriaConFoto()
     listacat = admincat.convertirimagenes(listacategorias)
-    return render_template("principalUsuario.html",categorias=listacat)
+    return render_template("principalUsuario.html",categorias=listacat,usuarioactivo=usuario)
 
+@app.route("/Hammer.com/tu-Cuenta/")
+def paginaprmodificarcuenta():
+    usuario = session['user']
+    admin = adminOpciones()
+    ltsDepartamentos = admin.getDepartamentos()
+    ltsMunicipios = admin.getMunicipios()
+    return render_template("modificarUsuario.html",departamentos = ltsDepartamentos, municipios = ltsMunicipios,datosusuario=usuario)
 
 if __name__=='__main__':
     app.run(debug=True)
