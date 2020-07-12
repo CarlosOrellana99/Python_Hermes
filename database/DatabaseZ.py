@@ -1,4 +1,4 @@
-import mysql.connector
+import pymysql
 
 class DatabaseZ:
     """ Base de datos MySql
@@ -10,14 +10,14 @@ class DatabaseZ:
         self.params = {
             "host":"localhost",
             "user": "root",
-            "passwd": "12345",
+            "passwd": "12345678B",
             "database": "hermes"
         }
         self.connection = self.createConnection()
         self.cursor = self.createCurosor()
     
     def createConnection(self):
-        conn = mysql.connector.connect(
+        conn = pymysql.connect(
             host = self.params["host"],
             user = self.params["user"],
             passwd = self.params["passwd"],
@@ -27,7 +27,7 @@ class DatabaseZ:
     
     def createCurosor(self):
         cursor = None
-        if self.connection.is_connected():
+        if not self.connection is None:
             cursor = self.connection.cursor()
         return cursor
     
@@ -62,6 +62,7 @@ class DatabaseZ:
             -----
             Debuelve una lista de datos
         """
+
         cursor = self.cursor
         data = {}
         if cursor is not None:

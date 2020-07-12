@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, flash, session, url_for
 from flask_login import UserMixin
-from database.Logics import adminAdministrador, adminClientes, adminTrabajadores, adminOpciones
+from database.Logics import adminAdministrador, adminClientes, adminTrabajadores, adminOpciones,adminCategorias
 
 app = Flask(__name__) #Page 30
 app.secret_key = "Latrenge3456"
@@ -85,17 +85,26 @@ def login(): # View function
     encontrado = dictionary['encontrado']
     permitido = dictionary['permitido']
     tipo = dictionary['tipo']
-
+    
     if encontrado and permitido:
+        session['user'] = dictionary['user']
         if tipo == "admin":
-            session['user'] = dictionary['user']
             return "Registrado como admin"
         elif tipo == "worker":
             return "Registrado como trabajador"
         elif tipo == "user":
-            return "Registrado como usuario"
+            return redirect("/Hammer.com/u")
     else:
         return redirect("/")
+
+@app.route("/Hammer.com/u")
+def paginaprincipalusuario():
+    usuario = session['user']
+    print (f"{usuario}")
+    admincat = adminCategorias()
+    listacategorias = admincat.getCategoriaConFoto()
+    listacat = admincat.convertirimagenes(listacategorias)
+    return render_template("principalUsuario.html",categorias=listacat)
 
 
 if __name__=='__main__':
