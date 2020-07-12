@@ -79,7 +79,6 @@ class adminAdministrador(DatabaseZ):
             }
         return lista
 
-
 class adminClientes(DatabaseZ):
     """Aministración de los clientes en la base de datos
     ----
@@ -100,7 +99,7 @@ class adminClientes(DatabaseZ):
         departamento,
         municipio,
         foto=None,
-    ):
+        ):
         """ Inserta los componentes de un cliente en la base de datos
         -------
         Devuelve True si se ejecutó con éxito y false si no se hicieron cambios"""
@@ -172,7 +171,6 @@ class adminClientes(DatabaseZ):
             }
         return lista
 
-
 class adminTrabajadores(DatabaseZ):
     """"Aministración de los trabajadores en la base de datos
     ----
@@ -196,8 +194,7 @@ class adminTrabajadores(DatabaseZ):
         genero,
         aceptado,
         membresia,
-        foto=None,
-    ):
+        foto=None,):
         """ Inserta los componentes de un cliente en la base de datos
         -------
         Devuelve True si se ejecutó con éxito y false si no se hicieron cambios"""
