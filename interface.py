@@ -107,5 +107,10 @@ def paginaprincipalusuario():
     return render_template("principalUsuario.html",categorias=listacat)
 
 
+@app.route("/test")
+def test():
+    return render_template("inicioadmin.html")
+
+
 if __name__=='__main__':
     app.run(debug=True)
