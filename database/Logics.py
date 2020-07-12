@@ -1,5 +1,6 @@
 from database.DatabaseZ import DatabaseZ
 from base64 import b64encode
+from datetime import date
 
 class adminAdministrador(DatabaseZ):
     """Administrador de la cuenta Administrador
@@ -78,6 +79,16 @@ class adminAdministrador(DatabaseZ):
                 "foto": tupla[5],
             }
         return lista
+
+    def searchWorker(self, word, limit = "20"):
+        """
+        Devuelve una lista con todos los trabajadores relacionados a una palabra
+        ---
+        La palabra se bueca en el dui, el nomre, el apellido, el celular, la dirección, el correo, la descripción o la categoría
+        "limit" ajusta el número de trabajadores devueltos
+        """
+        admin = self.adminTrabajadores
+        lista = admin.fetchAllWorkersByWord(word, limit)
 
 class adminClientes(DatabaseZ):
     """Aministración de los clientes en la base de datos
@@ -179,48 +190,21 @@ class adminTrabajadores(DatabaseZ):
     def __init__(self):
         self.database = DatabaseZ()
 
-    def insert(
-        self,
-        dui,
-        nombre,
-        apellido,
-        celular,
-        direccion,
-        correo,
-        contrasena,
-        descripcion,
-        departamento,
-        municipio,
-        genero,
-        aceptado,
-        membresia,
-        foto=None,):
+    def insert( self, dui, nombre, apellido, celular, direccion, correo, contrasena, descripcion, departamento, municipio, genero, aceptado, membresia, foto=None,):
         """ Inserta los componentes de un cliente en la base de datos
         -------
         Devuelve True si se ejecutó con éxito y false si no se hicieron cambios"""
         success = False
+        fecha = date.today()
+        fechaF = fecha.strftime("%d-%m-%Y")
         if foto == "":
             sql = """INSERT INTO `hermes`.`trabajadores` 
-            (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Descripcion`, `Departamento`, `Municipio`, `Genero`, `Aceptado`, `Membresia`) 
+            (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Descripcion`, `Departamento`, `Municipio`, `Genero`, `Aceptado`, `Membresia`, `fechaDeEntrada`) 
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
-            val = (
-                dui,
-                nombre,
-                apellido,
-                celular,
-                direccion,
-                correo,
-                contrasena,
-                descripcion,
-                departamento,
-                municipio,
-                genero,
-                aceptado,
-                membresia,
-            )
+            val = ( dui, nombre, apellido, celular, direccion, correo, contrasena, descripcion, departamento, municipio, genero, aceptado, membresia, fechaF)
         else:
             sql = """INSERT INTO `hermes`.`trabajadores` 
-            (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Descripcion`, `Departamento`, `Municipio`, `Genero`, `Aceptado`, `Membresia`, `Foto`) 
+            (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Descripcion`, `Departamento`, `Municipio`, `Genero`, `Aceptado`, `Membresia`, `Foto`, `fechaDeEntrada`) 
             VALUES (%s, s, %s, %s, %s, s, %s, %s, %s, %s, %s, %s, %s, %s );"""
             val = (
                 dui,
@@ -237,6 +221,7 @@ class adminTrabajadores(DatabaseZ):
                 aceptado,
                 membresia,
                 foto,
+                fechaF
             )
 
         database = self.database
@@ -255,10 +240,52 @@ class adminTrabajadores(DatabaseZ):
         data = database.executeQuery(sql)
         lista = {}
         if len(data) > 0:
-            lista = self.convertTuplaToList(data)
+            lista = self.convertTuplaToDicc(data[0])
         return lista
 
-    def convertTuplaToList(self, tupla):
+    def fetchAllWorkersByWord(self, word, limit = str(20), kind = {}, order = "fechaDeEntrada", mode = "desc"):
+
+        """"Lista de {limit} trabajadores con características que parescan a {word}
+        ----
+        {Kind} es una lista en que se detalla qué se buscará. Si desea buscar en todos los campos no escriba nada.
+        Si desea buscar en uno o dos campos especificos, ingrese una lista a {kind} con los campos en que desea buscar.
+        Asegúrese que los campos de {kind} sean: ['DUI', 'Nombre', 'Apellido', 'Celular', 'Direccion', 'Descripcion', 'Membresia', 'categoria.nombre', 'municipios.nombre', 'departamentos.nombre']
+        La búsqueda se ordena con la fecha de entrada descendente. Para ajustar, el campo {order} es el campo de ordenamiento y {mode} es el modo de ordenamiento
+        """
+        database = self.database 
+        if len(kind) == 0:
+            lista = ['trabajadores.DUI', 'trabajadores.Nombre', 'trabajadores.Apellido', 'trabajadores.Celular', 'trabajadores.Direccion', 'trabajadores.Descripcion', 'trabajadores.Membresia', 'categoria.nombre', 'municipios.nombre', 'departamentos.nombre']
+        else:
+            lista = kind
+        select = "trabajadores.idTrabajadores, trabajadores.DUI, trabajadores.Nombre, trabajadores.Apellido, trabajadores.Celular, trabajadores.Direccion, trabajadores.Correo, trabajadores.Contrasena, trabajadores.Descripcion, trabajadores.Genero, trabajadores.Foto, trabajadores.Aceptado, trabajadores.Membresia, departamentos.nombre as depa, municipios.nombre as mun, trabajadores.trabajos, categoria.nombre  as catName"
+        final = []
+        for x in lista:
+            sql = f"""  SELECT {select} FROM hermes.categorias 
+                        right join hermes.trabajadores on trabajadores.idTrabajadores = categorias.Trabajador
+                        inner join hermes.categoria on categoria.idCategoria = categorias.Categoria
+                        inner join hermes.departamentos on departamentos.idDepartamento = trabajadores.Departamento
+                        inner join hermes.municipios on municipios.idMunicipio = trabajadores.Municipio
+                        where ({x}) like '%{word.upper()}%'
+                        order by {order} {mode} limit {limit} ;"""
+            
+            data = database.executeQuery(sql)
+            temporal = self.convertDataToList(data)
+            final += temporal
+        
+        return final
+    
+    def convertDataToList(self, data):
+        """De los datos devueltos de un select de trabajadores, devuelve una lista de diccionarios"""
+        lista = []
+        value = None
+        if len(data) > 0:
+            for x in data:
+                value = self.convertTuplaToDicc(x)
+                lista.append(value)
+        return lista
+
+    def convertTuplaToDicc(self, tupla):
+        """Converts a tuple to a dictionary"""
         if tupla is not None:
             lista = {
                 "id": tupla[0],
@@ -270,12 +297,14 @@ class adminTrabajadores(DatabaseZ):
                 "correo": tupla[6],
                 "contra": tupla[7],
                 "descripcion": tupla[8],  #
-                "genero": tupla[11],
-                "foto": tupla[12],
-                "aceptado": tupla[13],
-                "membresia": tupla[14],
-                "departamento": tupla[15],
-                "municipio": tupla[16],
+                "genero": tupla[9],
+                "foto":  b64encode(tupla[10]).decode("utf-8"),
+                "aceptado": tupla[11],
+                "membresia": tupla[12],
+                "departamento": tupla[13],
+                "municipio": tupla[14],
+                "trabajos": tupla[15],
+                "Categoría": tupla[16]
             }
         return lista
 

@@ -62,7 +62,6 @@ class DatabaseZ:
             -----
             Debuelve una lista de datos
         """
-
         cursor = self.cursor
         data = {}
         if cursor is not None:
