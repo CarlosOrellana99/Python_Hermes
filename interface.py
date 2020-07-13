@@ -37,6 +37,7 @@ def registerUser(kind): # View function
         correo = request.form.get('email')
         contrasena = request.form.get('contraseña')
         dui = request.form.get('dui')
+        genero = request.form.get('genero')
         celular = request.form.get('telefono')
         departamento = int(request.form.get('departamento'))
         municipio = int(request.form.get('municipio'))
@@ -45,7 +46,7 @@ def registerUser(kind): # View function
 
         admin = adminClientes()
 
-        success = admin.insert(dui, nombre, apellido, celular, direccion, correo, contrasena, departamento, municipio, foto)
+        success = admin.insert(dui, nombre, apellido, celular, direccion, correo, contrasena, departamento, municipio, genero, foto)
     elif kind == "worker":
         success = False
         nombre = request.form.get('nombre')

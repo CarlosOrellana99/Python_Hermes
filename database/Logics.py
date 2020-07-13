@@ -90,6 +90,8 @@ class adminAdministrador(DatabaseZ):
         admin = self.adminTrabajadores
         lista = admin.fetchAllWorkersByWord(word, limit)
 
+    
+
 class adminClientes(DatabaseZ):
     """Aministración de los clientes en la base de datos
     ----
@@ -98,55 +100,22 @@ class adminClientes(DatabaseZ):
     def __init__(self):
         self.database = DatabaseZ()
 
-    def insert(
-        self,
-        dui,
-        nombre,
-        apellido,
-        celular,
-        direccion,
-        correo,
-        contrasena,
-        departamento,
-        municipio,
-        foto=None,
-        ):
+    def insert(self, dui, nombre, apellido, celular, direccion, correo, contrasena, departamento, municipio, genero, foto=None ):
         """ Inserta los componentes de un cliente en la base de datos
         -------
         Devuelve True si se ejecutó con éxito y false si no se hicieron cambios"""
         success = False
-        if foto == "":
+        if  foto == "":
             sql = """INSERT INTO hermes.clientes 
-            (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Departamento`, `Municipio`) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);"""
-            val = (
-                dui,
-                nombre,
-                apellido,
-                celular,
-                direccion,
-                correo,
-                contrasena,
-                departamento,
-                municipio,
-            )
+            (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Departamento`, `Municipio`, `Genero` )  
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
+            val = (dui, nombre, apellido, celular, direccion, correo, contrasena, departamento, municipio, genero)
         else:
             sql = """INSERT INTO hermes.clientes 
-            (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Departamento`, `Municipio`, `Foto`) 
+            (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Departamento`, `Municipio`, `Foto`, `Genero` ) 
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
 
-            val = (
-                dui,
-                nombre,
-                apellido,
-                celular,
-                direccion,
-                correo,
-                contrasena,
-                departamento,
-                municipio,
-                foto,
-            )
+            val = ( dui, nombre, apellido, celular, direccion, correo, contrasena, departamento, municipio, foto, genero)
 
         database = self.database
         success = database.executeMany(sql, val)
@@ -182,6 +151,7 @@ class adminClientes(DatabaseZ):
             }
         return lista
 
+    
 class adminTrabajadores(DatabaseZ):
     """"Aministración de los trabajadores en la base de datos
     ----
@@ -243,35 +213,48 @@ class adminTrabajadores(DatabaseZ):
             lista = self.convertTuplaToDicc(data[0])
         return lista
 
-    def fetchAllWorkersByWord(self, word, limit = str(20), kind = {}, order = "fechaDeEntrada", mode = "desc"):
+    def fetchAllWorkersByWord(self, word, limit = str(20), kind = [], order = "fechaDeEntrada", mode = "desc", aprox=True, cat = True):
 
         """"Lista de {limit} trabajadores con características que parescan a {word}
         ----
-        {Kind} es una lista en que se detalla qué se buscará. Si desea buscar en todos los campos no escriba nada.
-        Si desea buscar en uno o dos campos especificos, ingrese una lista a {kind} con los campos en que desea buscar.
-        Asegúrese que los campos de {kind} sean: ['DUI', 'Nombre', 'Apellido', 'Celular', 'Direccion', 'Descripcion', 'Membresia', 'categoria.nombre', 'municipios.nombre', 'departamentos.nombre']
+        {Kind} es la lista de lugares en que se buscará 
+        Kind puede ser: ['trabajadores.DUI', 'trabajadores.Nombre', 'trabajadores.Apellido', 'trabajadores.Celular', 'trabajadores.Direccion', 'trabajadores.Descripcion', 'membresias.Membresia', 'municipios.nombre', 'departamentos.nombre']
+        Si desea que la busqueda no incluya a categoria escriba cat = False en los argumentos
+        Para buscar a un trabajador por su id escriba 'trabajadores.idTrabajadores' en kind
         La búsqueda se ordena con la fecha de entrada descendente. Para ajustar, el campo {order} es el campo de ordenamiento y {mode} es el modo de ordenamiento
+        Si desea una búsqueda exacta ingrese False en aprox
         """
         database = self.database 
+        if aprox:
+            like = f"like  '%{word.upper()}%'"
+        else:
+            like = f"= '{word.upper()}'"
+        final = []
+
         if len(kind) == 0:
-            lista = ['trabajadores.DUI', 'trabajadores.Nombre', 'trabajadores.Apellido', 'trabajadores.Celular', 'trabajadores.Direccion', 'trabajadores.Descripcion', 'trabajadores.Membresia', 'categoria.nombre', 'municipios.nombre', 'departamentos.nombre']
+            lista = ['trabajadores.DUI', 'trabajadores.Nombre', 'trabajadores.Apellido', 'trabajadores.Celular', 'trabajadores.Direccion', 'trabajadores.Descripcion', 'membresias.Membresia', 'municipios.nombre', 'departamentos.nombre', 'categoria.nombre']
         else:
             lista = kind
-        select = "trabajadores.idTrabajadores, trabajadores.DUI, trabajadores.Nombre, trabajadores.Apellido, trabajadores.Celular, trabajadores.Direccion, trabajadores.Correo, trabajadores.Contrasena, trabajadores.Descripcion, trabajadores.Genero, trabajadores.Foto, trabajadores.Aceptado, trabajadores.Membresia, departamentos.nombre as depa, municipios.nombre as mun, trabajadores.trabajos, categoria.nombre  as catName"
-        final = []
+
+        select = "trabajadores.idTrabajadores, trabajadores.DUI, trabajadores.Nombre, trabajadores.Apellido, trabajadores.Celular, trabajadores.Direccion, trabajadores.Correo, trabajadores.Contrasena, trabajadores.Descripcion, trabajadores.Genero, trabajadores.Foto, trabajadores.Aceptado,  membresias.Membresia, departamentos.nombre as depa, municipios.nombre as mun, trabajadores.trabajos"
+        # Búsquedas generales
         for x in lista:
-            sql = f"""  SELECT {select} FROM hermes.categorias 
-                        right join hermes.trabajadores on trabajadores.idTrabajadores = categorias.Trabajador
-                        inner join hermes.categoria on categoria.idCategoria = categorias.Categoria
-                        inner join hermes.departamentos on departamentos.idDepartamento = trabajadores.Departamento
-                        inner join hermes.municipios on municipios.idMunicipio = trabajadores.Municipio
-                        where ({x}) like '%{word.upper()}%'
-                        order by {order} {mode} limit {limit} ;"""
-            
+
+            sql = f"""  SELECT distinct {select}
+                    FROM categorias 
+                    right join trabajadores on trabajadores.idTrabajadores = categorias.Trabajador
+                    left join categoria on categoria.idCategoria = categorias.Categoria
+                    inner join hermes.departamentos on departamentos.idDepartamento = trabajadores.Departamento
+                    inner join hermes.municipios on municipios.idMunicipio = trabajadores.Municipio
+                    inner join hermes.membresias on membresias.idMembresias = trabajadores.Membresia
+                    where {x} {like}
+                    order by {order} {mode} limit {limit};"""
+
+            print(sql)
             data = database.executeQuery(sql)
             temporal = self.convertDataToList(data)
             final += temporal
-        
+            
         return final
     
     def convertDataToList(self, data):
@@ -296,7 +279,7 @@ class adminTrabajadores(DatabaseZ):
                 "direccion": tupla[5],
                 "correo": tupla[6],
                 "contra": tupla[7],
-                "descripcion": tupla[8],  #
+                "descripcion": tupla[8],  
                 "genero": tupla[9],
                 "foto":  b64encode(tupla[10]).decode("utf-8"),
                 "aceptado": tupla[11],
@@ -304,9 +287,27 @@ class adminTrabajadores(DatabaseZ):
                 "departamento": tupla[13],
                 "municipio": tupla[14],
                 "trabajos": tupla[15],
-                "Categoría": tupla[16]
+                "Categoría": self.getCategoriasById(tupla[0])
             }
         return lista
+
+    def getCategoriasById(self, idTrabajador):
+        """Retorna la lista de categorias a las que pertenece el trabajador con el id especificado"""
+        sql = f"""SELECT categoria.nombre FROM hermes.categorias
+            left join categoria on categoria.idCategoria = categorias.categoria
+            where categorias.Trabajador = '{idTrabajador}';"""
+        
+        data = self.database.executeQuery(sql)
+        lista = []
+        for x in data:
+            lista.append(x[0])
+        return lista
+    
+
+    def createMembresia(self, idW):
+        trabajador = self.fetchAllWorkersByWord(idW, 1, ['trabajadores.idTrabajadores'])
+        pass
+
 
 class adminCategorias(DatabaseZ):
     def __init__(self):

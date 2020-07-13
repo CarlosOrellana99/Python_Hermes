@@ -81,6 +81,7 @@ class DatabaseZ:
         if cursor is not None:
             cursor.execute(sql, val)
             conn.commit()
+            
             rows = cursor.rowcount
             succes = rows > 0
         return succes

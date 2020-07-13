@@ -57,5 +57,9 @@ elif test == '7':
 
 elif test == '8':
     admin = adminTrabajadores()
-    lista = admin.fetchAllWorkersByWord("Cerrajero", mode="asc")
-    print((lista))
+    lista = admin.fetchAllWorkersByWord("14", kind={'trabajadores.idTrabajadores'}, mode="asc", aprox= False)
+    print(lista)
+
+elif test == '9':
+    admin = adminTrabajadores()
+    admin.getCategoriasById("12")
