@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, flash, session, url_for
-from flask_login import UserMixin
 from database.Logics import adminAdministrador, adminClientes, adminTrabajadores, adminOpciones,adminCategorias
 
 app = Flask(__name__) #Page 30
