@@ -10,7 +10,7 @@
             <h1>Crear Usuario</h1>
             <form action="/servlet/register/user" method="post">
                 <label for="nombre" style="font-size:20px;font-style:Perpetua">Nombre</label><br>
-                <input type="text" id="nombre" name="nombre" size="100" required><br><br>
+                <input type="text" id="nombre" name="nombre" size="100" required ><br><br>
                     
                 <label for="apellido" style="font-size:20px;font-style:Perpetua">Apellido</label><br>
                 <input type="text" id="apellido" name="apellido" size="100" required><br><br>
@@ -19,13 +19,19 @@
                 <input type="email" id="email" name="email" size="100" required><br><br>
                 
                 <label for="contraseña" style="font-size:20px;font-style:Perpetua">Contraseña</label><br>
-                <input type="text" id="contraseña" name="contraseña" size="100" required><br><br>
+                <input type="password" id="contraseña" name="contraseña" size="100" required><br><br>
                 
                 <label for="dui" style="font-size:20px;font-style:Perpetua">Numero de DUI</label><br>
-                <input type="text" id="dui" name="dui" size="100" required maxlength="9"><br><br>
+                <input type="text" id="dui" name="dui" size="100" required maxlength="9" required><br><br>
                 
                 <label for="telefono" style="font-size:20px;font-style:Perpetua">Numero de Telefono Personal</label><br>
                 <input type="text" id="telefono" name="telefono" size="100" required><br><br>
+
+                <label for="genero" style="font-size:20px;font-style:Perpetua">Género</label><br>
+                <select id="genero" name="genero">
+                    <option value="Masculino">Masculino</option>
+                    <option value="Femenino">Femenino</option>
+                </select><br><br>
                 
                 <label for="departamento" style="font-size:20px;font-style:Perpetua">Departamento</label><br>
                 <select id="departamento" name="departamento">

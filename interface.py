@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, flash, session, url_for
 from flask_login import UserMixin
-from database.Logics import adminAdministrador, adminClientes, adminTrabajadores, adminOpciones
+from database.Logics import adminAdministrador, adminClientes, adminTrabajadores, adminOpciones,adminCategorias
 
 app = Flask(__name__) #Page 30
 app.secret_key = "Latrenge3456"
@@ -37,6 +37,7 @@ def registerUser(kind): # View function
         correo = request.form.get('email')
         contrasena = request.form.get('contraseña')
         dui = request.form.get('dui')
+        genero = request.form.get('genero')
         celular = request.form.get('telefono')
         departamento = int(request.form.get('departamento'))
         municipio = int(request.form.get('municipio'))
@@ -45,7 +46,7 @@ def registerUser(kind): # View function
 
         admin = adminClientes()
 
-        success = admin.insert(dui, nombre, apellido, celular, direccion, correo, contrasena, departamento, municipio, foto)
+        success = admin.insert(dui, nombre, apellido, celular, direccion, correo, contrasena, departamento, municipio, genero, foto)
     elif kind == "worker":
         success = False
         nombre = request.form.get('nombre')
@@ -85,18 +86,38 @@ def login(): # View function
     encontrado = dictionary['encontrado']
     permitido = dictionary['permitido']
     tipo = dictionary['tipo']
-
+    
     if encontrado and permitido:
+        session['user'] = dictionary['user']
         if tipo == "admin":
-            session['user'] = dictionary['user']
             return "Registrado como admin"
         elif tipo == "worker":
             return "Registrado como trabajador"
         elif tipo == "user":
-            return "Registrado como usuario"
+            return redirect("/Hammer.com/u")
     else:
         return redirect("/")
 
+@app.route("/Hammer.com/u")
+def paginaprincipalusuario():
+    usuario = session['user']
+    print (f"{usuario}")
+    admincat = adminCategorias()
+    listacategorias = admincat.getCategoriaConFoto()
+    listacat = admincat.convertirimagenes(listacategorias)
+    return render_template("principalUsuario.html",categorias=listacat,usuarioactivo=usuario)
+
+@app.route("/Hammer.com/tu-Cuenta/")
+def paginaprmodificarcuenta():
+    usuario = session['user']
+    admin = adminOpciones()
+    ltsDepartamentos = admin.getDepartamentos()
+    ltsMunicipios = admin.getMunicipios()
+    return render_template("modificarUsuario.html",departamentos = ltsDepartamentos, municipios = ltsMunicipios,datosusuario=usuario)
+
+@app.route("/test")
+def test():
+    return render_template("inicioadmin.html")
 
 if __name__=='__main__':
     app.run(debug=True)

@@ -1,4 +1,4 @@
-import mysql.connector
+import pymysql
 
 class DatabaseZ:
     """ Base de datos MySql
@@ -17,7 +17,7 @@ class DatabaseZ:
         self.cursor = self.createCurosor()
     
     def createConnection(self):
-        conn = mysql.connector.connect(
+        conn = pymysql.connect(
             host = self.params["host"],
             user = self.params["user"],
             passwd = self.params["passwd"],
@@ -27,7 +27,7 @@ class DatabaseZ:
     
     def createCurosor(self):
         cursor = None
-        if self.connection.is_connected():
+        if not self.connection is None:
             cursor = self.connection.cursor()
         return cursor
     
@@ -81,6 +81,7 @@ class DatabaseZ:
         if cursor is not None:
             cursor.execute(sql, val)
             conn.commit()
+            
             rows = cursor.rowcount
             succes = rows > 0
         return succes

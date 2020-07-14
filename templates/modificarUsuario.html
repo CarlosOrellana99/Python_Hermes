@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <body style="background-color:rgb(245, 245, 245);" >
+        <center>
+            <div style="background-color:rgb(255, 255, 255);" >
+                <h2 style="font-size:50px;color:rgb(0, 0, 128);margin-top: 10px">HAMMER</h2>
+            </div>
+        </center>
+        <div >
+            <h1>Tu cuenta</h1>
+            <form action="/Hammer.com/tu-Cuenta" method="post">
+                <label for="nombre" style="font-size:20px;font-style:Perpetua">Nombre y Apellido</label><br>
+                <input type="text" id="nombre" value="{{datosusuario['nombre']}}" name="nombre" size="100" required><br><br>
+                    
+                <label for="apellido" style="font-size:20px;font-style:Perpetua">Apellido</label><br>
+                <input type="text" id="apellido" value="{{datosusuario['apellido']}}" name="apellido" size="100" required><br><br>
+                
+                <label for="dui" style="font-size:20px;font-style:Perpetua">Numero de DUI</label><br>
+                <input type="text" id="dui" name="dui" size="100" value="{{datosusuario['dui']}}" required maxlength="9" required><br><br>
+
+                <label for="email" style="font-size:20px;font-style:Perpetua">Correo electronico</label><br>
+                <input type="email" id="email" value="{{datosusuario['correo']}}" name="email" size="100" required><br><br>
+                
+                <label for="contraseña" style="font-size:20px;font-style:Perpetua">Contraseña</label><br>
+                <input type="text" id="contraseña" value="{{datosusuario['contra']}}" name="contraseña" size="100" required><br><br>
+                
+                <label for="telefono" style="font-size:20px;font-style:Perpetua">Numero de Telefono Personal</label><br>
+                <input type="text" id="telefono" value="{{datosusuario['telefono']}}" name="telefono" size="100" required><br><br>
+                
+                <label for="departamento" style="font-size:20px;font-style:Perpetua">Departamento</label><br>
+                <select id="departamento" name="departamento">
+                    {% for departamento in departamentos %}
+                        {% if departamento['nombre'] == datosusuario['departamento']%}
+                            <option value="{{departamento['id']}}" selected>{{ departamento['nombre'] }}</option>
+                        {% else %}
+                            <option value="{{departamento['id']}}">{{ departamento['nombre'] }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select> <br><br>
+                
+                <label for="municipio" style="font-size:20px;font-style:Perpetua">Municipio</label><br>
+                <select id="municipio" name="municipio">
+                    {% for municipio in municipios %}
+                        {% if municipio['nombre'] == datosusuario['municipio']%}
+                            <option value="{{municipio['id']}}" selected>{{ municipio['nombre'] }}</option>
+                        {% else %}
+                            <option value="{{municipio['id']}}" >{{ municipio['nombre'] }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select> <br><br>
+
+                <label for="direccion" style="font-size:20px;font-style:Perpetua">Direccion</label><br>
+                <input type="text" id="direccion" value="{{datosusuario['direccion']}}" name="direccion" size="100" required><br><br>
+                
+                <label for="imagen" style="font-size:20px;font-style:Perpetua">Foto de perfil</label><br>
+                <input type="file" id="imagen" name="imagen" size="100"><br><br>
+                <input type="submit" value="Guardar Cambios">
+                <input type="submit" value="Cancelar">
+            </form> <br><br>
+        </div>
+    </body>
+</html>
