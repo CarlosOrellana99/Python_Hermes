@@ -90,8 +90,11 @@ class adminAdministrador(DatabaseZ):
         admin = self.adminTrabajadores
         lista = admin.fetchAllWorkersByWord(word, limit)
 
+    def revocarLicenciaDeudores(self):
+        sql = "update hermes.membresias set membresias.Vigencia = 0 where datediff(now(), UltimoPago) > 31;"
+        exito = self.database.executeNonQueryBool(sql)
+        return exito
     
-
 class adminClientes(DatabaseZ):
     """Aministración de los clientes en la base de datos
     ----
@@ -151,16 +154,16 @@ class adminClientes(DatabaseZ):
             }
         return lista
 
-    
 class adminTrabajadores(DatabaseZ):
-    """"Aministración de los trabajadores en la base de datos
+    """
+    Aministración de los trabajadores en la base de datos
     ----
     """
 
     def __init__(self):
         self.database = DatabaseZ()
 
-    def insert( self, dui, nombre, apellido, celular, direccion, correo, contrasena, descripcion, departamento, municipio, genero, aceptado, membresia, foto=None,):
+    def insert( self, dui, nombre, apellido, celular, direccion, correo, contrasena, descripcion, departamento, municipio, genero, aceptado, membresia="AAAA-0000-0000", foto=None,):
         """ Inserta los componentes de un cliente en la base de datos
         -------
         Devuelve True si se ejecutó con éxito y false si no se hicieron cambios"""
@@ -250,7 +253,7 @@ class adminTrabajadores(DatabaseZ):
                     where {x} {like}
                     order by {order} {mode} limit {limit};"""
 
-            print(sql)
+            
             data = database.executeQuery(sql)
             temporal = self.convertDataToList(data)
             final += temporal
@@ -303,11 +306,65 @@ class adminTrabajadores(DatabaseZ):
             lista.append(x[0])
         return lista
     
+    def generarMembresiaEnTrabajador(self, idW):
+        trabajador = self.fetchAllWorkersByWord(str(idW), limit='1', kind= ['trabajadores.idTrabajadores'], order='trabajadores.idTrabajadores', aprox=False, cat=False)
+        membActual, exito = trabajador[0]['membresia'], False
+        last = self.getLastMembresia()
+        if membActual == "AAAA-0000-0000": # Esto significa que aún no se le ha asignado ninguna membresía
+            new = self.createMembresia(last)
+            sql = f"""  UPDATE hermes.membresias inner join hermes.trabajadores on trabajadores.Membresia = membresias.idMembresias
+                        set membresias.Membresia = '{new}'
+                        where trabajadores.idTrabajadores = '{idW}';"""
+            exito = self.database.executeNonQueryBool(sql)
+        return exito
 
-    def createMembresia(self, idW):
-        trabajador = self.fetchAllWorkersByWord(idW, 1, ['trabajadores.idTrabajadores'])
-        pass
+    def createMembresia(self, last):
+        # last = self.getLastMembresia()
+        numeros_ok = ['1', '2', '3', '4', '5', '6', '7', '8', '0']
+        abecedario = {"A": "B", "B": "C", "C": "D", "D": "E", "E": "F", "F": "A"}
+        letras = ['A', 'B', 'C', 'D', 'E', 'F']
+        nueva, value, added, num="", "", False, 0
+        for x in reversed(last):
+            print(x)
+            if x in numeros_ok:
+                value = int(x)
+                value += 1
+                added = True
+            elif x == '9':
+                value = "0"
+            elif x in letras:
+                value = abecedario[x]
+                num += 1
+                added = not (value == "A") or (num > 3)
+            else:
+                value = '-'
+            nueva += str(value)
+            if added:
+                break
+        final = last[0:(14-len(nueva))] + nueva[::-1]
+        return final
+        
+    def getLastMembresia(self):
+        """Devuelve el valor de la última membresía ingresada"""
+        database = self.database
+        sql = """   SELECT membresias.Membresia FROM hermes.trabajadores 
+                    inner join hermes.membresias on membresias.idMembresias = trabajadores.Membresia
+                    order by membresias.Membresia desc limit 1;"""
+        data = database.executeQuery(sql)
+        membresia = data[0][0]
+        return membresia
 
+    def fragmentarMembersia(self, membresia):
+        """Devuelve un diccionario con lo siguiente:
+            {'membresia': '00-0000-0000', 'primeraParte': '00', 'segundaParte': '0000', 'terceraParte': '0000'}
+        """
+        dicc = {
+        "membresia": membresia,
+        "primeraParte": membresia[0:2],
+        "segundaParte": membresia[3:7],
+        "terceraParte": membresia[8:12] 
+        }
+        return dicc
 
 class adminCategorias(DatabaseZ):
     def __init__(self):
