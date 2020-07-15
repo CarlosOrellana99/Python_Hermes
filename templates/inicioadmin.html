@@ -2,16 +2,69 @@
 {% block title %}Inicio Administrador{% endblock %}
 {% block currentInicioAdmin %}<span class="sr-only">(current)</span>{% endblock %}
 {% block contenidoInicioAdmin %}
-<div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
-    <div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-        <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
-    </div>
-    <div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-        <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
-    </div>
-</div>
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
     <h1 class="h2">Bienvenido de vuelta, Administrador</h1>
+    
 </div>
-
+<div class="row mb-2">
+    <div class="col-md-6">
+        <div class="row no-gutters overflow-hidden flex-md-row mb-4 h-md-250 position-relative" style="border: #00c2cb 8px inset;">
+            <div class="col p-4 d-flex flex-column position-static">
+                <h3 class="mb-0">Trabajadores con mora</h3>
+                <h1 class="card-text mb-auto">34</h1>
+                <button class="btn btn-outline-dark my-2 my-sm-0" style="width: 50%; background-color: #00c2cb; margin:auto">
+                    Revocar licencia
+                </button>
+                <p><span style="font-size:x-small">*La licencia se reestablecerá automáticamente al realizar el pago</span></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row no-gutters overflow-hidden flex-md-row mb-4 h-md-250 position-relative" style="border: #00c2cb 8px inset;">
+            <div class="col p-4 d-flex flex-column position-static">
+                <h3 class="mb-0">Ingresos del mes</h3>
+                <h1 class="card-text mb-auto">$34</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mb-2">
+    <div class="col-md-6">
+        <div class="row no-gutters overflow-hidden flex-md-row mb-4 h-md-250 position-relative" style="border: #00c2cb 8px inset;">
+            <div class="col p-4 d-flex flex-column position-static">
+                <h3 class="mb-0">Número de trabajadores sin acceso</h3>
+                <h1 class="card-text mb-auto">34</h1>
+                <button class="btn btn-outline-dark my-2 my-sm-0" style="width: 50%; background-color: #00c2cb; margin:auto">
+                    Trabajadores sin acceso
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="row no-gutters overflow-hidden flex-md-row mb-4 h-md-250 position-relative" style="border: #00c2cb 8px inset;">
+            <div class="col p-4 d-flex flex-column position-static">
+                <h3 class="mb-0">Top 5 Trabajadores</h3>
+                <div class="box" style="border: lightgray 2px inset">
+                    <article class="media">
+                        <div class="media-left">
+                            <figure class="image is-128x128">
+                                <a href= "" ><img src="https://i.imgur.com/h6LWrGM.png" alt="Image" style="overflow:hidden ;max-height: 128px; max-width:128px"></a>
+                            </figure>
+                        </div>
+                        <div class="media-content">
+                            <div class="content">
+                                <p><strong>Nombre</strong>
+                                    <br>
+                                    Correo
+                                    <br>
+                                    Descripción
+                                </p>
+                            </div>
+                        </div>                                       
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
