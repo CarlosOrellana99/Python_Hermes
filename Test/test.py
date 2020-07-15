@@ -65,6 +65,6 @@ elif test == 'p':
     admin.createMembresia()
 
 elif test == '9':
-    admin = adminTrabajadores()
-    print(admin.generarMembresiaEnTrabajador("10"))
+    admin = adminAdministrador()
+    print(admin.verify("dedroperka@enayu.com", "contrasena"))
     

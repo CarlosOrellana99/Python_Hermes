@@ -88,11 +88,13 @@ def login(): # View function
     
     if encontrado and permitido:
         session['user'] = dictionary['user']
+        
         if tipo == "admin":
             return "Registrado como admin"
         elif tipo == "worker":
             return "Registrado como trabajador"
         elif tipo == "user":
+            print(dictionary['user'])
             return redirect("/Hammer.com/u")
     else:
         return redirect("/")
@@ -109,10 +111,34 @@ def paginaprincipalusuario():
 @app.route("/Hammer.com/tu-Cuenta/")
 def paginaprmodificarcuenta():
     usuario = session['user']
+    stridusuario= str(usuario['id'])
     admin = adminOpciones()
     ltsDepartamentos = admin.getDepartamentos()
     ltsMunicipios = admin.getMunicipios()
-    return render_template("modificarUsuario.html",departamentos = ltsDepartamentos, municipios = ltsMunicipios,datosusuario=usuario)
+    return render_template("modificarUsuario.html",departamentos = ltsDepartamentos, municipios = ltsMunicipios,datosusuario=usuario,strid=stridusuario)
+
+@app.route("/Hammer.com/servlet/tu-Cuenta/<iduser>", methods=['POST'])
+def modificarcuenta(iduser):
+    success=False
+    idusuario= int(iduser)
+    nombre = request.form.get('nombre')
+    apellido = request.form.get('apellido')
+    correo = request.form.get('email')
+    contrasena = request.form.get('contraseña')
+    dui = request.form.get('dui')
+    telefono = request.form.get('telefono')
+    genero = request.form.get('genero')
+    departamento = int(request.form.get('departamento'))
+    municipio = int(request.form.get('municipio'))
+    direccion = (request.form.get('direccion'))
+    diccionariouser = {"id": idusuario, "nombre": nombre,"apellido":apellido,"correo":correo,"contra":contrasena,"dui":dui,
+                        "telefono":telefono,"genero":genero,"departamento":departamento,"municipio":municipio,"direccion":direccion}
+    adminmodificar=adminClientes()
+    success = adminmodificar.updateusuario(diccionariouser)
+    if success == True:
+        print("datos de vuenta modificados con exito")
+        session['msg'] = "Sus datos de cuenta ha sido modificado con exito, vuelva a ingresar"
+        return redirect("/")
 
 @app.route("/test")
 def test():
