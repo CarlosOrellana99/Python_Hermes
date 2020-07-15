@@ -8,7 +8,7 @@
         </center>
         <div >
             <h1>Tu cuenta</h1>
-            <form action="/Hammer.com/tu-Cuenta" method="post">
+            <form action="/Hammer.com/servlet/tu-Cuenta/{{strid}}" method="post">
                 <label for="nombre" style="font-size:20px;font-style:Perpetua">Nombre y Apellido</label><br>
                 <input type="text" id="nombre" value="{{datosusuario['nombre']}}" name="nombre" size="100" required><br><br>
                     
@@ -26,6 +26,21 @@
                 
                 <label for="telefono" style="font-size:20px;font-style:Perpetua">Numero de Telefono Personal</label><br>
                 <input type="text" id="telefono" value="{{datosusuario['telefono']}}" name="telefono" size="100" required><br><br>
+
+                <label for="genero" style="font-size:20px;font-style:Perpetua">Género</label><br>
+                <select id="genero" name="genero">
+                    {% if datosusuario['genero'] == "Masculino" %}
+                        <option value="Masculino" selected> Masculino</option>
+                    {% else %}
+                    <option value="Masculino">Masculino</option>
+                    {% endif %}
+
+                    {% if datosusuario['genero'] == "Femenino" %}
+                        <option value="Femenino" selected>Femenino</option>
+                    {% else %}
+                        <option value="Femenino">Femenino</option>
+                    {% endif %}
+                </select><br><br>
                 
                 <label for="departamento" style="font-size:20px;font-style:Perpetua">Departamento</label><br>
                 <select id="departamento" name="departamento">
