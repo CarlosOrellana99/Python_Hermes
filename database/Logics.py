@@ -438,7 +438,7 @@ class adminCuenta():
         database = self.database
         sql = """UPDATE hermes.clientes SET
             DUI=%s , Nombre=%s, Apellido=%s, Celular=%s, Direccion=%s, Correo=%s ,
-            Contrasena=%s , Departamento=%s , Municipio=%s WHERE idClientes=%s;"""
+            Contrasena=%s , Departamento=%s , Municipio=%s, Genero=%s WHERE idClientes=%s;"""
         val = (
             datanueva['dui'],
              datanueva['nombre'],
@@ -449,6 +449,7 @@ class adminCuenta():
             datanueva['contra'],
             datanueva['departamento'],
             datanueva['municipio'],
+            datanueva['genero'],
             datanueva['id']
             )
         success = database.executeMany(sql,val)

@@ -126,11 +126,12 @@ def modificarcuenta(iduser):
     contrasena = request.form.get('contraseña')
     dui = request.form.get('dui')
     telefono = request.form.get('telefono')
+    genero = request.form.get('genero')
     departamento = int(request.form.get('departamento'))
     municipio = int(request.form.get('municipio'))
     direccion = (request.form.get('direccion'))
     diccionariouser = {"id": idusuario, "nombre": nombre,"apellido":apellido,"correo":correo,"contra":contrasena,"dui":dui,
-                        "telefono":telefono,"departamento":departamento,"municipio":municipio,"direccion":direccion}
+                        "telefono":telefono,"genero":genero,"departamento":departamento,"municipio":municipio,"direccion":direccion}
     adminmodificar=adminCuenta()
     success = adminmodificar.updateusuario(diccionariouser)
     if success == True:
