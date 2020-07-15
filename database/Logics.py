@@ -95,6 +95,22 @@ class adminAdministrador(DatabaseZ):
         exito = self.database.executeNonQueryBool(sql)
         return exito
     
+    def getTopN(self, n = 5):
+        database = self.adminTrabajadores
+        adminT = self.adminTrabajadores
+        sql = f"""SELECT citas.Trabajador, count(distinct(citas.idCitas)) as sumCitas 
+                from citas  
+                where datediff(now(), citas.Fecha) < 31 and citas.finalizada = 'True'
+                group by citas.Trabajador 
+                order by sumCitas desc limit {n};"""
+        data = database.executeQuery(sql)
+        top5trabajadores = []
+        for x in data:
+            trabajador = adminT.fetchAllWorkersByWord(x[0], limit = 1, kind = ['trabajadores.idTrabajadores'] , aprox = False, cat = False)
+            top5trabajadores.append(tuple(trabajador[0], x[1]))
+
+        return top5trabajadores
+
 class adminClientes(DatabaseZ):
     """Aministración de los clientes en la base de datos
     ----
@@ -177,7 +193,6 @@ class adminClientes(DatabaseZ):
             
         success = database.executeMany(sql,val)
         return success
-
 
 class adminTrabajadores(DatabaseZ):
     """
