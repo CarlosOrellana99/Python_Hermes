@@ -149,8 +149,9 @@ class adminClientes(DatabaseZ):
                 "correo": tupla[6],
                 "contra": tupla[7],
                 "foto": tupla[8],
-                "departamento": tupla[11],
-                "municipio": tupla[12],
+                "genero": tupla[11],
+                "departamento": tupla[12],
+                "municipio": tupla[13],
             }
         return lista
 
