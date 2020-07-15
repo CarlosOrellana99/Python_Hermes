@@ -144,5 +144,9 @@ def modificarcuenta(iduser):
 def test():
     return render_template("inicioadmin.html")
 
+@app.route("/test2")
+def test2():
+    return render_template("trabajadoresConAcceso.html")
+
 if __name__=='__main__':
     app.run(debug=True)
