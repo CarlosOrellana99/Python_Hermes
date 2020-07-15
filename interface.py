@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, flash, session, url_for
 from flask_login import UserMixin
-from database.Logics import adminAdministrador, adminClientes, adminTrabajadores, adminOpciones,adminCategorias,adminCuenta
+from database.Logics import adminAdministrador, adminClientes, adminTrabajadores, adminOpciones,adminCategorias
 
 app = Flask(__name__) #Page 30
 app.secret_key = "Latrenge3456"
@@ -134,7 +134,7 @@ def modificarcuenta(iduser):
     direccion = (request.form.get('direccion'))
     diccionariouser = {"id": idusuario, "nombre": nombre,"apellido":apellido,"correo":correo,"contra":contrasena,"dui":dui,
                         "telefono":telefono,"genero":genero,"departamento":departamento,"municipio":municipio,"direccion":direccion}
-    adminmodificar=adminCuenta()
+    adminmodificar=adminClientes()
     success = adminmodificar.updateusuario(diccionariouser)
     if success == True:
         print("datos de vuenta modificados con exito")

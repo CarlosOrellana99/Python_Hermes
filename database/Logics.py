@@ -155,6 +155,30 @@ class adminClientes(DatabaseZ):
             }
         return lista
 
+    def updateusuario(self, datanueva):
+        """ actualiza los campos de la cuenta de un usuario recibiendo un diccionario con los nuevos campos y el id"""
+        database = self.database
+        sql = """UPDATE hermes.clientes SET
+            DUI=%s , Nombre=%s, Apellido=%s, Celular=%s, Direccion=%s, Correo=%s ,
+            Contrasena=%s , Departamento=%s , Municipio=%s, Genero=%s WHERE idClientes=%s;"""
+        val = (
+            datanueva['dui'],
+             datanueva['nombre'],
+             datanueva['apellido'],
+            datanueva['telefono'],
+            datanueva['direccion'],
+            datanueva['correo'],
+            datanueva['contra'],
+            datanueva['departamento'],
+            datanueva['municipio'],
+            datanueva['genero'],
+            datanueva['id']
+            )
+            
+        success = database.executeMany(sql,val)
+        return success
+
+
 class adminTrabajadores(DatabaseZ):
     """
     Aministración de los trabajadores en la base de datos
@@ -429,29 +453,3 @@ class adminOpciones(DatabaseZ):
             dicc = {"id": x[0], "nombre": x[1]}
             lista.append(dicc)
         return lista
-
-class adminCuenta():
-    def __init__(self):
-        self.database = DatabaseZ()
-
-    def updateusuario(self,datanueva):
-        """ actualiza los campos de la cuenta de un usuario recibiendo un diccionario con los nuevos campos y el id"""
-        database = self.database
-        sql = """UPDATE hermes.clientes SET
-            DUI=%s , Nombre=%s, Apellido=%s, Celular=%s, Direccion=%s, Correo=%s ,
-            Contrasena=%s , Departamento=%s , Municipio=%s, Genero=%s WHERE idClientes=%s;"""
-        val = (
-            datanueva['dui'],
-             datanueva['nombre'],
-             datanueva['apellido'],
-            datanueva['telefono'],
-            datanueva['direccion'],
-            datanueva['correo'],
-            datanueva['contra'],
-            datanueva['departamento'],
-            datanueva['municipio'],
-            datanueva['genero'],
-            datanueva['id']
-            )
-        success = database.executeMany(sql,val)
-        return success
