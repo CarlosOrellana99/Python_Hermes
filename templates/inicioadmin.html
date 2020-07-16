@@ -10,7 +10,7 @@
         <div class="row no-gutters overflow-hidden flex-md-row mb-4 h-md-250 position-relative" style="border: #00c2cb 8px inset;">
             <div class="col p-4 d-flex flex-column position-static">
                 <h3 class="mb-0">Trabajadores con mora</h3>
-                <h1 class="card-text mb-auto">34</h1>
+                <h1 class="card-text mb-auto">{{ stats["TrabajadoresMora"]  }}</h1>
                 <button class="btn btn-outline-dark my-2 my-sm-0" style="width: 50%; background-color: #00c2cb; margin:auto">
                     Revocar licencia
                 </button>
@@ -22,7 +22,7 @@
         <div class="row no-gutters overflow-hidden flex-md-row mb-4 h-md-250 position-relative" style="border: #00c2cb 8px inset;">
             <div class="col p-4 d-flex flex-column position-static">
                 <h3 class="mb-0">Ingresos del mes</h3>
-                <h1 class="card-text mb-auto">$34</h1>
+                <h1 class="card-text mb-auto">$ {{ stats["IngresosMes"] }}</h1>
             </div>
         </div>
     </div>
@@ -32,7 +32,7 @@
         <div class="row no-gutters overflow-hidden flex-md-row mb-4 h-md-250 position-relative" style="border: #00c2cb 8px inset;">
             <div class="col p-4 d-flex flex-column position-static">
                 <h3 class="mb-0">Número de trabajadores sin acceso</h3>
-                <h1 class="card-text mb-auto">34</h1>
+                <h1 class="card-text mb-auto">{{ stats["TrabajadoresNoAcceso"] }}</h1>
                 <button class="btn btn-outline-dark my-2 my-sm-0" style="width: 50%; background-color: #00c2cb; margin:auto">
                     Trabajadores sin acceso
                 </button>
@@ -43,25 +43,29 @@
         <div class="row no-gutters overflow-hidden flex-md-row mb-4 h-md-250 position-relative" style="border: #00c2cb 8px inset;">
             <div class="col p-4 d-flex flex-column position-static">
                 <h3 class="mb-0">Top 5 Trabajadores</h3>
+                {% for worker in top5 %}
                 <div class="box" style="border: lightgray 2px inset">
                     <article class="media">
                         <div class="media-left">
                             <figure class="image is-128x128">
-                                <a href= "" ><img src="https://i.imgur.com/h6LWrGM.png" alt="Image" style="overflow:hidden ;max-height: 128px; max-width:128px"></a>
+                                <a href= "" ><img src="data:;base64,{{ worker['foto'] }}" alt="Image" style="overflow:hidden ;height: 128px; width:128px"></a>
                             </figure>
                         </div>
                         <div class="media-content">
                             <div class="content">
-                                <p><strong>Nombre</strong>
+                                <p><strong>Nombre:     </strong>{{ worker['nombre']}}
                                     <br>
-                                    Correo
+                                    <strong>Correo:     </strong> {{ worker['correo'] }}
                                     <br>
-                                    Descripción
+                                    <strong>Descripción:     </strong> {{ worker['descripcion'] }}
+                                    <br>
+                                    <strong>Cantidad de citas este mes:     </strong> {{ worker['cantidadCitas'] }}
                                 </p>
                             </div>
                         </div>                                       
                     </article>
                 </div>
+                {% endfor %}
             </div>
         </div>
     </div>
