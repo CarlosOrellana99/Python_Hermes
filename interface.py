@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, flash, session, url_for
-from database.Logics import adminAdministrador, adminClientes, adminTrabajadores, adminOpciones,adminCategorias
+from database.Logics import adminAdministrador, adminClientes, adminTrabajadores, adminOpciones,adminCategorias,adminCitas
 
 app = Flask(__name__) #Page 30
 app.secret_key = "Latrenge3456"
@@ -145,10 +145,14 @@ def modificarcuenta():
         session['idusuarioactual']=""
         session['correoactual']=""
         session['passwordactual']=""
-  #      if not correoactual==correo or not passwordactual==contrasena:
         return redirect("/")
- #       else:
-  #          return redirect("/Hammer.com/tu-Cuenta/")
+
+@app.route("/Hammer.com/citas")
+def CitasCliente():
+    admincitas=adminCitas()
+    usuario = session['user']
+    citaspendientes,citasnoconfirmadas,citaspasadas=admincitas.getCitasCliente(usuario['id'])
+    return render_template("citasU.html",citaspendientes=citaspendientes,citasnoconfirmadas=citasnoconfirmadas,citaspasadas=citaspasadas)
 
 @app.route("/test")
 def test():

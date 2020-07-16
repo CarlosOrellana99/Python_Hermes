@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Title of the document</title>
+</head>
+
+<body>
+<p>Citas pendientes</p>
+{% for x in citaspendientes %}
+    <p>{{x['Fecha']}}</p>
+    <p>{{x['NombreTrabajador']}} {{x['ApellidoTrabajador']}}</p>
+{% endfor %}
+<br>
+<p>Citas en espera de Confirmación</p>
+{% for y in citasnoconfirmadas %}
+    <p>{{y['Fecha']}}</p>
+    <p>{{y['NombreTrabajador']}} {{y['ApellidoTrabajador']}}</p>
+{% endfor %}
+<br>
+<p>Citas pasadas</p>
+{% for z in citaspasadas %}
+    <p>{{z['Fecha']}}</p>
+    <p>{{z['NombreTrabajador']}} {{z['ApellidoTrabajador']}}</p>
+{% endfor %}
+</body>
+
+</html>

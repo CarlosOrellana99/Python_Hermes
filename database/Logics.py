@@ -468,3 +468,60 @@ class adminOpciones(DatabaseZ):
             dicc = {"id": x[0], "nombre": x[1]}
             lista.append(dicc)
         return lista
+
+class adminCitas(DatabaseZ):
+    def __init__(self):
+        self.database = DatabaseZ()
+    
+    def getCitasCliente(self, idCliente):
+        """Retorna una lista de diccionarios con los datos de las citas y trabajadores"""
+        database = self.database
+        sql = f"""SELECT idCitas,Fecha,Hora,Finalizada,DescripcionTrabajo,Confirmacion,Cliente,idTrabajadores,
+                Nombre,Apellido,Descripcion,Departamento,Municipio,Foto,trabajos,fechaDeEntrada FROM hermes.citas 
+                left outer join hermes.trabajadores on trabajador=idTrabajadores WHERE Cliente='{idCliente}';"""
+        data = database.executeQuery(sql)
+        CitasCliente= self.creardiccsCitasClientes(data)
+        CitasClienteTipos = self.clasificarcitasCliente(CitasCliente)
+        return CitasClienteTipos
+
+    def creardiccsCitasClientes(self, lista):
+        """Crea una lista de diccionarios de las citas del cliente"""
+        listafinal=[]
+        if lista is not None:
+            for x in lista:
+                dicc = {
+                    "idCitas": x[0],
+                    "Fecha": x[1],
+                    "Hora": x[2],
+                    "Finalizada": x[3],
+                    "DescripcionTrabajo": x[4],
+                    "Confirmacion": x[5],
+                    "Cliente": x[6],
+                    "idTrabajadores": x[7],
+                    "NombreTrabajador": x[8],  
+                    "ApellidoTrabajdor": x[9],
+                    "DescripcionTrabajador": x[10],
+                    "DepartamentoTrabajador": x[11],
+                    "Municipiotrabajador": x[12],
+                    "foto":  b64encode(x[13]).decode("utf-8"),
+                    "TrabajosRealizados": x[14],
+                    "FechadeEntrada": x[15],
+                }
+                listafinal.append(dicc)
+        return listafinal
+
+    def clasificarcitasCliente(self,listacitas):
+        citaspendientes=[]
+        citasnoconfirmadas=[]
+        citaspasadas=[]
+        if listacitas is not None:
+            for cita in listacitas:
+                if cita['Finalizada']=="False" and cita['Confirmacion']=="True":
+                    citaspendientes.append(cita)
+                elif cita['Confirmacion']=="False":
+                    citasnoconfirmadas.append(cita)
+                elif cita['Finalizada']=="True":
+                    citaspasadas.append(cita)
+
+            return citaspendientes,citasnoconfirmadas,citaspasadas
+
