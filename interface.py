@@ -7,6 +7,9 @@ app.secret_key = "Latrenge3456"
 
 @app.route("/")
 def index(): # View function
+    session['user'] = None
+    session['kind'] = None
+
     if 'msg' in session:
         flash(session['msg']) # version no funcional de flash
         del(session['msg'])
@@ -88,9 +91,9 @@ def login(): # View function
     
     if encontrado and permitido:
         session['user'] = dictionary['user']
-        
+        session['kind'] = tipo
         if tipo == "admin":
-            return "Registrado como admin"
+            return redirect("/Hammer.com/admin")
         elif tipo == "worker":
             return "Registrado como trabajador"
         elif tipo == "user":
@@ -98,6 +101,23 @@ def login(): # View function
             return redirect("/Hammer.com/u")
     else:
         return redirect("/")
+
+# Admin UI
+@app.route("/Hammer.com/admin")
+def adminIndex():
+    admin = session['user']
+    tipo = session['kind']
+    if not tipo == "admin":
+        return f"""<h1>You do not have access to this page</h1><br>
+                    <h2>Please sing up in this </h2><a href="/">link</a>""", 402
+    else:
+        adminA = adminAdministrador()
+        top5 = adminA.getTopN()
+        stats = adminA.getStats()
+        return render_template("inicioadmin.html", top5 = top5, admin =  admin, stats = stats)
+
+
+# User UI
 
 @app.route("/Hammer.com/u")
 def paginaprincipalusuario():
@@ -140,6 +160,7 @@ def modificarcuenta(iduser):
         session['msg'] = "Sus datos de cuenta ha sido modificado con exito, vuelva a ingresar"
         return redirect("/")
 
+# Tests
 @app.route("/test")
 def test():
     return render_template("inicioadmin.html")
