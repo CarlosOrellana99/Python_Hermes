@@ -131,16 +131,20 @@ def paginaprincipalusuario():
 @app.route("/Hammer.com/tu-Cuenta/")
 def paginaprmodificarcuenta():
     usuario = session['user']
-    stridusuario= str(usuario['id'])
+    session['idusuarioactual']= usuario['id']
+    session['correoactual']=usuario['correo']
+    session['passwordactual']=usuario['contra']
     admin = adminOpciones()
     ltsDepartamentos = admin.getDepartamentos()
     ltsMunicipios = admin.getMunicipios()
-    return render_template("modificarUsuario.html",departamentos = ltsDepartamentos, municipios = ltsMunicipios,datosusuario=usuario,strid=stridusuario)
+    return render_template("modificarUsuario.html",departamentos = ltsDepartamentos, municipios = ltsMunicipios,datosusuario=usuario)
 
-@app.route("/Hammer.com/servlet/tu-Cuenta/<iduser>", methods=['POST'])
-def modificarcuenta(iduser):
+@app.route("/Hammer.com/servlet/tu-Cuenta/", methods=['POST'])
+def modificarcuenta():
     success=False
-    idusuario= int(iduser)
+    idusuario= session['idusuarioactual']
+    correoactual = session['correoactual']
+    passwordactual=session['passwordactual']
     nombre = request.form.get('nombre')
     apellido = request.form.get('apellido')
     correo = request.form.get('email')
@@ -158,7 +162,13 @@ def modificarcuenta(iduser):
     if success == True:
         print("datos de vuenta modificados con exito")
         session['msg'] = "Sus datos de cuenta ha sido modificado con exito, vuelva a ingresar"
+        session['idusuarioactual']=""
+        session['correoactual']=""
+        session['passwordactual']=""
+  #      if not correoactual==correo or not passwordactual==contrasena:
         return redirect("/")
+ #       else:
+  #          return redirect("/Hammer.com/tu-Cuenta/")
 
 # Tests
 @app.route("/test")
