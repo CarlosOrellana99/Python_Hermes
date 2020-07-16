@@ -1,0 +1,53 @@
+{% extends "baseadmin.html" %}
+{% block title %}Hammer - Resultados de Busqueda{% endblock %}
+{% block contenidoInicioAdmin %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <form class="form-inline" action="/action_page.php">
+        <div class="form-group">
+            <label for="email">Número de resultados:</label>
+            <input type="email" class="form-control mr-3 ml-1" id="email" style="width: 55px;">
+        </div>
+        <div class="form-group">
+            <label for="email">Buscar en:</label>
+            <select id="inputState" class="form-control mr-3 ml-1">
+                <option selected>Seleccione...</option>
+                <option value="trabajadores.DUI">DUI</option>
+                <option value="trabajadores.Nombre">Nombre</option>
+                <option value="trabajadores.Apellido">Apellido</option>
+                <option value="trabajadores.Celular">Celular</option>
+                <option value="trabajadores.Direccion">Direccion</option>
+                <option value="trabajadores.Descripcion">Descripcion</option>
+                <option value="membresias.Membresia">Membresia</option>
+                <option value="municipios.nombre">Municipio</option>
+                <option value="departamentos.nombre">Departamento</option>
+                <option value="categoria.nombre">Categoria</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="pwd">Frase:</label>
+            <input type="email" class="form-control mr-3 ml-1" id="email">
+        </div>
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
+</div>
+<div class="box" style="border: #00cc27 4px inset;margin-right: 2.5%; float:left; width:47.5%;"><!--Tiene que haber un IF para cambiar el color (Acceso/Sin Acceso)-->
+    <article class="media">
+        <div class="media-left">
+            <figure class="image is-128x128">
+                <a href= "" ><img src="https://i.imgur.com/h6LWrGM.png" alt="Image" style="overflow:hidden ;max-height: 128px; max-width:128px"></a>
+            </figure>
+        </div>
+        <div class="media-content">
+            <div class="content">
+                <p>
+                    <strong>Nombre</strong>
+                    <br>
+                    Correo
+                    <br>
+                    Descripción
+                </p>
+            </div>
+        </div>
+    </article>
+</div>
+{% endblock %}

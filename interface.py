@@ -142,11 +142,16 @@ def modificarcuenta(iduser):
 
 @app.route("/test")
 def test():
-    return render_template("inicioadmin.html")
+    adminA = adminAdministrador()
+    dictionary = adminA.verify("moris32345@hotmail.es", "moris32345")
+    admin = dictionary['user']
+    top5 = adminA.getTopN()
+    stats = adminA.getStats()
+    return render_template("inicioadmin.html", top5 = top5, admin =  admin, stats = stats)
 
 @app.route("/test2")
 def test2():
-    return render_template("trabajadoresConAcceso.html")
+    return render_template("busquedaAdmin.html")
 
 if __name__=='__main__':
     app.run(debug=True)
