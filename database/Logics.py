@@ -1,10 +1,11 @@
 from database.DatabaseZ import DatabaseZ
 from base64 import b64encode
 from datetime import date
+from decimal import Decimal
 
 class adminAdministrador(DatabaseZ):
     """Administrador de la cuenta Administrador
-    ----
+    -----
     Tiene acceso a todas las cuentas y al la de Administrador
     """
 
@@ -76,7 +77,7 @@ class adminAdministrador(DatabaseZ):
                 "apellido": tupla[2],
                 "correo": tupla[3],
                 "contra": tupla[4],
-                "foto": tupla[5],
+                "foto": b64encode(tupla[5]).decode("utf-8"),
             }
         return lista
 
@@ -103,13 +104,46 @@ class adminAdministrador(DatabaseZ):
                 where datediff(now(), citas.Fecha) < 31 and citas.finalizada = 'True'
                 group by citas.Trabajador 
                 order by sumCitas desc limit {n};"""
-        data = database.executeQuery(sql)
+        data = self.database.executeQuery(sql)
         top5trabajadores = []
         for x in data:
-            trabajador = adminT.fetchAllWorkersByWord(x[0], limit = 1, kind = ['trabajadores.idTrabajadores'] , aprox = False, cat = False)
-            top5trabajadores.append(tuple(trabajador[0], x[1]))
+            trabajador = adminT.fetchAllWorkersByWord(str(x[0]), limit = 1, kind = ['trabajadores.idTrabajadores'] , aprox = False, cat = False)
+            conclusion = trabajador[0]
+            conclusion["cantidadCitas"]  = x[1]
+            
+            top5trabajadores.append(conclusion)
 
         return top5trabajadores
+
+    def getStats(self):
+        dicc = {"TrabajadoresMora": self.getNumeroTrabajadoresMora(),
+                "TrabajadoresNoAcceso": self.getNumeroTrabajadoresNoAcceso(),
+                "IngresosMes": self.ingresosMes()}
+        return dicc
+
+    def getNumeroTrabajadoresMora(self):
+        sql = """SELECT count(distinct(membresias.idMembresias)) as morosos FROM hermes.trabajadores 
+                inner join membresias on membresias.idMembresias = trabajadores.Membresia
+                where datediff(now(), membresias.UltimoPago) > 31;"""
+        data = self.database.executeQuery(sql)
+        valor = int(data[0][0])
+        return valor
+    
+    def getNumeroTrabajadoresNoAcceso(self):
+        sql = """SELECT count(distinct(membresias.idMembresias)) as morosos FROM hermes.trabajadores 
+                inner join membresias on membresias.idMembresias = trabajadores.Membresia
+                where membresias.Membresia = "AAAA-0000-0000";"""
+            
+        data = self.database.executeQuery(sql)
+        valor = int(data[0][0])
+        return valor
+
+    def ingresosMes(self):
+        sql = """SELECT sum(monto) as total FROM hermes.pagos
+                where month(Fecha) = month(now());"""
+        data = self.database.executeQuery(sql)
+        valor = Decimal(data[0][0])
+        return valor
 
 class adminClientes(DatabaseZ):
     """Aministración de los clientes en la base de datos
@@ -164,7 +198,7 @@ class adminClientes(DatabaseZ):
                 "direccion": tupla[5],
                 "correo": tupla[6],
                 "contra": tupla[7],
-                "foto": tupla[8],
+                "foto": b64encode(tupla[8]).decode("utf-8"),
                 "genero": tupla[11],
                 "departamento": tupla[12],
                 "municipio": tupla[13],

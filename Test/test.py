@@ -66,5 +66,5 @@ elif test == 'p':
 
 elif test == '9':
     admin = adminAdministrador()
-    print(admin.verify("dedroperka@enayu.com", "contrasena"))
+    print(admin.getStats())
     
