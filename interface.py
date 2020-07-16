@@ -118,7 +118,6 @@ def adminIndex():
 
 
 # User UI
-
 @app.route("/Hammer.com/u")
 def paginaprincipalusuario():
     usuario = session['user']
@@ -173,7 +172,12 @@ def modificarcuenta():
 # Tests
 @app.route("/test")
 def test():
-    return render_template("inicioadmin.html")
+    adminA = adminAdministrador()
+    dictionary = adminA.verify("moris32345@hotmail.es", "moris32345")
+    admin = dictionary['user']
+    top5 = adminA.getTopN()
+    stats = adminA.getStats()
+    return render_template("inicioadmin.html", top5 = top5, admin =  admin, stats = stats)
 
 @app.route("/test2")
 def test2():

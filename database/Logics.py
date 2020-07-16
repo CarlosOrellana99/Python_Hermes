@@ -77,7 +77,7 @@ class adminAdministrador(DatabaseZ):
                 "apellido": tupla[2],
                 "correo": tupla[3],
                 "contra": tupla[4],
-                "foto": tupla[5],
+                "foto": b64encode(tupla[5]).decode("utf-8"),
             }
         return lista
 
@@ -198,7 +198,7 @@ class adminClientes(DatabaseZ):
                 "direccion": tupla[5],
                 "correo": tupla[6],
                 "contra": tupla[7],
-                "foto": tupla[8],
+                "foto": b64encode(tupla[8]).decode("utf-8"),
                 "genero": tupla[11],
                 "departamento": tupla[12],
                 "municipio": tupla[13],
