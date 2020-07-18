@@ -125,7 +125,9 @@ def paginaprincipalusuario():
     admincat = adminCategorias()
     listacategorias = admincat.getCategoriaConFoto()
     listacat = admincat.convertirimagenes(listacategorias)
-    return render_template("principalUsuario.html",categorias=listacat,usuarioactivo=usuario)
+    admin = adminOpciones()
+    ltsDepartamentos = admin.getDepartamentos()
+    return render_template("principalUsuario.html",categorias=listacat,usuarioactivo=usuario,departamentos =ltsDepartamentos)
 
 @app.route("/Hammer.com/tu-Cuenta/")
 def paginaprmodificarcuenta():
@@ -172,6 +174,12 @@ def CitasCliente():
     usuario = session['user']
     citaspendientes,citasnoconfirmadas,citaspasadas=admincitas.getCitasCliente(usuario['id'])
     return render_template("citasU.html",citaspendientes=citaspendientes,citasnoconfirmadas=citasnoconfirmadas,citaspasadas=citaspasadas)
+
+@app.route("/Hammer.com/buscarTrabajadores",methods=['POST'])
+def busquedaTrabajadoresCliente():
+    palabra = request.form.get('palabra')
+    
+    return render_template("busquedaTrabajadores.html")
 
 # Tests
 @app.route("/test")
