@@ -4,23 +4,25 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
     <h1 class="h2">Trabajadores sin Acceso</h1>
 </div>
+{% for x in trabajadores %}
 <div class="box" style="border: rgb(255, 0, 0) 4px inset;margin-right: 2.5%; float:left; width:47.5%;">
     <article class="media">
         <div class="media-left">
             <figure class="image is-128x128">
-                <a href= "" ><img src="https://i.imgur.com/h6LWrGM.png" alt="Image" style="overflow:hidden ;max-height: 128px; max-width:128px"></a>
+                <a href= "" ><img src="data:;base64,{{ x['foto'] }}" alt="Image" style="overflow:hidden ;max-height: 128px; max-width:128px"></a>
             </figure>
         </div>
         <div class="media-content">
             <div class="content">
-                <p><strong>Nombre</strong>
-                    <br>
-                    Correo
-                    <br>
-                    Descripción
-                </p>
+                <p class="subtitle"><strong>Nombre</strong></p>
+                <p>{{ x['nombre'] }}</p>
+                <p class="subtitle"><strong>Correo</strong></p>
+                <p>{{ x['correo'] }}</p>
+                <p class="subtitle"><strong>Descripción</strong></p>
+                <p>{{ x['descripcion'] }}</p>
             </div>
         </div>
     </article>
 </div>
+{% endfor %}
 {% endblock %}

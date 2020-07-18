@@ -97,7 +97,7 @@ class adminAdministrador(DatabaseZ):
         lista = admin.fetchAllWorkersByWord(word, limit)
 
     def revocarLicenciaDeudores(self):
-        sql = "update hermes.membresias set membresias.Vigencia = 0 where datediff(now(), UltimoPago) > 31;"
+        sql = "update hermes.membresias set membresias.Vigencia = 0 where datediff(now(), UltimoPago) > 31 and membresias.vigencia = 1;"
         exito = self.database.executeNonQueryBool(sql)
         return exito
     
@@ -129,7 +129,7 @@ class adminAdministrador(DatabaseZ):
     def getNumeroTrabajadoresMora(self):
         sql = """SELECT count(distinct(membresias.idMembresias)) as morosos FROM hermes.trabajadores 
                 inner join membresias on membresias.idMembresias = trabajadores.Membresia
-                where datediff(now(), membresias.UltimoPago) > 31;"""
+                where datediff(now(), membresias.UltimoPago) > 31 and membresias.vigencia = 1;"""
         data = self.database.executeQuery(sql)
         valor = int(data[0][0])
         return valor
@@ -149,6 +149,16 @@ class adminAdministrador(DatabaseZ):
         data = self.database.executeQuery(sql)
         valor = Decimal(data[0][0])
         return valor
+
+    def getTrabajadoresSinAcceso(self, limit = "30"):
+        admin = self.adminTrabajadores
+        trabajadores = admin.fetchAllWorkersByWord("0", limit, ['trabajadores.aceptado'], mode = "asc", aprox = False, cat = False)
+        return trabajadores
+
+    def getTrabajadoresConAcceso(self, limit = "30", modo = "asc"):
+        admin = self.adminTrabajadores
+        trabajadores = admin.fetchAllWorkersByWord("1", limit, ['trabajadores.aceptado'], mode = modo, aprox = False, cat = False)
+        return trabajadores
 
 class adminClientes(DatabaseZ):
     """Aministración de los clientes en la base de datos
@@ -390,8 +400,10 @@ class adminTrabajadores(DatabaseZ):
         
         data = self.database.executeQuery(sql)
         lista = []
+        texto = ""
         for x in data:
             lista.append(x[0])
+            texto += str(x[0])
         return lista
     
     def generarMembresiaEnTrabajador(self, idW):
