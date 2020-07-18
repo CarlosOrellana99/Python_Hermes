@@ -105,17 +105,66 @@ def login(): # View function
 # Admin UI
 @app.route("/Hammer.com/admin")
 def adminIndex():
+    adminA = adminAdministrador()
     admin = session['user']
     tipo = session['kind']
+    adminCompleto = adminA.getAdminByCorreo(admin['correo'])
     if not tipo == "admin":
         return f"""<h1>You do not have access to this page</h1><br>
                     <h2>Please sing up in this </h2><a href="/">link</a>""", 402
     else:
-        adminA = adminAdministrador()
+        
         top5 = adminA.getTopN()
         stats = adminA.getStats()
-        return render_template("inicioadmin.html", top5 = top5, admin =  admin, stats = stats)
+        return render_template("inicioadmin.html", top5 = top5, admin =  adminCompleto, stats = stats)
 
+@app.route("/Hammer.com/admin/<acceso>")
+def TrabajadoresAcceso(acceso):
+    adminA = adminAdministrador()
+    tipo = session['kind']
+    admin = session['user']
+    adminCompleto = adminA.getAdminByCorreo(admin['correo'])
+
+    if not tipo == "admin":
+        return f"""<h1>You do not have access to this page</h1><br>
+                    <h2>Please sing up in this </h2><a href="/">link</a>""", 402  
+    else:
+        if acceso== 'sinAcceso':
+            lista = adminA.getTrabajadoresSinAcceso()
+            return render_template("trabajadoresSinAcceso.html", admin = adminCompleto, trabajadores = lista)
+        elif acceso== 'conAcceso':
+            lista = adminA.getTrabajadoresConAcceso()
+            return render_template("trabajadoresConAcceso.html", admin = adminCompleto, trabajadores = lista)
+
+@app.route("/Hammer.com/admin/servlet", methods=['POST'])
+def adminServlet():
+    tipo = session['kind']
+    if not tipo == "admin":
+        return f"""<h1>You do not have access to this page</h1><br>
+                    <h2>Please sing up in this </h2><a href="/">link</a>""", 402    
+    else:
+        idForm = request.form.get('id')
+        if idForm== '1':
+            adminA = adminAdministrador()
+            exito = adminA.revocarLicenciaDeudores()
+            if exito:
+                return redirect("/Hammer.com/admin")
+            else:
+                return "Process failed. Either there are no licences to revoque or an internal problem has occurred"
+
+@app.route("/Hammer.com/admin/buscar", methods=['GET'])
+def adminBuscar():
+    adminA = adminAdministrador()
+    admin = session['user']
+    tipo = session['kind']
+    adminCompleto = adminA.getAdminByCorreo(admin['correo'])
+    if not tipo == "admin":
+        return f"""<h1>You do not have access to this page</h1><br>
+                    <h2>Please sing up in this </h2><a href="/">link</a>""", 402    
+    word = str(request.args.get('wd'))
+    adminT = adminTrabajadores()
+    lista = adminT.fetchAllWorkersByWord(word)
+    return render_template("busquedaAdmin.html", trabajadores = lista, admin = adminCompleto)
 
 # User UI
 @app.route("/Hammer.com/u")
@@ -185,7 +234,7 @@ def busquedaTrabajadoresCliente():
 @app.route("/test")
 def test():
     adminA = adminAdministrador()
-    dictionary = adminA.verify("moris32345@hotmail.es", "moris32345")
+    dictionary = adminA.verify("moris32345@hotmail.es", "moris32345", True)
     admin = dictionary['user']
     top5 = adminA.getTopN()
     stats = adminA.getStats()
@@ -194,7 +243,7 @@ def test():
 @app.route("/test2")
 def test2():
     adminA = adminAdministrador()
-    dictionary = adminA.verify("moris32345@hotmail.es", "moris32345")
+    dictionary = adminA.verify("moris32345@hotmail.es", "moris32345", True)
     admin = dictionary['user']
     top5 = adminA.getTopN()
     stats = adminA.getStats()
