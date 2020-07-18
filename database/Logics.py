@@ -1,10 +1,11 @@
 from database.DatabaseZ import DatabaseZ
 from base64 import b64encode
 from datetime import date
+from decimal import Decimal
 
 class adminAdministrador(DatabaseZ):
     """Administrador de la cuenta Administrador
-    ----
+    -----
     Tiene acceso a todas las cuentas y al la de Administrador
     """
 
@@ -13,7 +14,7 @@ class adminAdministrador(DatabaseZ):
         self.adminClientes = adminClientes()
         self.adminTrabajadores = adminTrabajadores()
 
-    def verify(self, correo, contra):
+    def verify(self, correo, contra, picture = False):
         """Verifica si el par Correo-Contraseña pertenece a algún usuario de cualquier clase
         ----
         Devuelve un diccionario que que contiene :
@@ -23,11 +24,11 @@ class adminAdministrador(DatabaseZ):
         encontrado = False
         permitido = False
         tipo = None
-        lista = self.adminClientes.getUserbyCorreo(correo)
+        lista = self.adminClientes.getUserbyCorreo(correo, picture)
         if len(lista) == 0:
-            lista = self.adminTrabajadores.getWorkerbyCorreo(correo)
+            lista = self.adminTrabajadores.getWorkerbyCorreo(correo, picture)
             if len(lista) == 0:
-                lista = self.getAdminByCorreo(correo)
+                lista = self.getAdminByCorreo(correo, picture)
                 if not len(lista) == 0:
                     encontrado = True
                     tipo = "admin"
@@ -53,22 +54,27 @@ class adminAdministrador(DatabaseZ):
         }
         return conclusion
 
-    def getAdminByCorreo(self, correo):
+    def getAdminByCorreo(self, correo, picture = True):
         """Debuele una lista con los datos del usuario con ese correo"""
         database = self.database
         sql = f"SELECT * FROM hermes.administradoes where administradoes.Correo = '{correo}' limit 1;"
         data = database.executeQuery(sql)
         lista = {}
         if len(data) > 0:
-            lista = self.convertTuplaToList(data[0])
+            lista = self.convertTuplaToList(data[0], picture)
         return lista
 
     def checkContra(self, contra, lista):
         valor = contra == lista["contra"]
         return valor
 
-    def convertTuplaToList(self, tupla):
+    def convertTuplaToList(self, tupla, picture = True):
         lista = {}
+        if picture:
+            foto= b64encode(tupla[5]).decode("utf-8")
+        else:
+            foto= None
+
         if tupla is not None:
             lista = {
                 "id": tupla[0],
@@ -76,7 +82,7 @@ class adminAdministrador(DatabaseZ):
                 "apellido": tupla[2],
                 "correo": tupla[3],
                 "contra": tupla[4],
-                "foto": tupla[5],
+                "foto": foto
             }
         return lista
 
@@ -91,10 +97,69 @@ class adminAdministrador(DatabaseZ):
         lista = admin.fetchAllWorkersByWord(word, limit)
 
     def revocarLicenciaDeudores(self):
-        sql = "update hermes.membresias set membresias.Vigencia = 0 where datediff(now(), UltimoPago) > 31;"
+        sql = "update hermes.membresias set membresias.Vigencia = 0 where datediff(now(), UltimoPago) > 31 and membresias.vigencia = 1;"
         exito = self.database.executeNonQueryBool(sql)
         return exito
     
+    def getTopN(self, n = 5):
+        database = self.adminTrabajadores
+        adminT = self.adminTrabajadores
+        sql = f"""SELECT citas.Trabajador, count(distinct(citas.idCitas)) as sumCitas 
+                from citas  
+                where datediff(now(), citas.Fecha) < 31 and citas.finalizada = 'True'
+                group by citas.Trabajador 
+                order by sumCitas desc limit {n};"""
+        data = self.database.executeQuery(sql)
+        top5trabajadores = []
+        for x in data:
+            trabajador = adminT.fetchAllWorkersByWord(str(x[0]), limit = 1, kind = ['trabajadores.idTrabajadores'] , aprox = False, cat = False)
+            conclusion = trabajador[0]
+            conclusion["cantidadCitas"]  = x[1]
+            
+            top5trabajadores.append(conclusion)
+
+        return top5trabajadores
+
+    def getStats(self):
+        dicc = {"TrabajadoresMora": self.getNumeroTrabajadoresMora(),
+                "TrabajadoresNoAcceso": self.getNumeroTrabajadoresNoAcceso(),
+                "IngresosMes": self.ingresosMes()}
+        return dicc
+
+    def getNumeroTrabajadoresMora(self):
+        sql = """SELECT count(distinct(membresias.idMembresias)) as morosos FROM hermes.trabajadores 
+                inner join membresias on membresias.idMembresias = trabajadores.Membresia
+                where datediff(now(), membresias.UltimoPago) > 31 and membresias.vigencia = 1;"""
+        data = self.database.executeQuery(sql)
+        valor = int(data[0][0])
+        return valor
+    
+    def getNumeroTrabajadoresNoAcceso(self):
+        sql = """SELECT count(distinct(membresias.idMembresias)) as morosos FROM hermes.trabajadores 
+                inner join membresias on membresias.idMembresias = trabajadores.Membresia
+                where membresias.Membresia = "AAAA-0000-0000";"""
+            
+        data = self.database.executeQuery(sql)
+        valor = int(data[0][0])
+        return valor
+
+    def ingresosMes(self):
+        sql = """SELECT sum(monto) as total FROM hermes.pagos
+                where month(Fecha) = month(now());"""
+        data = self.database.executeQuery(sql)
+        valor = Decimal(data[0][0])
+        return valor
+
+    def getTrabajadoresSinAcceso(self, limit = "30"):
+        admin = self.adminTrabajadores
+        trabajadores = admin.fetchAllWorkersByWord("0", limit, ['trabajadores.aceptado'], mode = "asc", aprox = False, cat = False)
+        return trabajadores
+
+    def getTrabajadoresConAcceso(self, limit = "30", modo = "asc"):
+        admin = self.adminTrabajadores
+        trabajadores = admin.fetchAllWorkersByWord("1", limit, ['trabajadores.aceptado'], mode = modo, aprox = False, cat = False)
+        return trabajadores
+
 class adminClientes(DatabaseZ):
     """Aministración de los clientes en la base de datos
     ----
@@ -124,7 +189,7 @@ class adminClientes(DatabaseZ):
         success = database.executeMany(sql, val)
         return success
 
-    def getUserbyCorreo(self, correo):
+    def getUserbyCorreo(self, correo, picture = True):
         """Debuele una lista con los datos del usuario con ese correo"""
         database = self.database
         sql = f"""SELECT clientes.*, departamentos.Nombre as dep, municipios.Nombre as mun FROM hermes.clientes 
@@ -134,10 +199,15 @@ class adminClientes(DatabaseZ):
         data = database.executeQuery(sql)
         lista = {}
         if len(data) > 0:
-            lista = self.convertTuplaToList(data[0])
+            lista = self.convertTuplaToList(data[0],picture)
         return lista
 
-    def convertTuplaToList(self, tupla):
+    def convertTuplaToList(self, tupla, picture = True):
+        if picture:
+            foto = b64encode(tupla[8]).decode("utf-8")
+        else:
+            foto = None
+
         if tupla is not None:
             lista = {
                 "id": tupla[0],
@@ -148,11 +218,35 @@ class adminClientes(DatabaseZ):
                 "direccion": tupla[5],
                 "correo": tupla[6],
                 "contra": tupla[7],
-                "foto": tupla[8],
-                "departamento": tupla[11],
-                "municipio": tupla[12],
+                "foto": foto,
+                "genero": tupla[11],
+                "departamento": tupla[12],
+                "municipio": tupla[13],
             }
         return lista
+
+    def updateusuario(self, datanueva):
+        """ actualiza los campos de la cuenta de un usuario recibiendo un diccionario con los nuevos campos y el id"""
+        database = self.database
+        sql = """UPDATE hermes.clientes SET
+            DUI=%s , Nombre=%s, Apellido=%s, Celular=%s, Direccion=%s, Correo=%s ,
+            Contrasena=%s , Departamento=%s , Municipio=%s, Genero=%s WHERE idClientes=%s;"""
+        val = (
+            datanueva['dui'],
+             datanueva['nombre'],
+             datanueva['apellido'],
+            datanueva['telefono'],
+            datanueva['direccion'],
+            datanueva['correo'],
+            datanueva['contra'],
+            datanueva['departamento'],
+            datanueva['municipio'],
+            datanueva['genero'],
+            datanueva['id']
+            )
+            
+        success = database.executeMany(sql,val)
+        return success
 
 class adminTrabajadores(DatabaseZ):
     """
@@ -201,7 +295,7 @@ class adminTrabajadores(DatabaseZ):
         success = database.executeMany(sql, val)
         return success
 
-    def getWorkerbyCorreo(self, correo):
+    def getWorkerbyCorreo(self, correo, picture = True):
 
         """Debuele una lista con los datos del usuario con ese correo"""
         database = self.database
@@ -213,7 +307,7 @@ class adminTrabajadores(DatabaseZ):
         data = database.executeQuery(sql)
         lista = {}
         if len(data) > 0:
-            lista = self.convertTuplaToDicc(data[0])
+            lista = self.convertTuplaToDicc(data[0], picture)
         return lista
 
     def fetchAllWorkersByWord(self, word, limit = str(20), kind = [], order = "fechaDeEntrada", mode = "desc", aprox=True, cat = True):
@@ -270,8 +364,12 @@ class adminTrabajadores(DatabaseZ):
                 lista.append(value)
         return lista
 
-    def convertTuplaToDicc(self, tupla):
+    def convertTuplaToDicc(self, tupla, picture = True):
         """Converts a tuple to a dictionary"""
+        if picture:
+            foto = b64encode(tupla[10]).decode("utf-8")
+        else:
+            foto = None
         if tupla is not None:
             lista = {
                 "id": tupla[0],
@@ -284,7 +382,7 @@ class adminTrabajadores(DatabaseZ):
                 "contra": tupla[7],
                 "descripcion": tupla[8],  
                 "genero": tupla[9],
-                "foto":  b64encode(tupla[10]).decode("utf-8"),
+                "foto":  foto,
                 "aceptado": tupla[11],
                 "membresia": tupla[12],
                 "departamento": tupla[13],
@@ -302,8 +400,10 @@ class adminTrabajadores(DatabaseZ):
         
         data = self.database.executeQuery(sql)
         lista = []
+        texto = ""
         for x in data:
             lista.append(x[0])
+            texto += str(x[0])
         return lista
     
     def generarMembresiaEnTrabajador(self, idW):
@@ -429,4 +529,59 @@ class adminOpciones(DatabaseZ):
             lista.append(dicc)
         return lista
 
+class adminCitas(DatabaseZ):
+    def __init__(self):
+        self.database = DatabaseZ()
+    
+    def getCitasCliente(self, idCliente):
+        """Retorna una lista de diccionarios con los datos de las citas y trabajadores"""
+        database = self.database
+        sql = f"""SELECT idCitas,Fecha,Hora,Finalizada,DescripcionTrabajo,Confirmacion,Cliente,idTrabajadores,
+                Nombre,Apellido,Descripcion,Departamento,Municipio,Foto,trabajos,fechaDeEntrada FROM hermes.citas 
+                left outer join hermes.trabajadores on trabajador=idTrabajadores WHERE Cliente='{idCliente}';"""
+        data = database.executeQuery(sql)
+        CitasCliente= self.creardiccsCitasClientes(data)
+        CitasClienteTipos = self.clasificarcitasCliente(CitasCliente)
+        return CitasClienteTipos
+
+    def creardiccsCitasClientes(self, lista):
+        """Crea una lista de diccionarios de las citas del cliente"""
+        listafinal=[]
+        if lista is not None:
+            for x in lista:
+                dicc = {
+                    "idCitas": x[0],
+                    "Fecha": x[1],
+                    "Hora": x[2],
+                    "Finalizada": x[3],
+                    "DescripcionTrabajo": x[4],
+                    "Confirmacion": x[5],
+                    "Cliente": x[6],
+                    "idTrabajadores": x[7],
+                    "NombreTrabajador": x[8],  
+                    "ApellidoTrabajdor": x[9],
+                    "DescripcionTrabajador": x[10],
+                    "DepartamentoTrabajador": x[11],
+                    "Municipiotrabajador": x[12],
+                    "foto":  b64encode(x[13]).decode("utf-8"),
+                    "TrabajosRealizados": x[14],
+                    "FechadeEntrada": x[15],
+                }
+                listafinal.append(dicc)
+        return listafinal
+
+    def clasificarcitasCliente(self,listacitas):
+        citaspendientes=[]
+        citasnoconfirmadas=[]
+        citaspasadas=[]
+        if listacitas is not None:
+            for cita in listacitas:
+                if cita['Finalizada']=="False" and cita['Confirmacion']=="True":
+                    citaspendientes.append(cita)
+                elif cita['Confirmacion']=="False":
+                    citasnoconfirmadas.append(cita)
+                elif cita['Finalizada']=="True":
+                    citaspasadas.append(cita)
+
+            return citaspendientes,citasnoconfirmadas,citaspasadas
 

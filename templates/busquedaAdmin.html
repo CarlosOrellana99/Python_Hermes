@@ -1,0 +1,54 @@
+{% extends "baseadmin.html" %}
+{% block title %}Hammer - Resultados de Busqueda{% endblock %}
+{% block contenidoInicioAdmin %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <form class="form-inline" action="/action_page.php">
+        <div class="form-group">
+            <label for="email">Número de resultados:</label>
+            <input type="email" class="form-control mr-3 ml-1" id="email" style="width: 55px;">
+        </div>
+        <div class="form-group">
+            <label for="email">Buscar en:</label>
+            <select id="inputState" class="form-control mr-3 ml-1">
+                <option selected>Seleccione...</option>
+                <option value="trabajadores.DUI">DUI</option>
+                <option value="trabajadores.Nombre">Nombre</option>
+                <option value="trabajadores.Apellido">Apellido</option>
+                <option value="trabajadores.Celular">Celular</option>
+                <option value="trabajadores.Direccion">Direccion</option>
+                <option value="trabajadores.Descripcion">Descripcion</option>
+                <option value="membresias.Membresia">Membresia</option>
+                <option value="municipios.nombre">Municipio</option>
+                <option value="departamentos.nombre">Departamento</option>
+                <option value="categoria.nombre">Categoria</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="pwd">Frase:</label>
+            <input type="email" class="form-control mr-3 ml-1" id="email">
+        </div>
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
+</div>
+{% for x in trabajadores %}
+<div class="box" style="border: rgb(255, 0, 0) 4px inset;margin-right: 2.5%; float:left; width:47.5%;">
+    <article class="media">
+        <div class="media-left">
+            <figure class="image is-128x128">
+                <a href= "" ><img src="data:;base64,{{ x['foto'] }}" alt="Image" style="overflow:hidden ;max-height: 128px; max-width:128px"></a>
+            </figure>
+        </div>
+        <div class="media-content">
+            <div class="content">
+                <p class="subtitle"><strong>Nombre</strong></p>
+                <p>{{ x['nombre'] }}</p>
+                <p class="subtitle"><strong>Correo</strong></p>
+                <p>{{ x['correo'] }}</p>
+                <p class="subtitle"><strong>Descripción</strong></p>
+                <p>{{ x['descripcion'] }}</p>
+            </div>
+        </div>
+    </article>
+</div>
+{% endfor %}
+{% endblock %}

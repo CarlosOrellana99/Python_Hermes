@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html>
-<body style="background-color:rgb(245, 245, 245);" >
-<center>
-    <div style="background-color:rgb(255, 255, 255);">
-            <h2 style="font-size:100px;color:rgb(0, 0, 128);">HAMMER</h2>
-    </div>
-</center>
-    <div style="margin-left:410px">
-            <form action="/servlet/login" method="post">
-              <label for="correo" style="font-size:20px;font-style:Perpetua">Correo electronico</label><br>
-              <input type="text" id="correo" name="correo" size="100" required><br><br>
-              
-              <label for="contra" style="font-size:20px;font-style:Perpetua">Password</label><br>
-              <input type="password" id="contra" name="contra" size="100"><br><br>
-              <input type="submit" value="Submit">
-            </form> <br><br>
-        
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <title>Hammer - Login</title>
+    </head>
+    <body class="text-center" style="background-color:rgb(245, 245, 245);" >
+        <div class="mx-auto" style="text-align: center;width: 50%;">
+            <div style="background-color:rgb(255, 255, 255);">
+                <h2 style="font-size:100px;color:rgb(0, 0, 128);">HAMMER</h2>
+            </div>
+            <form class="form-signin mx-auto" style="width: 50%;"  method="POST" action="/servlet/login">
+                <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+                <label for="correo">Correo electronico</label>
+                <input type="email" id="correo" class="form-control" name="correo" placeholder="Email address" required="" autofocus="">
+                <label for="contra">Contraseña</label>
+                <input type="password" id="contra" class="form-control" name="contra" placeholder="Password" required="">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            </form>
             <a href="/register/user" style="color:rgb(0, 0, 128)"> ¿Eres nuevo usuario? Registrate</a><br><br>
-            <a href="/register/worker" style="color:rgb(0, 0, 128)" > ¿Quieres trabahar con nosotros? Registrate</a>
-    </div>
-
-</body>
+            <a href="/register/worker" style="color:rgb(0, 0, 128)" > ¿Quieres trabajar con nosotros? Registrate</a>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </body>
 </html>
