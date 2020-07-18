@@ -177,7 +177,7 @@ def CitasCliente():
 @app.route("/test")
 def test():
     adminA = adminAdministrador()
-    dictionary = adminA.verify("moris32345@hotmail.es", "moris32345")
+    dictionary = adminA.verify("moris32345@hotmail.es", "moris32345", True)
     admin = dictionary['user']
     top5 = adminA.getTopN()
     stats = adminA.getStats()
@@ -186,7 +186,7 @@ def test():
 @app.route("/test2")
 def test2():
     adminA = adminAdministrador()
-    dictionary = adminA.verify("moris32345@hotmail.es", "moris32345")
+    dictionary = adminA.verify("moris32345@hotmail.es", "moris32345", True)
     admin = dictionary['user']
     top5 = adminA.getTopN()
     stats = adminA.getStats()
