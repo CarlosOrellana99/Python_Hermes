@@ -10,23 +10,27 @@ def index(): # View function
     session['user'] = None
     session['kind'] = None
 
+    admin = adminAdministrador()
+    images = admin.getImages()
+
     if 'msg' in session:
         flash(session['msg']) # version no funcional de flash
         del(session['msg'])
 
-    return render_template('login.html')
+    return render_template('login.html', imagenes = images)
 
 @app.route("/register/<string:kind>")
 def register(kind): # View function
-
+    adminA = adminAdministrador()
+    images = adminA.getImages()
     admin = adminOpciones()
     ltsDepartamentos = admin.getDepartamentos()
     ltsMunicipios = admin.getMunicipios()
     
     if kind == "worker":
-        return render_template('registrotrabajador.html', departamentos = ltsDepartamentos, municipios = ltsMunicipios)
+        return render_template('registrotrabajador.html', departamentos = ltsDepartamentos, municipios = ltsMunicipios, imagenes = images)
     elif kind == "user":
-        return render_template('registrousuario.html', departamentos = ltsDepartamentos, municipios = ltsMunicipios)
+        return render_template('registrousuario.html', departamentos = ltsDepartamentos, municipios = ltsMunicipios, imagenes = images)
 
 # Servlets
 @app.route("/servlet/register/<kind>", methods=['POST'])
