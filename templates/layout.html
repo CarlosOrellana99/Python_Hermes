@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Hammmer</title>
+    <link rel="shortcut icon" href="{{url_for('static', filename='images/logosinfondo.PNG')}}">
+    <link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.min.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/estilosCatalogo.css)}}">
+    <script defer="" src="http://use.fontawesome.com/releases/v5.12.1/js//all.js"></script>
+    <!--<link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}">-->
+    <!--<link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">-->
+    <style>
+          
+    #busqueda::placeholder{
+      color: rgb(115, 115, 115);
+    }
+    
+   </style>
+</head>
+
+<body>
+    
+        
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <img src="images/logosinfondo.png" width="40" height="40" HSPACE="10" >
+        <a class="navbar-brand" href="principalUsuario.html">HAMMER</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#">Inicio <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">¿Quiénes somos?</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Servicios
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">Fontanería</a>
+                <a class="dropdown-item" href="#">Electricidad</a>
+                <a class="dropdown-item" href="#">Jardinería</a>
+                <a class="dropdown-item" href="#">Albañilería</a>
+                <a class="dropdown-item" href="#">Mantenimiento</a>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Historial</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Tu cuenta <span class="sr-only">(current)</span></a>
+              </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0" action="" method="post" target="_blank">
+            <input class="form-control mr-sm-2" type="search" name="busquedamusica" id="busqueda" placeholder="Trabajadores, departamentos, trabajos...">
+            <input class="btn btn-outline-light my-2 my-sm-0" type="submit" value="Buscar">
+          </form>
+        </div>
+      </nav>
+      
+    
+
+
+    <div class="container pt-4">
+        {%block body%}
+        {% endblock %}
+    </div>
+
+
+    
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+    <script src="{{url_for('static', filename='js/main.js')}}"></script>
+
+
+
+
+<!-- Footer -->
+
+<br>
+<br>
+
+<footer>
+  <div class="container-footer-all">
+  
+      <div class="container-body">
+          
+          <div class="column1">
+            <h1><img src="images/logosinfondo.png" width="40" height="40" HSPACE="10" >HAMMER</h1>
+            <h3>La solución en tus manos</h3>
+            <br>
+            <br>
+            <div class="row1">
+              <div class="container-image">
+                <a style="text-decoration:none; color:#C7C7C7;" href=""><img src="images/ps_logo.PNG" width="40" height="40" HSPACE="25" VSPACE="25"></a>
+              
+                <a style="text-decoration:none; color:#C7C7C7;" href=""><img style="border-radius: 10px;" src="images/fb_logo.PNG" width="40" height="40" HSPACE="25" VSPACE="25"></a>
+                
+                <a style="text-decoration:none; color:#C7C7C7;" href=""><img style="border-radius: 10px;"  src="images/ig_logo.PNG" width="40" height="40" HSPACE="25" VSPACE="25"></a>
+              </div>
+            </div>
+          </div>
+
+          
+
+          <div class="column2">
+              <h1>Servicios en:</h1>
+              <div class="row1">
+                <label><a style="text-decoration:none; color:#C7C7C7;" href="">Fontanería</a></label>
+              </div>
+
+              <div class="row1">
+                  <label><a style="text-decoration:none; color:#C7C7C7;" href="">Electricidad</a></label>
+              </div>
+              
+              <div class="row1">
+                  <label><a style="text-decoration:none; color:#C7C7C7;" href="">Jardinería</a></label>
+              </div>
+              <div class="row1">
+                <label><a style="text-decoration:none; color:#C7C7C7;" href="">Albañilería</a></label>
+              </div>
+              <div class="row1">
+                <label><a style="text-decoration:none; color:#C7C7C7;" href="">Mantenimiento</a></label>
+              </div>
+
+          </div>
+
+          <div class="column3">
+              <h1>Contáctanos</h1>
+              <div class="row1">
+                  <svg class="svg-inline--fa fa-phone fa-w-16" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="phone" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M493.4 24.6l-104-24c-11.3-2.6-22.9 3.3-27.5 13.9l-48 112c-4.2 9.8-1.4 21.3 6.9 28l60.6 49.6c-36 76.7-98.9 140.5-177.2 177.2l-49.6-60.6c-6.8-8.3-18.2-11.1-28-6.9l-112 48C3.9 366.5-2 378.1.6 389.4l24 104C27.1 504.2 36.7 512 48 512c256.1 0 464-207.5 464-464 0-11.2-7.7-20.9-18.6-23.4z"></path></svg><!-- <i class="fas fa-phone"></i> -->
+                  <label>Número de teléfono</label>
+                  <br>
+                  <p>+503 1234-5678</p><p>
+              </p></div>
+              
+              <div class="row1">
+                  <svg class="svg-inline--fa fa-envelope fa-w-16" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="envelope" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"></path></svg><!-- <i class="fas fa-envelope"></i> -->
+                  <label>Correo Electrónico</label>
+                  <br>
+                  <a href=""><p>hammer@hammer.com</p></a>
+              </div>
+
+
+          </div>
+
+      </div>
+
+    
+     
+      
+
+  </div>
+
+  <div class="container-footer">
+
+      <div class="information">
+          <br>
+          <p>HAMMER 2020 | Design by Hermes</p>
+          
+  </div>
+  </div>
+
+
+</footer>
+
+</body>
+
+
+</html>

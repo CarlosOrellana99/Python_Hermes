@@ -15,14 +15,14 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Trabajadores con Acceso</a>
+                        <a class="nav-link" href="/Hammer.com/admin/conAcceso">Trabajadores con Acceso</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Trabajadores sin Acceso</a>
+                        <a class="nav-link" href="/Hammer.com/admin/sinAcceso">Trabajadores sin Acceso</a>
                     </li>
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Buscar Trabajador" aria-label="Search">
+                <form class="form-inline my-2 my-lg-0" action="/Hammer.com/admin/buscar" method="GET">
+                    <input class="form-control mr-sm-2" type="search" name="wd" id="wd" placeholder="Buscar Trabajador" aria-label="Search">
                     <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Buscar</button>
                 </form>
             </div>
@@ -40,7 +40,9 @@
                                 </figure>
                             </div>
                             <p class="subtitle"><strong>Nombre de Contacto</strong></p>
+                            <p>{{ admin['nombre'] }} {{ admin['apellido'] }}</p>
                             <p class="subtitle"><strong>Correo Electrónico</strong></p>
+                            <p>{{ admin['correo'] }} </p>
                         </ul>
                     </div>
                 </nav>
