@@ -8,17 +8,19 @@
         <div class="mx-auto" style="text-align: center;width: 50%;">
             <div style="background-color:rgb(255, 255, 255);">
                 <h2 style="font-size:100px;color:rgb(0, 0, 128);">HAMMER</h2>
-            </div>
+            </div><br>
             <form class="form-signin mx-auto" style="width: 50%;"  method="POST" action="/servlet/login">
-                <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                <label for="correo">Correo electronico</label>
-                <input type="email" id="correo" class="form-control" name="correo" placeholder="Email address" required="" autofocus="">
-                <label for="contra">Contraseña</label>
-                <input type="password" id="contra" class="form-control" name="contra" placeholder="Password" required="">
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                <strong><h1 class="h3 mb-3 font-weight-normal">Por favor regístrese</h1></strong>
+                <strong><label for="correo">Correo electronico</label></strong>
+                <input type="email" id="correo" class="form-control" name="correo" placeholder="Correo electrónico" required="" autofocus=""><br>
+                <strong><label for="contra">Contraseña</label></strong>
+                <input type="password" id="contra" class="form-control" name="contra" placeholder="Contraseña" required="">
+                <br>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Registrarse</button>
             </form>
-            <a href="/register/user" style="color:rgb(0, 0, 128)"> ¿Eres nuevo usuario? Registrate</a><br><br>
-            <a href="/register/worker" style="color:rgb(0, 0, 128)" > ¿Quieres trabajar con nosotros? Registrate</a>
+            <br>
+            <a href="/register/user" style="color:rgb(0, 0, 128)"> ¿Eres nuevo usuario? Crea una nueva sesión</a><br><br>
+            <a href="/register/worker" style="color:rgb(0, 0, 128)" > ¿Quieres trabajar con nosotros? Apúntate</a>
         </div>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

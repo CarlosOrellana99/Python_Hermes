@@ -164,7 +164,30 @@ def adminBuscar():
     word = str(request.args.get('wd'))
     adminT = adminTrabajadores()
     lista = adminT.fetchAllWorkersByWord(word)
-    return render_template("busquedaAdmin.html", trabajadores = lista, admin = adminCompleto)
+    numeros = range(5,105,5)
+    return render_template("busquedaAdmin.html", trabajadores = lista, admin = adminCompleto, numeros = numeros, word = word)
+
+@app.route("/Hammer.com/admin/buscar/advanced/", methods=['GET'])
+def adminBuscarConfigurado():
+    adminA = adminAdministrador()
+    admin = session['user']
+    tipo = session['kind']
+    adminCompleto = adminA.getAdminByCorreo(admin['correo'])
+    if not tipo == "admin":
+        return f"""<h1>You do not have access to this page</h1><br>
+                    <h2>Please sing up in this </h2><a href="/">link</a>""", 402  
+    adminT = adminTrabajadores()
+    cantidad = (request.args.get('cantidad'))
+    buscarEn = str(request.args.get('buscarEn'))
+    word = str(request.args.get('wd'))
+    if buscarEn == "*":
+        lista = adminT.fetchAllWorkersByWord(word, cantidad)
+    else:
+        lista = adminT.fetchAllWorkersByWord(word, cantidad, [buscarEn])
+
+    
+    numeros = range(5,105,5)
+    return render_template("busquedaAdmin.html", trabajadores = lista, admin = adminCompleto, numeros = numeros, word = word)
 
 # User UI
 @app.route("/Hammer.com/u")
