@@ -158,6 +158,15 @@ class adminAdministrador(DatabaseZ):
         admin = self.adminTrabajadores
         trabajadores = admin.fetchAllWorkersByWord("1", limit, ['trabajadores.aceptado'], mode = modo, aprox = False, cat = False)
         return trabajadores
+    
+    def getImages(self):
+        sql = "SELECT * FROM hermes.imagenes;"
+        data = self.database.executeQuery(sql)
+        dicc = {
+            "logo": b64encode(data[0][1]).decode("utf-8"),
+            "pared": b64encode(data[1][1]).decode("utf-8")
+        }
+        return dicc
 
 class adminClientes(DatabaseZ):
     """Aministración de los clientes en la base de datos

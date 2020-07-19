@@ -3,6 +3,7 @@
     <head>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <title>Hammer - Login</title>
+         </style>
     </head>
     <body  style="background-image:url(data:;base64,{{ imagenes['pared'] }}); background-repeat: no-repeat;background-attachment: fixed;background-size: cover;" >
         <div class="jumbotron jumbotron-fluid text-white" style="height: 150px; background-color: black;">
@@ -13,19 +14,9 @@
         <br>
         <br>
         <br>
-        <div class="mx-auto align-middle" style="text-align: center; height: 500px;">
-            <form action="/servlet/login" class="form-signin mx-auto  align-middle" style="width: 20%;" method="POST">
-                <h1 class="h3 mb-3 font-weight-normal">Registrese a continuación</h1>
-                <label for="correo" style="float: left">Correo electronico:</label>
-                <input type="email" id="correo" class="form-control" name="correo" placeholder="Email address" required="" autofocus="">
-                <br>
-                <label for="contra" style="float: left">Contraseña:</label>
-                <input type="password" id="contra" class="form-control" name="contra" placeholder="Password" required="">
-                <br>
-                <button class="btn btn-lg btn-primary btn-block mx-auto" type="submit" style="width: 50%;">Sign in</button>
-            </form>
-        </div>
-        <br>
+            {% block formulario %}
+            {% endblock %}
+        
 
         <footer class="page-footer font-small pt-4 text-white" style="background-color: black;">
             <div class="container text-center text-md-left">
@@ -107,5 +98,6 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        
     </body>
 </html>
