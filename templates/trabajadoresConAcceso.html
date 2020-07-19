@@ -4,25 +4,25 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
     <h1 class="h2">Trabajadores con Acceso</h1>
 </div>
-{% for x in trabajadores %}
-<div class="box" style="border: #00cc27 4px inset;margin-right: 2.5%; float:left; width:47.5%;">
-    <article class="media">
-        <div class="media-left">
-            <figure class="image is-128x128">
-                <a href= "" ><img src="data:;base64,{{ x['foto'] }}" alt="Image" style="overflow:hidden ;height: 128px; width:128px"></a>
-            </figure>
-        </div>
-        <div class="media-content">
-            <div class="content">
-                <p class="subtitle"><strong>Nombre</strong></p>
-                <p>{{ x['nombre'] }}</p>
-                <p class="subtitle"><strong>Correo</strong></p>
-                <p>{{ x['correo'] }}</p>
-                <p class="subtitle"><strong>Descripción</strong></p>
-                <p>{{ x['descripcion'] }}</p>
+    {% for x in trabajadores %}
+    <div style="border: #00cc27 4px inset;margin: 2.5%;">
+        <article class="media">
+            <div class="media-left">
+                <figure class="image is-128x128">
+                    <a href= "" ><img src="data:;base64,{{ x['foto'] }}" alt="Image" style="overflow:hidden ;height: 128px; width:128px"></a>
+                </figure>
             </div>
-        </div>
-    </article>
-</div>
-{% endfor %}
+            <div class="media-content">
+                <div class="content">
+                    <p class="subtitle"><strong>Nombre</strong></p>
+                    <p>{{ x['nombre'] }}</p>
+                    <p class="subtitle"><strong>Correo</strong></p>
+                    <p>{{ x['correo'] }}</p>
+                    <p class="subtitle"><strong>Descripción</strong></p>
+                    <p>{{ x['descripcion'] }}</p>
+                </div>
+            </div>
+        </article>
+    </div>
+    {% endfor %}
 {% endblock %}
