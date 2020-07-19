@@ -102,7 +102,6 @@ class adminAdministrador(DatabaseZ):
         return exito
     
     def getTopN(self, n = 5):
-        database = self.adminTrabajadores
         adminT = self.adminTrabajadores
         sql = f"""SELECT citas.Trabajador, count(distinct(citas.idCitas)) as sumCitas 
                 from citas  
@@ -346,7 +345,7 @@ class adminTrabajadores(DatabaseZ):
                     inner join hermes.membresias on membresias.idMembresias = trabajadores.Membresia
                     where {x} {like}
                     order by {order} {mode} limit {limit};"""
-
+            # print(sql)
             
             data = database.executeQuery(sql)
             temporal = self.convertDataToList(data)
@@ -467,6 +466,7 @@ class adminTrabajadores(DatabaseZ):
         return dicc
 
 class adminCategorias(DatabaseZ):
+    
     def __init__(self):
         self.database = DatabaseZ()
         
