@@ -37,38 +37,37 @@
         <button type="submit" class="btn btn-primary">Buscar</button>
     </form>
 </div>
-<div class="row row-cols-1 row-cols-md-3">
     {% for x in trabajadores %}
-    <div class="col mb-4">
+    <div style="float: left; width: 31%; margin: 1%;">
         {% if x['aceptado'] == 0: %}
-        <div class="card border-danger mb-3 h-100" style="max-width: 540px;">
+        <div class="card border-danger">
         {% else: %}
-        <div class="card border-succes mb-3 h-100" style="max-width: 540px;">
+        <div class="card border-succes">
         {% endif %}
             <div class="row no-gutters">
-            <div class="col-md-4">
-                <img src="data:;base64,{{ x['foto'] }}" class="card-img" alt="Image" style="overflow:hidden ;max-height: 250px; max-width:150px">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title"><strong>{{ x['nombre'] }} {{ x['apellido'] }}</strong></h5>
-                    {% if x['aceptado'] == 0: %}
-                    <hr style="border-color: red;">
-                    {% else: %}
-                    <hr style="border-color: green;">
-                    {% endif %}
-
-                    <h6 class="card-title"><strong>Correo:</strong></h6>
-                    <p class="card-text">{{ x['correo'] }}</p>
-                    <h6 class="card-title"><strong>Teléfono:</strong></h6>
-                    <p class="card-text">{{ x['telefono'] }}</p>
-                    {% if x['aceptado']== 0: %}
-                    <a href="#"><button type="button" class="btn btn-outline-danger">Ir al perfil del trabajador</button></a>
-                    {% else: %}
-                    <a href="#"><button type="button" class="btn btn-outline-success">Ir al perfil del trabajador</button></a>
-                    {% endif %}
+                <div class="col-md-4">
+                    <img src="data:;base64,{{ x['foto'] }}" class="card-img" alt="Image" style="overflow:hidden ;height: 180px; width:180px">
                 </div>
-            </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title"><strong>{{ x['nombre'] }} {{ x['apellido'] }}</strong></h5>
+                        {% if x['aceptado'] == 0: %}
+                        <hr style="border-color: red;">
+                        {% else: %}
+                        <hr style="border-color: green;">
+                        {% endif %}
+
+                        <h6 class="card-title"><strong>Correo:</strong></h6>
+                        <p class="card-text">{{ x['correo'] }}</p>
+                        <h6 class="card-title"><strong>Teléfono:</strong></h6>
+                        <p class="card-text">{{ x['telefono'] }}</p>
+                        {% if x['aceptado']== 0: %}
+                        <a href="#"><button type="button" class="btn btn-outline-danger">Ir al perfil del trabajador</button></a>
+                        {% else: %}
+                        <a href="#"><button type="button" class="btn btn-outline-success">Ir al perfil del trabajador</button></a>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -87,8 +86,5 @@
     <h6>Recuerda que puedes alterar los parámetos de búsqueda en la barra de "Búsqueda avanzada"</h6>
     <button type="button" class="close" data-dismiss="alert">&times;</button>
 </div>
-</br></br></br></br></br></br></br>
-{% endif %}   
-</br></br></br></br></br></br></br></br></br></br></br></br>
-
+{% endif %}
 {% endblock %}
