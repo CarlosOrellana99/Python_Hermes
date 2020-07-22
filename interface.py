@@ -235,6 +235,7 @@ def modificarcuenta():
                         "telefono":telefono,"genero":genero,"departamento":departamento,"municipio":municipio,"direccion":direccion}
     adminmodificar=adminClientes()
     success = adminmodificar.updateusuario(diccionariouser)
+    diccionariouser['departamento'],diccionariouser['municipio']=adminmodificar.getDepartamentoMunicipioCliente(idusuario)
     if success == True:
         print("datos de vuenta modificados con exito")
         session['msg'] = "Sus datos de cuenta ha sido modificado con exito, vuelva a ingresar"
