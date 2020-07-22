@@ -105,12 +105,12 @@
                         </li>
                     </ul>
                     <form class="form-inline my-2 my-lg-0" action="/Hammer.com/admin/buscar" method="GET">
-                        <input class="form-control mr-sm-2" type="search" name="wd" id="wd" placeholder="Buscar Trabajador" aria-label="Search">
+                        <input class="form-control mr-sm-2" type="search" name="wd" id="wd" placeholder="Buscar Trabajador" aria-label="Search" required>
                         <button class="btn btn-outline-info my-2 my-sm-0"  style="color: white;" type="submit">Buscar</button>
                     </form>
                 </div>
             </nav>
-            <div style="margin: 10px;">
+            <div style="margin: 10px; min-height: 800px;">
                 {% block contenidoInicioAdmin %}
                 {% endblock %}
             </div>

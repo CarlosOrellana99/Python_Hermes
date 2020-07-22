@@ -5,13 +5,12 @@
     <h1 class="h2">Trabajadores con Acceso</h1>
 </div>
 
-<div class="row row-cols-1 row-cols-md-3">
-    {% for x in trabajadores %}
-        <div class="col mb-4">
-            <div class="card border-success mb-3 h-100" style="max-width: 540px;">
-                <div class="row no-gutters">
+{% for x in trabajadores %}
+    <div style="float: left; width: 31%; margin: 1%;">
+        <div class="card border-success">
+            <div class="row no-gutters">
                 <div class="col-md-4">
-                    <img src="data:;base64,{{ x['foto'] }}" class="card-img" alt="Image" style="overflow:hidden ;max-height: 250px; max-width:150px">
+                    <img src="data:;base64,{{ x['foto'] }}" class="card-img" alt="Image" style="overflow:hidden ;height: 180px; width:180px">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
@@ -24,11 +23,10 @@
                         <a href="#"><button type="button" class="btn btn-outline-success">Ir al perfil del trabajador</button></a>
                     </div>
                 </div>
-                </div>
             </div>
         </div>
-    {% endfor %}
-</div>
+    </div>
+{% endfor %}
 {% if cantidad == 0: %}
 <div class="alert alert-danger alert-dismissible fade show" >
     <h4 class="alert-heading">No hemos encontrado ningún trabajador con acceso.</h4> 
@@ -37,7 +35,5 @@
     <h6>Una vez hayas dado acceso a los trabajadores, comenzarán a aparecer acá. Los trabajadores con acceso podrán activar sus membresías.</h6>
     <button type="button" class="close" data-dismiss="alert">&times;</button>
 </div>
-</br></br></br></br></br></br></br></br></br></br></br></br>
-{% endif %}   
-</br></br></br></br></br></br></br></br></br></br></br></br>
+{% endif %}
 {% endblock %}
