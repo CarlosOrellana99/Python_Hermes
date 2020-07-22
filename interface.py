@@ -92,7 +92,6 @@ def login(): # View function
     encontrado = dictionary['encontrado']
     permitido = dictionary['permitido']
     tipo = dictionary['tipo']
-    
     if encontrado and permitido:
         session['user'] = dictionary['user']
         session['kind'] = tipo
@@ -201,7 +200,9 @@ def paginaprincipalusuario():
     admincat = adminCategorias()
     listacategorias = admincat.getCategoriaConFoto()
     listacat = admincat.convertirimagenes(listacategorias)
-    return render_template("principalUsuario.html",categorias=listacat,usuarioactivo=usuario)
+    admin = adminOpciones()
+    ltsDepartamentos = admin.getDepartamentos()
+    return render_template("principalUsuario.html",categorias=listacat,usuarioactivo=usuario,departamentos =ltsDepartamentos)
 
 @app.route("/Hammer.com/tu-Cuenta/")
 def paginaprmodificarcuenta():
@@ -238,9 +239,14 @@ def modificarcuenta():
         print("datos de vuenta modificados con exito")
         session['msg'] = "Sus datos de cuenta ha sido modificado con exito, vuelva a ingresar"
         session['idusuarioactual']=""
-        session['correoactual']=""
-        session['passwordactual']=""
-        return redirect("/")
+        usuario=session['user']
+        if not correoactual== diccionariouser['correo'] or not passwordactual==diccionariouser['contra']:
+            session['correoactual']=""
+            session['passwordactual']=""
+            return redirect("/")
+        else:
+            session['user']= diccionariouser
+            return redirect("/Hammer.com/tu-Cuenta/")
 
 @app.route("/Hammer.com/citas")
 def CitasCliente():
@@ -248,6 +254,12 @@ def CitasCliente():
     usuario = session['user']
     citaspendientes,citasnoconfirmadas,citaspasadas=admincitas.getCitasCliente(usuario['id'])
     return render_template("citasU.html",citaspendientes=citaspendientes,citasnoconfirmadas=citasnoconfirmadas,citaspasadas=citaspasadas)
+
+@app.route("/Hammer.com/buscarTrabajadores",methods=['POST'])
+def busquedaTrabajadoresCliente():
+    palabra = request.form.get('palabra')
+    
+    return render_template("busquedaTrabajadores.html")
 
 # Tests
 @app.route("/test")
