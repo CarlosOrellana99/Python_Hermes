@@ -88,7 +88,6 @@ def login(): # View function
     encontrado = dictionary['encontrado']
     permitido = dictionary['permitido']
     tipo = dictionary['tipo']
-    
     if encontrado and permitido:
         session['user'] = dictionary['user']
         session['kind'] = tipo
@@ -213,9 +212,14 @@ def modificarcuenta():
         print("datos de vuenta modificados con exito")
         session['msg'] = "Sus datos de cuenta ha sido modificado con exito, vuelva a ingresar"
         session['idusuarioactual']=""
-        session['correoactual']=""
-        session['passwordactual']=""
-        return redirect("/")
+        usuario=session['user']
+        if not correoactual== diccionariouser['correo'] or not passwordactual==diccionariouser['contra']:
+            session['correoactual']=""
+            session['passwordactual']=""
+            return redirect("/")
+        else:
+            session['user']= diccionariouser
+            return redirect("/Hammer.com/tu-Cuenta/")
 
 @app.route("/Hammer.com/citas")
 def CitasCliente():
