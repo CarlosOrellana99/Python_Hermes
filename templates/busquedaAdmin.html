@@ -2,7 +2,7 @@
 {% block title %}Hammer - Resultados de Busqueda{% endblock %}
 {% block contenidoInicioAdmin %}
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-    <form class="form-inline" action="/Hammer.com/admin/buscar/advanced/" method="GET">
+    <form class="form-inline" action="/Hammer.com/admin/buscar/advanced/" method="POST">
         <div class="form-group mr-3">
             <h3>Búsqueda avazada</h3>
         </div>
@@ -18,9 +18,8 @@
         <div class="form-group">
             <label for="buscarEn">Buscar en:</label>
             <select id="buscarEn" name="buscarEn" class="form-control mr-3 ml-1">
-                <option value="*" selected>Todos</option>
                 <option value="trabajadores.DUI">DUI</option>
-                <option value="trabajadores.Nombre">Nombre</option>
+                <option selected value="trabajadores.Nombre">Nombre</option>
                 <option value="trabajadores.Apellido">Apellido</option>
                 <option value="trabajadores.Celular">Celular</option>
                 <option value="trabajadores.Direccion">Direccion</option>
@@ -33,7 +32,7 @@
         </div>
         <div class="form-group">
             <label for="wd">Palabra a buscar:</label>
-            <input type="wd" class="form-control mr-3 ml-1" id="wd" name="wd" value ="{{ word }}">
+            <input type="wd" class="form-control mr-3 ml-1" id="wd" required name="wd" value ="{{ word }}">
         </div>
         <button type="submit" class="btn btn-primary">Buscar</button>
     </form>

@@ -347,7 +347,7 @@ class adminTrabajadores(DatabaseZ):
         """
         database = self.database 
         if aprox:
-            like = f"like  '%{word.upper()}%'"
+            like = f"like  '{word.upper()}%'"
         else:
             like = f"= '{word.upper()}'"
         final = []

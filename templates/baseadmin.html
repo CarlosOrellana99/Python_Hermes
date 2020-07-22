@@ -8,7 +8,6 @@
             body {
               font-family: "Lato", sans-serif;
             }
-            
             .sidebar {
               height: 100%;
               width: 0;
@@ -21,7 +20,6 @@
               transition: 0.5s;
               padding-top: 60px;
             }
-            
             .sidebar a {
               padding: 8px 8px 8px 32px;
               text-decoration: none;
@@ -30,11 +28,9 @@
               display: block;
               transition: 0.3s;
             }
-            
             .sidebar a:hover {
               color: #f1f1f1;
             }
-            
             .sidebar .closebtn {
               position: absolute;
               top: 0;
@@ -42,7 +38,6 @@
               font-size: 36px;
               margin-left: 50px;
             }
-            
             .openbtn {
               font-size: 20px;
               cursor: pointer;
@@ -51,15 +46,12 @@
               padding: 10px 15px;
               border: none;
             }
-            
             .openbtn:hover {
               background-color: #444;
             }
-            
             #main {
               transition: margin-left .5s;
             }
-            
             /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
             @media screen and (max-height: 450px) {
               .sidebar {padding-top: 15px;}
@@ -85,6 +77,11 @@
                     <p class="subtitle" style="color: white;">{{ admin['correo'] }} </p>
                 </ul>
             </div>
+            <div>
+                <a href="/"><button class="btn btn-outline-info my-2 my-sm-0"  style="color: white;" type="button">Cerrar sesión</button></a>
+
+                </button>
+            </div>
         </div>
                   
         <div id="main">
@@ -104,8 +101,8 @@
                             <a class="nav-link" style="color: white;" href="/Hammer.com/admin/sinAcceso">Trabajadores sin Acceso</a>
                         </li>
                     </ul>
-                    <form class="form-inline my-2 my-lg-0" action="/Hammer.com/admin/buscar" method="GET">
-                        <input class="form-control mr-sm-2" type="search" name="wd" id="wd" placeholder="Buscar Trabajador" aria-label="Search">
+                    <form class="form-inline my-2 my-lg-0" action="/Hammer.com/admin/buscar" method="POST">
+                        <input class="form-control mr-sm-2" type="search" name="wd" id="wd" placeholder="Buscar Trabajador" required aria-label="Search">
                         <button class="btn btn-outline-info my-2 my-sm-0"  style="color: white;" type="submit">Buscar</button>
                     </form>
                 </div>
@@ -142,7 +139,6 @@
                         <div class="row1">
                             <label><a style="text-decoration:none; color:#C7C7C7;" href="">Mantenimiento</a></label>
                         </div>
-        
                     </div>
                     <hr class="clearfix w-100 d-md-none">
                     <div class="col-md-2 mx-auto">

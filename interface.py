@@ -7,8 +7,8 @@ app.secret_key = "Latrenge3456"
 
 @app.route("/")
 def index(): # View function
-    session['user'] = None
-    session['kind'] = None
+    session['user'] = {"correo": "esteCorreoNoExiste<>"}
+    session['kind'] = "None"
 
     admin = adminAdministrador()
     images = admin.getImages()
@@ -159,7 +159,7 @@ def adminServlet():
             else:
                 return "Process failed. Either there are no licences to revoque or an internal problem has occurred"
 
-@app.route("/Hammer.com/admin/buscar", methods=['GET'])
+@app.route("/Hammer.com/admin/buscar", methods=['POST'])
 def adminBuscar():
     adminA = adminAdministrador()
     images = adminA.getImages()
@@ -167,16 +167,15 @@ def adminBuscar():
     tipo = session['kind']
     adminCompleto = adminA.getAdminByCorreo(admin['correo'])
     if not tipo == "admin":
-        return f"""<h1>You do not have access to this page</h1><br>
-                    <h2>Please sing up in this </h2><a href="/">link</a>""", 402    
-    word = str(request.args.get('wd'))
+        return redirect("/Hammer.com/notAccess")    
+    word = str(request.form.get('wd'))
     adminT = adminTrabajadores()
-    lista = adminT.fetchAllWorkersByWord(word)
+    lista = adminT.fetchAllWorkersByWord(word, kind = ['trabajadores.DUI', 'trabajadores.Nombre', 'trabajadores.Apellido'])
     numeros = range(5,105,5)
     numero = len(lista)
     return render_template("busquedaAdmin.html", trabajadores = lista, admin = adminCompleto, numeros = numeros, word = word, imagenes = images, cantidad = numero)
 
-@app.route("/Hammer.com/admin/buscar/advanced/", methods=['GET'])
+@app.route("/Hammer.com/admin/buscar/advanced/", methods=['POST'])
 def adminBuscarConfigurado():
     adminA = adminAdministrador()
     images = adminA.getImages()
@@ -184,20 +183,18 @@ def adminBuscarConfigurado():
     tipo = session['kind']
     adminCompleto = adminA.getAdminByCorreo(admin['correo'])
     if not tipo == "admin":
-        return f"""<h1>You do not have access to this page</h1><br>
-                    <h2>Please sing up in this </h2><a href="/">link</a>""", 402  
+        return redirect("/Hammer.com/notAccess") 
     adminT = adminTrabajadores()
-    cantidad = (request.args.get('cantidad'))
-    buscarEn = str(request.args.get('buscarEn'))
-    word = str(request.args.get('wd'))
-    if buscarEn == "*":
-        lista = adminT.fetchAllWorkersByWord(word, cantidad)
-    else:
-        lista = adminT.fetchAllWorkersByWord(word, cantidad, [buscarEn])
+    cantidad = (request.form.get('cantidad'))
+    buscarEn = str(request.form.get('buscarEn'))
+    word = str(request.form.get('wd'))
+    lista = adminT.fetchAllWorkersByWord(word, cantidad, [buscarEn])
 
     numero = len(lista)
     numeros = range(5,105,5)
     return render_template("busquedaAdmin.html", trabajadores = lista, admin = adminCompleto, numeros = numeros, word = word, imagenes= images, cantidad= numero)
+
+
 
 # User UI
 @app.route("/Hammer.com/u")
@@ -268,6 +265,14 @@ def busquedaTrabajadoresCliente():
     palabra = request.form.get('palabra')
     
     return render_template("busquedaTrabajadores.html")
+
+# Errors
+
+@app.route("/Hammer.com/notAccess")
+def notAcces():
+    adminA = adminAdministrador()
+    images = adminA.getImages()
+    return render_template("notAccess.html", imagenes = images)
 
 # Tests
 @app.route("/test")

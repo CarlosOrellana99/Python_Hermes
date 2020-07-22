@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="shortcut icon" type="image/x-icon" href="data:;base64,{{ imagenes['icono'] }}" />
+        <title>Hammer - Login</title>
+    </head>
+    <body  style="background-image:url(data:;base64,{{ imagenes['pared'] }}); background-repeat: no-repeat;background-attachment: fixed;background-size: cover;" >
+        <div class="jumbotron jumbotron-fluid text-white" style="height: 150px; background-color: black;">
+            <div style="text-align: center; top: 50%;">
+                <h1><img src="data:;base64,{{ imagenes['logo'] }}" width="128" height="128">Hammer</h1>
+            </div>
+        </div>
+        <br><br><br><br><br><br><br><br>
+        <div class="alert alert-dark fade show" style="width: 70%" >
+            <h2><svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-person-badge-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm4.5 0a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zM8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm5 2.755C12.146 12.825 10.623 12 8 12s-4.146.826-5 1.755V14a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-.245z"/>
+            </svg>
+            ¡No te has registrado correctamente!</h2> <br>
+            <h5><svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-file-earmark-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M4 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V5.707A1 1 0 0 0 13.707 5L10 1.293A1 1 0 0 0 9.293 1H4zm5 1v3a1 1 0 0 0 1 1h3L9 2z"/>
+              </svg>
+              Por favor ve a nuestra <a href="/" class="alert-link"> página de inicio </a> e ingresa tus credenciales para disfrutar de todos nuestros servicios.</h5>
+            <hr>
+            <h6><svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-person-plus-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm7.5-3a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                <path fill-rule="evenodd" d="M13 7.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0v-2z"/>
+            </svg>
+            Si aún no tienes cuenta puedes regitrarte <a href="/register/user" class="alert-link">aquí</a></h6>
+            
+        </div>
+        
+        <br><br><br><br><br><br><br><br>
+
+        <footer class="page-footer font-small pt-4 text-white" style="background-color: black;">
+            <div class="container text-center text-md-left">
+                <div class="row">
+                    <div class="col-md-4 mx-auto">
+                        <h1><img src="data:;base64,{{ imagenes['logo'] }}" width="40" height="40" HSPACE="10" >HAMMER</h1>
+                        <h3>La solución en tus manos</h3>
+                    </div>
+                    <hr class="clearfix w-100 d-md-none">
+                    <div class="col-md-3 mx-auto">
+                        <h1>Servicios en:</h1>
+                        <div class="row1">
+                            <label><a style="text-decoration:none; color:#C7C7C7;" href="">Fontanería</a></label>
+                        </div>
+        
+                        <div class="row1">
+                            <label><a style="text-decoration:none; color:#C7C7C7;" href="">Electricidad</a></label>
+                        </div>
+                        
+                        <div class="row1">
+                            <label><a style="text-decoration:none; color:#C7C7C7;" href="">Jardinería</a></label>
+                        </div>
+                        <div class="row1">
+                            <label><a style="text-decoration:none; color:#C7C7C7;" href="">Albañilería</a></label>
+                        </div>
+                        <div class="row1">
+                            <label><a style="text-decoration:none; color:#C7C7C7;" href="">Mantenimiento</a></label>
+                        </div>
+        
+                    </div>
+                    <hr class="clearfix w-100 d-md-none">
+                    <div class="col-md-2 mx-auto">
+                        <h1>Contáctanos</h1>
+                        <div class="row1">
+                            <label>Número de teléfono</label>
+                            <br>
+                            <a href="tel:+503 1234-5678"><p>+503 1234-5678</p></a>
+                        </div>
+                    
+                        <div class="row1">
+                            <label>Correo Electrónico</label>
+                            <br>
+                            <a href="mailto:hammer.info@gmail.com"><p>hammer@hammer.com</p></a>
+                        </div>
+            
+                    </div>
+                    <hr class="clearfix w-100 d-md-none">
+                </div>
+                <hr>
+                <ul class="list-unstyled list-inline text-center py-2">
+                    <li class="list-inline-item">
+                        <h5 class="mb-1">¿Eres nuevo usuario?</h5>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="/register/user" class="btn btn-danger btn-rounded">¡Registrate!</a>
+                    </li>
+                </ul>
+                <ul class="list-unstyled list-inline text-center py-2">
+                    <li class="list-inline-item">
+                        <h5 class="mb-1">¿Quieres trabajar con nosotros?</h5>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="/register/worker" class="btn btn-danger btn-rounded">¡Registrate!</a>
+                    </li>
+                </ul>
+                <hr>
+            </div>
+            <div class="footer-copyright text-center py-3">HAMMER 2020 | Design by Hermes</div>
+        </footer>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </body>
+</html>
