@@ -258,6 +258,20 @@ class adminClientes(DatabaseZ):
         success = database.executeMany(sql,val)
         return success
 
+    def getDepartamentoMunicipioCliente(self,idCliente):
+        """ Obtiene el nombre del Departamento y Municipio de un cliente"""
+        database = self.database
+        sql=f"""SELECT clientes.idClientes,departamentos.Nombre,municipios.Nombre FROM hermes.clientes 
+                left join hermes.departamentos on clientes.Departamento= departamentos.idDepartamento 
+                left join hermes.municipios on clientes.Municipio=municipios.idMunicipio 
+                WHERE clientes.idClientes='{idCliente}';"""
+        data = database.executeQuery(sql)
+        for x in data:
+            Departamento = x[1]
+            Municipio=x[2]
+            
+        return Departamento,Municipio
+
 class adminTrabajadores(DatabaseZ):
     """
     Aministración de los trabajadores en la base de datos
