@@ -2,6 +2,7 @@
 <html>
     <head>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="shortcut icon" type="image/x-icon" href="data:;base64,{{ imagenes['icono'] }}" />
         <title>{% block title %}{% endblock %}</title>
         <style>
             body {
@@ -15,7 +16,7 @@
               z-index: 1;
               top: 0;
               left: 0;
-              background-color: #111;
+              background-color: black;
               overflow-x: hidden;
               transition: 0.5s;
               padding-top: 60px;
@@ -45,7 +46,7 @@
             .openbtn {
               font-size: 20px;
               cursor: pointer;
-              background-color: #111;
+              background-color: black;
               color: white;
               padding: 10px 15px;
               border: none;
@@ -71,17 +72,17 @@
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
             <div>
                 <ul>
-                    <h3 class="title" style="color: white;">Mi cuenta</h3>
+                    <h1 class="title" style="color: #02dce7;">Mi cuenta</h1>
                     <br>
                     <div>
                         <figure class="image">
-                            <a><img src="data:;base64,{{ admin['foto'] }}" class="border" alt="Image" style="overflow:hidden ;height: 128px; width:128px"></a>
+                            <a><img src="data:;base64,{{ admin['foto'] }}" class="border" alt="Image" style="overflow:hidden; height: 128px; width:128px"></a>
                         </figure>
                     </div>
-                    <p class="subtitle" style="color: white;"><strong>Nombre de Contacto</strong></p>
-                    <p>{{ admin['nombre'] }} {{ admin['apellido'] }}</p>
-                    <p class="subtitle" style="color: white;"><strong>Correo Electrónico</strong></p>
-                    <p>{{ admin['correo'] }} </p>
+                    <h5 class="title" style="color: white;"><strong>Nombre de Contacto</strong></h5>
+                    <p class="subtitle" style="color: white;">{{ admin['nombre'] }} {{ admin['apellido'] }}</p>
+                    <h5 class="title" style="color: white;"><strong>Correo Electrónico</strong></h5>
+                    <p class="subtitle" style="color: white;">{{ admin['correo'] }} </p>
                 </ul>
             </div>
         </div>
@@ -91,13 +92,13 @@
                 <button class="openbtn" onclick="openNav()" style="margin-right: 10px;">☰</button>
                 <nav class="navbar h1" style="background-color: black">
                     <a class="navbar-brand" href="/Hammer.com/admin">
-                        <img src="https://i.imgur.com/Qvw6KIV.jpg" width="181" height="50"  alt="">
+                        <img src="data:;base64,{{ imagenes['logoYnombre'] }}" width="181" height="50"  alt="Image">
                     </a>
                 </nav>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" style="color: white;" href="/Hammer.com/admin/conAcceso">Trabajadores con Acceso</a>
+                            <a class="nav-link" style="color: white;" onblur="" href="/Hammer.com/admin/conAcceso">Trabajadores con Acceso</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" style="color: white;" href="/Hammer.com/admin/sinAcceso">Trabajadores sin Acceso</a>
@@ -105,7 +106,7 @@
                     </ul>
                     <form class="form-inline my-2 my-lg-0" action="/Hammer.com/admin/buscar" method="GET">
                         <input class="form-control mr-sm-2" type="search" name="wd" id="wd" placeholder="Buscar Trabajador" aria-label="Search">
-                        <button class="btn btn-outline-light my-2 my-sm-0"  style="color: white;" type="submit">Buscar</button>
+                        <button class="btn btn-outline-info my-2 my-sm-0"  style="color: white;" type="submit">Buscar</button>
                     </form>
                 </div>
             </nav>
@@ -118,7 +119,7 @@
             <div class="container text-center text-md-left">
                 <div class="row">
                     <div class="col mx-auto">
-                        <h1><img src="https://i.imgur.com/K7tROUX.png" width="40" height="40" HSPACE="10" >HAMMER</h1>
+                        <h1><img src="data:;base64,{{ imagenes['logo'] }}" width="40" height="40" HSPACE="10" >HAMMER</h1>
                         <h3>La solución en tus manos</h3>
                     </div>
                     <hr class="clearfix w-100 d-md-none">
@@ -149,13 +150,13 @@
                         <div class="row1">
                             <label>Número de teléfono</label>
                             <br>
-                            <p>+503 1234-5678</p>
+                            <a href="tel:+503 1234-5678"><p>+503 1234-5678</p></a>
                         </div>
                     
                         <div class="row1">
                             <label>Correo Electrónico</label>
                             <br>
-                            <a href=""><p>hammer@hammer.com</p></a>
+                            <a href="mailto:hammer.info@gmail.com"><p>hammer.info@gmail.com</p></a>
                         </div>
                     </div>
                     <hr class="clearfix w-100 d-md-none">

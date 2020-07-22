@@ -58,8 +58,7 @@ elif test == '8':
     print(lista)
 
 elif test == 'p':
-    for x in range(5,10,5):
-        print(x)
+    print(0%2)
 
 elif test == '9':
     admin = adminAdministrador()

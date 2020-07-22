@@ -4,25 +4,41 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
     <h1 class="h2">Trabajadores con Acceso</h1>
 </div>
+
+<div class="row row-cols-1 row-cols-md-3">
     {% for x in trabajadores %}
-    <div style="border: #00cc27 4px inset;margin: 2.5%;">
-        <article class="media">
-            <div class="media-left">
-                <figure class="image is-128x128">
-                    <a href= "" ><img src="data:;base64,{{ x['foto'] }}" alt="Image" style="overflow:hidden ;height: 128px; width:128px"></a>
-                </figure>
-            </div>
-            <div class="media-content">
-                <div class="content">
-                    <p class="subtitle"><strong>Nombre</strong></p>
-                    <p>{{ x['nombre'] }}</p>
-                    <p class="subtitle"><strong>Correo</strong></p>
-                    <p>{{ x['correo'] }}</p>
-                    <p class="subtitle"><strong>Descripción</strong></p>
-                    <p>{{ x['descripcion'] }}</p>
+        <div class="col mb-4">
+            <div class="card border-success mb-3 h-100" style="max-width: 540px;">
+                <div class="row no-gutters">
+                <div class="col-md-4">
+                    <img src="data:;base64,{{ x['foto'] }}" class="card-img" alt="Image" style="overflow:hidden ;max-height: 250px; max-width:150px">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title"><strong>{{ x['nombre'] }} {{ x['apellido'] }}</strong></strong></h5>
+                        <hr style="border-color: green;">
+                        <h6 class="card-title"><strong>Correo:</strong></h6>
+                        <p class="card-text">{{ x['correo'] }}</p>
+                        <h6 class="card-title"><strong>Teléfono:</strong></h6>
+                        <p class="card-text">{{ x['telefono'] }}</p>
+                        <a href="#"><button type="button" class="btn btn-outline-success">Ir al perfil del trabajador</button></a>
+                    </div>
+                </div>
                 </div>
             </div>
-        </article>
-    </div>
+        </div>
     {% endfor %}
+</div>
+{% if cantidad == 0: %}
+<div class="alert alert-danger alert-dismissible fade show" >
+    <h4 class="alert-heading">No hemos encontrado ningún trabajador con acceso.</h4> 
+    <h5>Comienza a dar accesos <a class="alert-link" href="/Hammer.com/admin/sinAcceso">aquí</a></h5>
+    <hr>
+    <h6>Una vez hayas dado acceso a los trabajadores, comenzarán a aparecer acá. Los trabajadores con acceso podrán activar sus membresías.</h6>
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+</div>
+</br></br></br></br></br></br></br></br></br></br></br></br>
+</br></br></br></br></br></br></br></br></br></br></br></br>
+{% endif %}   
+</br></br></br></br></br></br></br></br></br></br></br></br>
 {% endblock %}

@@ -111,6 +111,7 @@ def adminIndex():
     adminA = adminAdministrador()
     admin = session['user']
     tipo = session['kind']
+    image = adminA.getImages()
     adminCompleto = adminA.getAdminByCorreo(admin['correo'])
     if not tipo == "admin":
         return f"""<h1>You do not have access to this page</h1><br>
@@ -119,11 +120,12 @@ def adminIndex():
         
         top5 = adminA.getTopN()
         stats = adminA.getStats()
-        return render_template("inicioadmin.html", top5 = top5, admin =  adminCompleto, stats = stats)
+        return render_template("inicioadmin.html", top5 = top5, admin =  adminCompleto, stats = stats, imagenes = image)
 
 @app.route("/Hammer.com/admin/<acceso>")
 def TrabajadoresAcceso(acceso):
     adminA = adminAdministrador()
+    image = adminA.getImages()
     tipo = session['kind']
     admin = session['user']
     adminCompleto = adminA.getAdminByCorreo(admin['correo'])
@@ -134,10 +136,12 @@ def TrabajadoresAcceso(acceso):
     else:
         if acceso== 'sinAcceso':
             lista = adminA.getTrabajadoresSinAcceso()
-            return render_template("trabajadoresSinAcceso.html", admin = adminCompleto, trabajadores = lista)
+            cantidad = len(lista)
+            return render_template("trabajadoresSinAcceso.html", admin = adminCompleto, trabajadores = lista, cantidad = cantidad,  imagenes = image)
         elif acceso== 'conAcceso':
             lista = adminA.getTrabajadoresConAcceso()
-            return render_template("trabajadoresConAcceso.html", admin = adminCompleto, trabajadores = lista)
+            cantidad = len(lista)
+            return render_template("trabajadoresConAcceso.html", admin = adminCompleto, trabajadores = lista, imagenes = image, cantidad = cantidad)
 
 @app.route("/Hammer.com/admin/servlet", methods=['POST'])
 def adminServlet():
@@ -158,6 +162,7 @@ def adminServlet():
 @app.route("/Hammer.com/admin/buscar", methods=['GET'])
 def adminBuscar():
     adminA = adminAdministrador()
+    images = adminA.getImages()
     admin = session['user']
     tipo = session['kind']
     adminCompleto = adminA.getAdminByCorreo(admin['correo'])
@@ -168,11 +173,13 @@ def adminBuscar():
     adminT = adminTrabajadores()
     lista = adminT.fetchAllWorkersByWord(word)
     numeros = range(5,105,5)
-    return render_template("busquedaAdmin.html", trabajadores = lista, admin = adminCompleto, numeros = numeros, word = word)
+    numero = len(lista)
+    return render_template("busquedaAdmin.html", trabajadores = lista, admin = adminCompleto, numeros = numeros, word = word, imagenes = images, cantidad = numero)
 
 @app.route("/Hammer.com/admin/buscar/advanced/", methods=['GET'])
 def adminBuscarConfigurado():
     adminA = adminAdministrador()
+    images = adminA.getImages()
     admin = session['user']
     tipo = session['kind']
     adminCompleto = adminA.getAdminByCorreo(admin['correo'])
@@ -188,9 +195,9 @@ def adminBuscarConfigurado():
     else:
         lista = adminT.fetchAllWorkersByWord(word, cantidad, [buscarEn])
 
-    
+    numero = len(lista)
     numeros = range(5,105,5)
-    return render_template("busquedaAdmin.html", trabajadores = lista, admin = adminCompleto, numeros = numeros, word = word)
+    return render_template("busquedaAdmin.html", trabajadores = lista, admin = adminCompleto, numeros = numeros, word = word, imagenes= images, cantidad= numero)
 
 # User UI
 @app.route("/Hammer.com/u")
@@ -213,7 +220,7 @@ def paginaprmodificarcuenta():
     admin = adminOpciones()
     ltsDepartamentos = admin.getDepartamentos()
     ltsMunicipios = admin.getMunicipios()
-    return render_template("modificarUsuario.html",departamentos = ltsDepartamentos, municipios = ltsMunicipios,datosusuario=usuario)
+    return render_template("modificarUsuario.html",departamentos = ltsDepartamentos, municipios = ltsMunicipios, datosusuario=usuario)
 
 @app.route("/Hammer.com/servlet/tu-Cuenta/", methods=['POST'])
 def modificarcuenta():

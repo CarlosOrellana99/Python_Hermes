@@ -166,7 +166,7 @@ class adminAdministrador(DatabaseZ):
             "logo": b64encode(data[0][1]).decode("utf-8"),
             "pared": b64encode(data[1][1]).decode("utf-8"),
             "icono": b64encode(data[2][1]).decode("utf-8"),
-            
+            "logoYnombre": b64encode(data[3][1]).decode("utf-8")
         }
         return dicc
 
@@ -368,13 +368,15 @@ class adminTrabajadores(DatabaseZ):
         """De los datos devueltos de un select de trabajadores, devuelve una lista de diccionarios"""
         lista = []
         value = None
+        numero = 0
         if len(data) > 0:
             for x in data:
-                value = self.convertTuplaToDicc(x)
+                value = self.convertTuplaToDicc(x, numero = numero)
                 lista.append(value)
+                numero += 1
         return lista
 
-    def convertTuplaToDicc(self, tupla, picture = True):
+    def convertTuplaToDicc(self, tupla, picture = True, numero = 0):
         """Converts a tuple to a dictionary"""
         if picture:
             foto = b64encode(tupla[10]).decode("utf-8")
@@ -398,7 +400,8 @@ class adminTrabajadores(DatabaseZ):
                 "departamento": tupla[13],
                 "municipio": tupla[14],
                 "trabajos": tupla[15],
-                "Categoría": self.getCategoriasById(tupla[0])
+                "Categoría": self.getCategoriasById(tupla[0]),
+                "numero": numero
             }
         return lista
 
