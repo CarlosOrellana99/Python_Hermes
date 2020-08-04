@@ -16,8 +16,8 @@
 
 <form action="/Hammer.com/buscarTrabajadores" method="post" target="_blank">
   <p>
-    Búsqueda: <input type="search" name="busquedamusica" placeholder="Trabajadores, departamentos, trabajos...">
-    <input type="submit" value="Buscar">
+    Búsqueda: <input type="search" id = "palabra" name="palabra" placeholder="Trabajadores, departamentos, trabajos...">
+
   </p>
     <p>Filtros:</p>
     <label for="departamento" style="font-size:20px;font-style:Perpetua">Departamento</label><br>
@@ -31,13 +31,14 @@
                     {% endfor %}
                 </select> <br><br>
     <label for="departamento" style="font-size:20px;font-style:Perpetua">Categoria</label><br>
-                <select id="filtroDepartamento" name="filtroDepartamento">
+                <select id="filtroCategoria" name="filtroCategoria">
                     {% for categoria in categorias %}
                             <option value="{{categoria['id']}}">{{ categoria['nombre'] }}</option>
                     {% endfor %}
                 </select> <br><br>
-
+    <input type="submit" value="Buscar">
 </form>
+
 {% for i in categorias %}
     <p>{{i["id"]}}</p>
     <p>{{i["nombre"]}}</p>

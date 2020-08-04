@@ -261,7 +261,14 @@ def CitasCliente():
 
 @app.route("/Hammer.com/buscarTrabajadores",methods=['POST'])
 def busquedaTrabajadoresCliente():
+    adminworker = adminTrabajadores()
     palabra = request.form.get('palabra')
+    filtroDepartamento = request.form.get('filtroDepartamento')
+    filtroCategoria = request.form.get('filtroCategoria')
+    filtrodep=["departamentos.nombre"]
+    filtrocat=[]
+    listaFiltroDepartamentos = adminworker.fetchAllWorkersByWord(filtroDepartamento,"",filtro1,"","",False,"")
+    listaFiltroCategoria = adminworker.fetchAllWorkersByWord(filtroCategoria,"",x,"","",False,"")
     
     return render_template("busquedaTrabajadores.html")
 
