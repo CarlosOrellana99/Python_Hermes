@@ -195,7 +195,6 @@ def adminBuscarConfigurado():
     return render_template("busquedaAdmin.html", trabajadores = lista, admin = adminCompleto, numeros = numeros, word = word, imagenes= images, cantidad= numero)
 
 
-
 # User UI
 @app.route("/Hammer.com/u")
 def paginaprincipalusuario():

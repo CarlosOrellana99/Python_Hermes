@@ -146,7 +146,11 @@ class adminAdministrador(DatabaseZ):
         sql = """SELECT sum(monto) as total FROM hermes.pagos
                 where month(Fecha) = month(now());"""
         data = self.database.executeQuery(sql)
-        valor = Decimal(data[0][0])
+        if data[0][0] is None:
+            valor = Decimal(0.0)
+
+        else:
+            valor = Decimal(data[0][0])
         return valor
 
     def getTrabajadoresSinAcceso(self, limit = "30"):
@@ -362,9 +366,9 @@ class adminTrabajadores(DatabaseZ):
         for x in lista:
 
             sql = f"""  SELECT distinct {select}
-                    FROM categorias 
-                    right join trabajadores on trabajadores.idTrabajadores = categorias.Trabajador
-                    left join categoria on categoria.idCategoria = categorias.Categoria
+                    FROM categoriatrabajadores 
+                    right join trabajadores on trabajadores.idTrabajadores = categoriatrabajadores.Trabajador
+                    left join categoria on categoria.idCategoria = categoriatrabajadores.Categoria
                     inner join hermes.departamentos on departamentos.idDepartamento = trabajadores.Departamento
                     inner join hermes.municipios on municipios.idMunicipio = trabajadores.Municipio
                     inner join hermes.membresias on membresias.idMembresias = trabajadores.Membresia
@@ -421,9 +425,9 @@ class adminTrabajadores(DatabaseZ):
 
     def getCategoriasById(self, idTrabajador):
         """Retorna la lista de categorias a las que pertenece el trabajador con el id especificado"""
-        sql = f"""SELECT categoria.nombre FROM hermes.categorias
-            left join categoria on categoria.idCategoria = categorias.categoria
-            where categorias.Trabajador = '{idTrabajador}';"""
+        sql = f"""SELECT categoria.nombre FROM hermes.categoriatrabajadores
+            left join categoria on categoria.idCategoria = categoriatrabajadores.categoria
+            where categoriatrabajadores.Trabajador = '{idTrabajador}';"""
         
         data = self.database.executeQuery(sql)
         lista = []
