@@ -14,14 +14,15 @@
 
 </div>
 
-<form action="/Hammer.com/buscarTrabajadores" method="post" target="_blank">
+<form action="/Hammer.com/buscarTrabajadores" method="post">
   <p>
-    Búsqueda: <input type="search" id = "palabra" name="palabra" placeholder="Trabajadores, departamentos, trabajos...">
+    Búsqueda: <input type="text" id = "palabra" name="palabra">
 
   </p>
     <p>Filtros:</p>
     <label for="departamento" style="font-size:20px;font-style:Perpetua">Departamento</label><br>
                 <select id="filtroDepartamento" name="filtroDepartamento">
+                    <option value="Todos">Todos</option>
                     {% for departamento in departamentos %}
                         {% if departamento['nombre'] == usuarioactivo['departamento']%}
                             <option value="{{departamento['id']}}" selected>{{ departamento['nombre'] }}</option>
@@ -32,6 +33,7 @@
                 </select> <br><br>
     <label for="departamento" style="font-size:20px;font-style:Perpetua">Categoria</label><br>
                 <select id="filtroCategoria" name="filtroCategoria">
+                    <option value="Todos">Todas</option>
                     {% for categoria in categorias %}
                             <option value="{{categoria['id']}}">{{ categoria['nombre'] }}</option>
                     {% endfor %}

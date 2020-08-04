@@ -361,7 +361,7 @@ class adminTrabajadores(DatabaseZ):
         else:
             lista = kind
 
-        select = "trabajadores.idTrabajadores, trabajadores.DUI, trabajadores.Nombre, trabajadores.Apellido, trabajadores.Celular, trabajadores.Direccion, trabajadores.Correo, trabajadores.Contrasena, trabajadores.Descripcion, trabajadores.Genero, trabajadores.Foto, trabajadores.Aceptado,  membresias.Membresia, departamentos.nombre as depa, municipios.nombre as mun, trabajadores.trabajos"
+        select = "trabajadores.idTrabajadores, trabajadores.DUI, trabajadores.Nombre, trabajadores.Apellido, trabajadores.Celular, trabajadores.Direccion, trabajadores.Correo, trabajadores.Contrasena, trabajadores.Descripcion, trabajadores.Genero, trabajadores.Foto, trabajadores.Aceptado,  membresias.Membresia, departamentos.nombre as depa, municipios.nombre as mun, trabajadores.trabajos, membresias.vigencia"
         # Búsquedas generales
         for x in lista:
 
@@ -415,6 +415,7 @@ class adminTrabajadores(DatabaseZ):
                 "foto":  foto,
                 "aceptado": tupla[11],
                 "membresia": tupla[12],
+                "vigencia":tupla[16],
                 "departamento": tupla[13],
                 "municipio": tupla[14],
                 "trabajos": tupla[15],
@@ -496,6 +497,21 @@ class adminTrabajadores(DatabaseZ):
         "terceraParte": membresia[8:12] 
         }
         return dicc
+    def filtrarTrabajadoresByDepCat(self,lista,departamento,categoria):
+        """Filtra una lista de trabajadores por su departamento y categoria"""
+        listaFiltrada =[]
+        for y in lista:
+            if departamento=="Todos":
+                if categoria=="Todos":
+                    listaFiltrada.append(y)
+                elif y['categoria']=="categoria":
+                    listaFiltrada.append(y)
+            elif y['departamento']==departamento:
+                if categoria=="Todos":
+                    listaFiltrada.append(y)
+                elif y['categoria']=="categoria":
+                    listaFiltrada.append(y)
+        return listaFiltrada       
 
 class adminCategorias(DatabaseZ):
     
@@ -560,6 +576,36 @@ class adminOpciones(DatabaseZ):
             dicc = {"id": x[0], "nombre": x[1]}
             lista.append(dicc)
         return lista
+    
+    def getDepartamentoById(self,idDepartamento):
+        """Busca un departamento por su id y devuelve una lista con sus datos (id,nombre)"""
+        database = self.database
+        sql = f"SELECT idDepartamento, Nombre FROM hermes.departamentos WHERE idDepartamento='{idDepartamento}';"
+        data = database.executeQuery(sql)
+        lista = self.listToDicc(data)
+        departamento =None
+        for x in lista:
+            departemnto = x["nombre"]
+        return departamento
+    
+    def getMunicipioById(self,idMunicipio):
+        """Busca un municipio por su id y devuelve una lista con sus datos (id,nombre)"""
+        database = self.database
+        sql = f"SELECT idMunicipio, Nombre FROM hermes.municipios WHERE idMunicipio='{idMunicipio}';"
+        data = database.executeQuery(sql)
+        lista = self.listToDicc(data)
+        return lista
+
+    def getCategoriaById(self,idCategoria):
+        """Busca un categoria por su id y devuelve una lista con sus datos (id,nombre)"""
+        database = self.database
+        sql = f"SELECT idCategoria,Nombre FROM hermes.categoria WHERE idCategoria='{idCategoria}';"
+        data = database.executeQuery(sql)
+        lista = self.listToDicc(data)
+        categoria =None
+        for x in lista:
+            categoria = x["nombre"]
+        return categoria
 
 class adminCitas(DatabaseZ):
     def __init__(self):

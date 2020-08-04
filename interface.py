@@ -262,15 +262,30 @@ def CitasCliente():
 @app.route("/Hammer.com/buscarTrabajadores",methods=['POST'])
 def busquedaTrabajadoresCliente():
     adminworker = adminTrabajadores()
+    adminoptions= adminOpciones()
     palabra = request.form.get('palabra')
-    filtroDepartamento = request.form.get('filtroDepartamento')
-    filtroCategoria = request.form.get('filtroCategoria')
-    filtrodep=["departamentos.nombre"]
-    filtrocat=[]
-    listaFiltroDepartamentos = adminworker.fetchAllWorkersByWord(filtroDepartamento,"",filtro1,"","",False,"")
-    listaFiltroCategoria = adminworker.fetchAllWorkersByWord(filtroCategoria,"",x,"","",False,"")
+    departamento=request.form.get('filtroDepartamento')
+    categoria=request.form.get('filtroCategoria')
+    default=['trabajadores.DUI']
+    if not palabra=="":
+        getBusqueda = adminworker.fetchAllWorkersByWord(palabra)
+    else:
+        getBusqueda = adminworker.fetchAllWorkersByWord("",kind=default)
     
-    return render_template("busquedaTrabajadores.html")
+    if departamento=="Todos":
+        filtroDepartamento=departamento
+    else:
+        filtroDepartamento=adminoptions.getDepartamentoById(departamento)
+    
+    if categoria=="Todos":
+        filtroCategoria=categoria
+    else:
+        filtroCategoria=adminoptions.getCategoriaById(categoria)
+
+
+    listafiltrada = adminworker.filtrarTrabajadoresByDepCat(getBusqueda,filtroDepartamento,filtroCategoria)
+
+    return render_template("busquedaTrabajadores.html",busqueda=listafiltrada)
 
 # Errors
 
