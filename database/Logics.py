@@ -504,13 +504,17 @@ class adminTrabajadores(DatabaseZ):
             if departamento=="Todos":
                 if categoria=="Todos":
                     listaFiltrada.append(y)
-                elif y['categoria']=="categoria":
-                    listaFiltrada.append(y)
-            elif y['departamento']==departamento:
+                else:
+                    for x in y["Categoría"]:
+                        if x == categoria:
+                            listaFiltrada.append(y)
+            elif y["departamento"]==departamento:
                 if categoria=="Todos":
                     listaFiltrada.append(y)
-                elif y['categoria']=="categoria":
-                    listaFiltrada.append(y)
+                else:
+                    for x in y["Categoría"]:
+                        if x == categoria:
+                            listaFiltrada.append(y)
         return listaFiltrada       
 
 class adminCategorias(DatabaseZ):
@@ -585,7 +589,7 @@ class adminOpciones(DatabaseZ):
         lista = self.listToDicc(data)
         departamento =None
         for x in lista:
-            departemnto = x["nombre"]
+            departamento = x["nombre"]
         return departamento
     
     def getMunicipioById(self,idMunicipio):
