@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <body>
+    
     {% for i in busqueda %}
+    <form action="/Hammer.com/agendarCita/form" method="post">
     <p>{{i["id"]}}</p>
     <p>{{i["nombre"]}}</p>
+    <p>{{i["apellido"]}}</p>
     <p>{{i["Categoría"]}}</p>
     <p>{{i["departamento"]}}</p>
     <p>{{i["vigencia"]}}</p>
+    <input type="hidden" name="Trabajador" id ="Trabajador" value="{{i['correo']}}">
+    <input type="submit" value="Agendar Cita">
+    </form>
     <div></div>
     {% endfor %}
+    
 </body>
 </html>

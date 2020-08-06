@@ -666,4 +666,47 @@ class adminCitas(DatabaseZ):
                     citaspasadas.append(cita)
 
             return citaspendientes,citasnoconfirmadas,citaspasadas
+            
+    def deleteCita(self,idCita):
+        """Elimina una Cita"""
+        database = self.database
+        sql = f"DELETE FROM `hermes`.`citas` WHERE (`idCitas` = {idCita});"
+        success = database.executeNonQueryBool(sql)
+        return success
+
+    def insertCita(self, datanueva):
+        """Agrega una citas y returna True si se realiza correctamente"""
+        database = self.database
+        sql = """INSERT INTO hermes.citas (`Fecha`, `Hora`, `Trabajador`, `Cliente`, `Finalizada`,`DescripcionTrabajo`, `Confirmacion`) 
+                 VALUES ( %s, %s, %s, %s, %s, %s, %s);"""
+        val = (
+            datanueva['Fecha'],
+            datanueva['Hora'],
+            datanueva['Trabajador'],
+            datanueva['Cliente'],
+            datanueva['Finalizada'],
+            datanueva['DescripcionTrabajo'],
+            datanueva['Confirmacion']
+            )
+        success = database.executeMany(sql,val)
+        return success
+
+    def updateCitas(self, datanueva):
+        """Actualiza la informacion de las citas y returna True si se realiza correctamente"""
+        database = self.database
+        sql = """UPDATE hermes.citas SET
+            Fecha=%s , Hora=%s, Trabajador=%s, Cliente=%s, Finalizada=%s, DescripcionTrabajo=%s ,
+            Confirmacion=%s WHERE idCitas=%s;"""
+        val = (
+            datanueva['Fecha'],
+            datanueva['Hora'],
+            datanueva['Trabajador'],
+            datanueva['Cliente'],
+            datanueva['Finalizada'],
+            datanueva['DescripcionTrabajo'],
+            datanueva['Confirmacion'],
+            datanueva['idCitas']
+            )
+        success = database.executeMany(sql,val)
+        return success
 

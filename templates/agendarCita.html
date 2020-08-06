@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+    <body>
+        <div >
+            <h1>Agendar Cita</h1>
+            <form action="/Hammer.com/agendarCita/agendar" method="post">
+                <label for="trabajador" style="font-size:20px;font-style:Perpetua">Trabajador: {{trabajadorCita[0]["nombre"]}} {{trabajadorCita[0]["apellido"]}}</label><br>
+                <label for="especialidades" style="font-size:20px;font-style:Perpetua">Especialidades: {{trabajadorCita[0]["Categoría"]}}</label><br>
+                <label for="departamento" style="font-size:20px;font-style:Perpetua">Departamento: {{trabajadorCita[0]["departamento"]}}</label><br>
+
+                <label for="Descripcion Trabajo" style="font-size:20px;font-style:Perpetua">Describa el trabajo requerido:</label><br>
+                <input class="form-control" type="text" id="descripcionTrabajo" name="descripcionTrabajo" size="150" required><br><br>
+
+                <label for="fechaPropuesta" style="font-size:20px;font-style:Perpetua">Proponga una fecha</label><br>
+                <input type="text" id="fechaPropuesta" name="fechaPropuesta" size="100" required><br><br>
+
+                <label for="horaPropuesta" style="font-size:20px;font-style:Perpetua">Proponga una hora</label><br>
+                <input type="text" id="horaPropuesta" name="horaPropuesta" size="100" required><br><br>
+                
+                <input type="hidden" name="idTrabajador" id ="idTrabajador" value="{{trabajadorCita[0]['id']}}">
+                <input type="submit" value="Agregar Cita">
+                <input type="submit" value="Cancelar">
+            </form> <br><br>
+        </div>
+    </body>
+</html>

@@ -287,6 +287,30 @@ def busquedaTrabajadoresCliente():
 
     return render_template("busquedaTrabajadores.html",busqueda=listafiltrada)
 
+@app.route("/Hammer.com/agendarCita/<funcion>",methods=['POST'])
+def agendarCita(funcion):
+    adminworkers = adminTrabajadores()
+    adminAgendar = adminCitas()
+    if funcion == "form":
+        correoTrabajador=request.form.get('Trabajador')
+        busquedacorreos=["trabajadores.Correo"]
+        diccTrabajador = adminworkers.fetchAllWorkersByWord(correoTrabajador,kind=busquedacorreos,aprox=False)
+        return render_template("agendarCita.html", trabajadorCita=diccTrabajador)
+    
+    if funcion=="agendar":
+        usuario = session['user']
+
+        cita = {
+                    "Fecha": request.form.get('fechaPropuesta'),
+                    "Hora": request.form.get('horaPropuesta'),
+                    "Trabajador":request.form.get('idTrabajador'),
+                    "Cliente":usuario['id'],
+                    "Finalizada":"False",
+                    "DescripcionTrabajo":request.form.get('descripcionTrabajo'),
+                    "Confirmacion":"False"
+                }
+        success = adminAgendar.insertCita(cita)
+        return redirect("/Hammer.com/u")
 # Errors
 
 @app.route("/Hammer.com/notAccess")
