@@ -6,27 +6,35 @@
 
 <body>
 <div class="tab">
-    <a href="/Hammer.com/u" style="color:rgb(0, 0, 128)"> Pagina Principal</a><br><br>
-    <a href="/Hammer.com/informacionEmpresa" style="color:rgb(0, 0, 128)"> Quienes Somos</a><br><br>
-    <a href="/Hammer.com/citas" style="color:rgb(0, 0, 128)"> Trabajos Recientes</a><br><br>
-    <a href="/Hammer.com/tu-Cuenta/" style="color:rgb(0, 0, 128)"> Tu Cuenta</a><br><br>
+    <a href="/Hammer.com/u" style="color:rgb(0, 0, 128)"> Pagina Principal</a>
+    <a href="/Hammer.com/informacionEmpresa" style="color:rgb(0, 0, 128)"> Quienes Somos</a>
+    <a href="/Hammer.com/citas" style="color:rgb(0, 0, 128)"> Trabajos Recientes</a>
+    <a href="/Hammer.com/tu-Cuenta/" style="color:rgb(0, 0, 128)"> Tu Cuenta</a>
 </div>
-<p>Citas pendientes</p>
+<p>Citas Activas</p>
 {% for x in citaspendientes %}
-    <p>{{x['Fecha']}}</p>
-    <p>{{x['NombreTrabajador']}} {{x['ApellidoTrabajador']}}</p>
+    <form action="/Hammer.com/eliminarCita" method="post">
+        <p>{{x['Fecha']}}</p>
+        <p>{{x['NombreTrabajador']}} {{x['ApellidoTrabajador']}}</p>
+        <input type= hidden name="idCita" id="idCita" value="{{x['idCitas']}}">
+        <input type="submit" value="Cancelar Cita">
+    </form>
 {% endfor %}
 <br>
 <p>Citas en espera de Confirmación</p>
 {% for y in citasnoconfirmadas %}
-    <p>{{y['Fecha']}}</p>
-    <p>{{y['NombreTrabajador']}} {{y['ApellidoTrabajador']}}</p>
+    <form action="/Hammer.com/eliminarCita" method="post">  
+        <p>{{y['Fecha']}}</p>
+        <p>{{y['NombreTrabajador']}} {{y['ApellidoTrabajador']}}</p>
+        <input type= hidden name="idCita" id="idCita" value="{{y['idCitas']}}">
+        <input type="submit" value="Cancelar Cita">
+    </form>
 {% endfor %}
 <br>
 <p>Citas pasadas</p>
 {% for z in citaspasadas %}
-    <p>{{z['Fecha']}}</p>
-    <p>{{z['NombreTrabajador']}} {{z['ApellidoTrabajador']}}</p>
+        <p>{{z['Fecha']}}</p>
+        <p>{{z['NombreTrabajador']}} {{z['ApellidoTrabajador']}}</p>
 {% endfor %}
 </body>
 

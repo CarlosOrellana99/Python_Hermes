@@ -100,7 +100,6 @@ def login(): # View function
         elif tipo == "worker":
             return "Registrado como trabajador"
         elif tipo == "user":
-            print(dictionary['user'])
             return redirect("/Hammer.com/u")
     else:
         return redirect("/")
@@ -198,8 +197,10 @@ def adminBuscarConfigurado():
 # User UI
 @app.route("/Hammer.com/u")
 def paginaprincipalusuario():
-    usuario = session['user']
-    print (f"{usuario}")
+    adminC=adminClientes()
+    user = session['user']
+    print(user)
+    usuario = adminC.getUserbyCorreo(user['correo'])
     admincat = adminCategorias()
     listacategorias = admincat.getCategoriaConFoto()
     listacat = admincat.convertirimagenes(listacategorias)
@@ -317,6 +318,14 @@ def agendarCita(funcion):
                 }
         success = adminAgendar.insertCita(cita)
         return redirect("/Hammer.com/u")
+
+@app.route("/Hammer.com/eliminarCita",methods=['POST'])
+def CancelarCita():
+    adminCita=adminCitas()
+    idCita = request.form.get('idCita')
+    delete = adminCita.deleteCita(idCita)
+    return redirect("/Hammer.com/citas")
+
 
 @app.route("/Hammer.com/informacionEmpresa")
 def quienesSomos():
