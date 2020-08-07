@@ -259,13 +259,19 @@ def CitasCliente():
     citaspendientes,citasnoconfirmadas,citaspasadas=admincitas.getCitasCliente(usuario['id'])
     return render_template("citasU.html",citaspendientes=citaspendientes,citasnoconfirmadas=citasnoconfirmadas,citaspasadas=citaspasadas)
 
-@app.route("/Hammer.com/buscarTrabajadores",methods=['POST'])
-def busquedaTrabajadoresCliente():
+@app.route("/Hammer.com/buscarTrabajadores/<form>",methods=['POST'])
+def busquedaTrabajadoresCliente(form):
     adminworker = adminTrabajadores()
     adminoptions= adminOpciones()
-    palabra = request.form.get('palabra')
-    departamento=request.form.get('filtroDepartamento')
-    categoria=request.form.get('filtroCategoria')
+    if form == "busqueda":
+        palabra = request.form.get('palabra')
+        departamento=request.form.get('filtroDepartamento')
+        categoria=request.form.get('filtroCategoria')
+    elif form=="categoria":
+        palabra = ""
+        departamento="Todos"
+        categoria=request.form.get('categoriaButton')
+
     default=['trabajadores.DUI']
     if not palabra=="":
         getBusqueda = adminworker.fetchAllWorkersByWord(palabra)
@@ -311,6 +317,10 @@ def agendarCita(funcion):
                 }
         success = adminAgendar.insertCita(cita)
         return redirect("/Hammer.com/u")
+
+@app.route("/Hammer.com/informacionEmpresa")
+def quienesSomos():
+    return render_template("informacionEmpresa.html")
 # Errors
 
 @app.route("/Hammer.com/notAccess")

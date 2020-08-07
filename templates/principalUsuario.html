@@ -8,13 +8,14 @@
 <h1>Hammer</h1>
 <p>Bienvenido</p>
 <div class="tab">
-    <button class="tablinks" onclick="openCity(event, 'London')">Quienes Somos</button>
+    <a href="/Hammer.com/u" style="color:rgb(0, 0, 128)"> Pagina Principal</a><br><br>
+    <a href="/Hammer.com/informacionEmpresa" style="color:rgb(0, 0, 128)"> Quienes Somos</a><br><br>
     <a href="/Hammer.com/citas" style="color:rgb(0, 0, 128)"> Trabajos Recientes</a><br><br>
     <a href="/Hammer.com/tu-Cuenta/" style="color:rgb(0, 0, 128)"> Tu Cuenta</a><br><br>
 
 </div>
 
-<form action="/Hammer.com/buscarTrabajadores" method="post">
+<form action="/Hammer.com/buscarTrabajadores/busqueda" method="post">
   <p>
     Búsqueda: <input type="text" id = "palabra" name="palabra">
 
@@ -42,9 +43,12 @@
 </form>
 
 {% for i in categorias %}
+    <form action="/Hammer.com/buscarTrabajadores/categoria" method="post">
     <p>{{i["id"]}}</p>
     <p>{{i["nombre"]}}</p>
-    <img src="data:;base64,{{i['imagen']}}" />
+    <button type="submit" id="categoriaButton" name="categoriaButton" value="{{i['id']}}"><img src="data:;base64,{{i['imagen']}}"/></button>
+    </form>
     {% endfor %}
+    
 </body>
 </html>
