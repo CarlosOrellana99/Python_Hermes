@@ -235,8 +235,13 @@ def modificarcuenta():
     departamento = int(request.form.get('departamento'))
     municipio = int(request.form.get('municipio'))
     direccion = (request.form.get('direccion'))
+    imagen=request.files['imagen']
+    if not imagen.filename =="":
+        foto= imagen.read()
+    else:
+        foto=None
     diccionariouser = {"id": idusuario, "nombre": nombre,"apellido":apellido,"correo":correo,"contra":contrasena,"dui":dui,
-                        "telefono":telefono,"genero":genero,"departamento":departamento,"municipio":municipio,"direccion":direccion}
+                        "telefono":telefono,"genero":genero,"departamento":departamento,"municipio":municipio,"direccion":direccion,"foto":foto}
     adminmodificar=adminClientes()
     success = adminmodificar.updateusuario(diccionariouser)
     diccionariouser['departamento'],diccionariouser['municipio']=adminmodificar.getDepartamentoMunicipioCliente(idusuario)
