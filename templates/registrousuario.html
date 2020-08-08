@@ -5,9 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Hammmer</title>
-        <link rel="shortcut icon" href="images/logosinfondo.png">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='images/logosinfondo.png') }}">
         <link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.min.css">
-        <link rel="stylesheet" href="css/footer.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
         <script defer="" src="http://use.fontawesome.com/releases/v5.12.1/js//all.js"></script>
         <style>
               
@@ -22,11 +22,12 @@
     
 
 
-    <body style="background:#EAEAEA;">
+    <body style="background:rgb(245, 245, 245);">
         <center>
             <div>
-                <img src="images/logosinfondo.png" width="40" height="40" HSPACE="10" >
+                
                 <h2 style="font-size:50px;color:rgb(0, 0, 128);margin-top: 10px">HAMMER</h2>
+                <img src="{{ url_for('static', filename='images/logosinfondo.png') }}" width="40" height="40" HSPACE="10" VSPACE="10" >
             </div>
         </center>
         <div class="row justify-content-center align-items-center">
