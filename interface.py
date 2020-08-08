@@ -7,26 +7,30 @@ app.secret_key = "Latrenge3456"
 
 @app.route("/")
 def index(): # View function
-    session['user'] = None
-    session['kind'] = None
+    session['user'] = {"correo": "esteCorreoNoExiste<>"}
+    session['kind'] = "None"
+
+    admin = adminAdministrador()
+    images = admin.getImages()
 
     if 'msg' in session:
         flash(session['msg']) # version no funcional de flash
         del(session['msg'])
 
-    return render_template('login.html')
+    return render_template('login.html', imagenes = images)
 
 @app.route("/register/<string:kind>")
 def register(kind): # View function
-
+    adminA = adminAdministrador()
+    images = adminA.getImages()
     admin = adminOpciones()
     ltsDepartamentos = admin.getDepartamentos()
     ltsMunicipios = admin.getMunicipios()
     
     if kind == "worker":
-        return render_template('registrotrabajador.html', departamentos = ltsDepartamentos, municipios = ltsMunicipios)
+        return render_template('registrotrabajador.html', departamentos = ltsDepartamentos, municipios = ltsMunicipios, imagenes = images)
     elif kind == "user":
-        return render_template('registrousuario.html', departamentos = ltsDepartamentos, municipios = ltsMunicipios)
+        return render_template('registrousuario.html', departamentos = ltsDepartamentos, municipios = ltsMunicipios, imagenes = images)
 
 # Servlets
 @app.route("/servlet/register/<kind>", methods=['POST'])
@@ -88,7 +92,6 @@ def login(): # View function
     encontrado = dictionary['encontrado']
     permitido = dictionary['permitido']
     tipo = dictionary['tipo']
-    
     if encontrado and permitido:
         session['user'] = dictionary['user']
         session['kind'] = tipo
@@ -108,6 +111,7 @@ def adminIndex():
     adminA = adminAdministrador()
     admin = session['user']
     tipo = session['kind']
+    image = adminA.getImages()
     adminCompleto = adminA.getAdminByCorreo(admin['correo'])
     if not tipo == "admin":
         return f"""<h1>You do not have access to this page</h1><br>
@@ -116,11 +120,12 @@ def adminIndex():
         
         top5 = adminA.getTopN()
         stats = adminA.getStats()
-        return render_template("inicioadmin.html", top5 = top5, admin =  adminCompleto, stats = stats)
+        return render_template("inicioadmin.html", top5 = top5, admin =  adminCompleto, stats = stats, imagenes = image)
 
 @app.route("/Hammer.com/admin/<acceso>")
 def TrabajadoresAcceso(acceso):
     adminA = adminAdministrador()
+    image = adminA.getImages()
     tipo = session['kind']
     admin = session['user']
     adminCompleto = adminA.getAdminByCorreo(admin['correo'])
@@ -131,10 +136,12 @@ def TrabajadoresAcceso(acceso):
     else:
         if acceso== 'sinAcceso':
             lista = adminA.getTrabajadoresSinAcceso()
-            return render_template("trabajadoresSinAcceso.html", admin = adminCompleto, trabajadores = lista)
+            cantidad = len(lista)
+            return render_template("trabajadoresSinAcceso.html", admin = adminCompleto, trabajadores = lista, cantidad = cantidad,  imagenes = image)
         elif acceso== 'conAcceso':
             lista = adminA.getTrabajadoresConAcceso()
-            return render_template("trabajadoresConAcceso.html", admin = adminCompleto, trabajadores = lista)
+            cantidad = len(lista)
+            return render_template("trabajadoresConAcceso.html", admin = adminCompleto, trabajadores = lista, imagenes = image, cantidad = cantidad)
 
 @app.route("/Hammer.com/admin/servlet", methods=['POST'])
 def adminServlet():
@@ -152,19 +159,41 @@ def adminServlet():
             else:
                 return "Process failed. Either there are no licences to revoque or an internal problem has occurred"
 
-@app.route("/Hammer.com/admin/buscar", methods=['GET'])
+@app.route("/Hammer.com/admin/buscar", methods=['POST'])
 def adminBuscar():
     adminA = adminAdministrador()
+    images = adminA.getImages()
     admin = session['user']
     tipo = session['kind']
     adminCompleto = adminA.getAdminByCorreo(admin['correo'])
     if not tipo == "admin":
-        return f"""<h1>You do not have access to this page</h1><br>
-                    <h2>Please sing up in this </h2><a href="/">link</a>""", 402    
-    word = str(request.args.get('wd'))
+        return redirect("/Hammer.com/notAccess")    
+    word = str(request.form.get('wd'))
     adminT = adminTrabajadores()
-    lista = adminT.fetchAllWorkersByWord(word)
-    return render_template("busquedaAdmin.html", trabajadores = lista, admin = adminCompleto)
+    lista = adminT.fetchAllWorkersByWord(word, kind = ['trabajadores.DUI', 'trabajadores.Nombre', 'trabajadores.Apellido'])
+    numeros = range(5,105,5)
+    numero = len(lista)
+    return render_template("busquedaAdmin.html", trabajadores = lista, admin = adminCompleto, numeros = numeros, word = word, imagenes = images, cantidad = numero)
+
+@app.route("/Hammer.com/admin/buscar/advanced/", methods=['POST'])
+def adminBuscarConfigurado():
+    adminA = adminAdministrador()
+    images = adminA.getImages()
+    admin = session['user']
+    tipo = session['kind']
+    adminCompleto = adminA.getAdminByCorreo(admin['correo'])
+    if not tipo == "admin":
+        return redirect("/Hammer.com/notAccess") 
+    adminT = adminTrabajadores()
+    cantidad = (request.form.get('cantidad'))
+    buscarEn = str(request.form.get('buscarEn'))
+    word = str(request.form.get('wd'))
+    lista = adminT.fetchAllWorkersByWord(word, cantidad, [buscarEn])
+
+    numero = len(lista)
+    numeros = range(5,105,5)
+    return render_template("busquedaAdmin.html", trabajadores = lista, admin = adminCompleto, numeros = numeros, word = word, imagenes= images, cantidad= numero)
+
 
 # User UI
 @app.route("/Hammer.com/u")
@@ -174,7 +203,9 @@ def paginaprincipalusuario():
     admincat = adminCategorias()
     listacategorias = admincat.getCategoriaConFoto()
     listacat = admincat.convertirimagenes(listacategorias)
-    return render_template("principalUsuario.html",categorias=listacat,usuarioactivo=usuario)
+    admin = adminOpciones()
+    ltsDepartamentos = admin.getDepartamentos()
+    return render_template("principalUsuario.html",categorias=listacat,usuarioactivo=usuario,departamentos =ltsDepartamentos)
 
 @app.route("/Hammer.com/tu-Cuenta/")
 def paginaprmodificarcuenta():
@@ -185,7 +216,7 @@ def paginaprmodificarcuenta():
     admin = adminOpciones()
     ltsDepartamentos = admin.getDepartamentos()
     ltsMunicipios = admin.getMunicipios()
-    return render_template("modificarUsuario.html",departamentos = ltsDepartamentos, municipios = ltsMunicipios,datosusuario=usuario)
+    return render_template("modificarUsuario.html",departamentos = ltsDepartamentos, municipios = ltsMunicipios, datosusuario=usuario)
 
 @app.route("/Hammer.com/servlet/tu-Cuenta/", methods=['POST'])
 def modificarcuenta():
@@ -207,13 +238,19 @@ def modificarcuenta():
                         "telefono":telefono,"genero":genero,"departamento":departamento,"municipio":municipio,"direccion":direccion}
     adminmodificar=adminClientes()
     success = adminmodificar.updateusuario(diccionariouser)
+    diccionariouser['departamento'],diccionariouser['municipio']=adminmodificar.getDepartamentoMunicipioCliente(idusuario)
     if success == True:
         print("datos de vuenta modificados con exito")
         session['msg'] = "Sus datos de cuenta ha sido modificado con exito, vuelva a ingresar"
         session['idusuarioactual']=""
-        session['correoactual']=""
-        session['passwordactual']=""
-        return redirect("/")
+        usuario=session['user']
+        if not correoactual== diccionariouser['correo'] or not passwordactual==diccionariouser['contra']:
+            session['correoactual']=""
+            session['passwordactual']=""
+            return redirect("/")
+        else:
+            session['user']= diccionariouser
+            return redirect("/Hammer.com/tu-Cuenta/")
 
 @app.route("/Hammer.com/citas")
 def CitasCliente():
@@ -221,6 +258,27 @@ def CitasCliente():
     usuario = session['user']
     citaspendientes,citasnoconfirmadas,citaspasadas=admincitas.getCitasCliente(usuario['id'])
     return render_template("citasU.html",citaspendientes=citaspendientes,citasnoconfirmadas=citasnoconfirmadas,citaspasadas=citaspasadas)
+
+@app.route("/Hammer.com/buscarTrabajadores",methods=['POST'])
+def busquedaTrabajadoresCliente():
+    adminworker = adminTrabajadores()
+    palabra = request.form.get('palabra')
+    filtroDepartamento = request.form.get('filtroDepartamento')
+    filtroCategoria = request.form.get('filtroCategoria')
+    filtrodep=["departamentos.nombre"]
+    filtrocat=[]
+    listaFiltroDepartamentos = adminworker.fetchAllWorkersByWord(filtroDepartamento,"",filtro1,"","",False,"")
+    listaFiltroCategoria = adminworker.fetchAllWorkersByWord(filtroCategoria,"",x,"","",False,"")
+    
+    return render_template("busquedaTrabajadores.html")
+
+# Errors
+
+@app.route("/Hammer.com/notAccess")
+def notAcces():
+    adminA = adminAdministrador()
+    images = adminA.getImages()
+    return render_template("notAccess.html", imagenes = images)
 
 # Tests
 @app.route("/test")

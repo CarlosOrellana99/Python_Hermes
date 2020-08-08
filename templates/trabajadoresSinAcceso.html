@@ -5,24 +5,34 @@
     <h1 class="h2">Trabajadores sin Acceso</h1>
 </div>
 {% for x in trabajadores %}
-<div class="box" style="border: rgb(255, 0, 0) 4px inset;margin-right: 2.5%; float:left; width:47.5%;">
-    <article class="media">
-        <div class="media-left">
-            <figure class="image is-128x128">
-                <a href= "" ><img src="data:;base64,{{ x['foto'] }}" alt="Image" style="overflow:hidden ;max-height: 128px; max-width:128px"></a>
-            </figure>
-        </div>
-        <div class="media-content">
-            <div class="content">
-                <p class="subtitle"><strong>Nombre</strong></p>
-                <p>{{ x['nombre'] }}</p>
-                <p class="subtitle"><strong>Correo</strong></p>
-                <p>{{ x['correo'] }}</p>
-                <p class="subtitle"><strong>Descripción</strong></p>
-                <p>{{ x['descripcion'] }}</p>
+<div style="float: left; width: 31%; margin: 1%;">
+    <div class="card border-danger">
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <img src="data:;base64,{{ x['foto'] }}" class="card-img" alt="Image" style="overflow:hidden ;height: 180px; width:180px">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                <h5 class="card-title"><strong>{{ x['nombre'] }} {{ x['apellido'] }}</strong></h5>
+                <hr style="border-color: red;">
+                <h6 class="card-title"><strong>Correo:</strong></h6>
+                <p class="card-text">{{ x['correo'] }}</p>
+                <h6 class="card-title"><strong>Teléfono:</strong></h6>
+                <p class="card-text">{{ x['telefono'] }}</p>
+                <a href="#"><button type="button" class="btn btn-outline-danger">Ir al perfil del trabajador</button></a>
+                </div>
             </div>
         </div>
-    </article>
+    </div>
 </div>
 {% endfor %}
+{% if cantidad == 0: %}
+<div class="alert alert-danger alert-dismissible fade show" >
+    <h4 class="alert-heading">No hemos encontrado ningún trabajador sin acceso.</h4> 
+    <h5>A medida más trabajadores se vayan inscribiendo, los verás aparecer aquí para que les hagas una entrevista.</h5>
+    <hr>
+    <h6>Visita a los trabajadores con acceso <a href="/Hammer.com/admin/sinAcceso">aquí</a></h6>
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+</div>
+{% endif %}
 {% endblock %}

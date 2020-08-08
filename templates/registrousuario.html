@@ -45,81 +45,112 @@
                 <div class="form-group">
                     <label for="apellido" style="font-size:20px;font-style:Perpetua">Apellido</label><br>
                 <input type="text" id="apellido" name="apellido" size="100" required class="form-control">
+{% extends "baseRegistro.html" %}
+{% block formulario %}
+       
+<div class="row justify-content-center align-items-center">
+    <div class=" col-md-5">
+        <form action="/servlet/register/user" method="POST">    
+            <div class="card card-body card-group text-white" style="background-color: rgb(0, 0, 0);">
+                <div class="form-group" style="font-size:30px;font-style:Perpetua"><strong>Crear Usuario</strong></div>
+                <div class="form-row">
+                    <div class="col">
+                        <label for="nombre" style="font-size:20px;font-style:Perpetua">Nombre</label><br>
+                        <input type="text" id="nombre" name="nombre" size="100" required class="form-control">
+                    </div>
+
+                    <div class="col">
+                        <label for="apellido" style="font-size:20px;font-style:Perpetua">Apellido</label><br>
+                        <input type="text" id="apellido" name="apellido" size="100" required class="form-control">
+                    </div>
                 </div>
+                    
 
                 <div class="form-group">
                     <label for="email" style="font-size:20px;font-style:Perpetua">Correo electronico</label><br>
-                <input type="email" id="email" name="email" size="100" required class="form-control">
+                    <input type="email" id="email" name="email" size="100" required class="form-control">
                 </div>
-
 
                 <div class="form-group">
                     <label for="contraseña" style="font-size:20px;font-style:Perpetua">Contraseña</label><br>
-                <input type="password" id="contraseña" name="contraseña" size="100" required class="form-control">
+                    <input type="password" id="contraseña" name="contraseña" size="100" required class="form-control">
                 </div>
-                    
-                <div class="form-group">
-                    <label for="dui" style="font-size:20px;font-style:Perpetua">Numero de DUI</label><br>
-                <input type="text" id="dui" name="dui" size="100" required maxlength="9" required class="form-control">
-                </div>
+                
 
                 <div class="form-group">
-                    <label for="telefono" style="font-size:20px;font-style:Perpetua">Numero de Telefono Personal</label><br>
-                <input type="text" id="telefono" name="telefono" size="100" required class="form-control">
+                    <label for="dui" style="font-size:20px;font-style:Perpetua">Numero de DUI</label><br>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="dui">Ejemplo: 00000000-0</span>
+                        </div>
+                        <input type="text" id="dui" name="dui" size="1000" required maxlength="10" required class="form-control"   aria-describedby="dui">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="telefono" style="font-size:20px;font-style:Perpetua">Número de teléfono personal</label><br>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text" id="dui">+ 503 </span>
+                        </div>
+                        <input type="text" id="telefono" name="telefono" size="1000" placeholder="0000-0000" required maxlength="10" required class="form-control" aria-describedby="dui">
+                    </div>
                 </div>
 
                 <div class="form-group">
                     <label for="genero" style="font-size:20px;font-style:Perpetua">Género</label><br>
-                <select id="genero" name="genero" class="form-control">
-                    <option value="Masculino">Masculino</option>
-                    <option value="Femenino">Femenino</option>
-                </select>
+                    <select id="genero" name="genero" class="form-control">
+                        <option value="Masculino">Masculino</option>
+                        <option value="Femenino">Femenino</option>
+                    </select>
                 </div>
-                
-                
-                <div class="form-group">
-                    <label for="departamento" style="font-size:20px;font-style:Perpetua">Departamento</label><br>
-                <select id="departamento" name="departamento" class="form-control">
-                    {% for departamento in departamentos %}
-                    <option value="{{departamento['id']}}">,{{ departamento['nombre'] }}</option>
-                    {% endfor %}
-                </select>
+                <div class="form-row">
+                    <div class="col">
+                        <label for="departamento" style="font-size:20px;font-style:Perpetua">Departamento</label><br>
+                        <select id="departamento" name="departamento" class="form-control">
+                            {% for departamento in departamentos %}
+                            <option value="{{departamento['id']}}">{{ departamento['nombre'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label for="municipio" style="font-size:20px;font-style:Perpetua">Municipio</label><br>
+                        <select id="municipio" name="municipio" class="form-control">
+                            {% for municipio in municipios %}
+                            <option value="{{municipio['id']}}">{{ municipio['nombre'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
-                
-                
-                <div class="form-group">
-                    <label for="municipio" style="font-size:20px;font-style:Perpetua">Municipio</label><br>
-                <select id="municipio" name="municipio" class="form-control">
-                    {% for municipio in municipios %}
-                    <option value="{{municipio['id']}}">{{ municipio['nombre'] }}</option>
-                    {% endfor %}
-                </select>
-                </div>
-                
+                <br><br>
                 <div class="form-group">
                     <label for="direccion" style="font-size:20px;font-style:Perpetua">Direccion</label><br>
-                <input type="text" id="direccion" name="direccion" size="100" required class="form-control">
+                    <input type="text" id="direccion" name="direccion" size="100" required class="form-control">
                 </div>
-                
-                <div class="form-group">
-                    <label for="imagen" style="font-size:20px;font-style:Perpetua">Foto de perfil</label><br>
-                    <input type="file" id="imagen" name="imagen" size="100" class="btn btn-normal btn-block">
-                    <input type="submit" value="Crear Usuario" class="btn btn-primary btn-lg">
-                    <input type="submit" value="Cancelar" class="btn btn-primary btn-lg">
+                <br><br>
+                <br><label for="imagen" style="font-size:20px;font-style:Perpetua">Sube una fotografía</label>
+                <div class="input-group mb-3">
+                    
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                    </div>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="imagen" name="imagen" aria-describedby="inputGroupFileAddon01">
+                        <label class="custom-file-label" for="imagen">Elija un archivo</label>
+                    </div>
                 </div>
-                
-                
-            </form> 
+                <script type="application/javascript">
+                    $('input[type="file"]').change(function(e){
+                        var fileName = e.target.files[0].name;
+                        $('.custom-file-label').html(fileName);
+                    });
+                </script>
+                <br>
+                <button type="submit" class="btn btn-info btn-block">Crear Usuario</button>
+            </div>
+        </form>
+    </div>
+</div>
+<br><br>
 
-        </div>
-        </div>
-        </div>
-
-
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-
-        <script src="{{url_for('static', filename='js/main.js')}}"></script>
-    </body>
-</html>
+{% endblock %}
+        

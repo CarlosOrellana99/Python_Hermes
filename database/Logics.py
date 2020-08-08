@@ -102,7 +102,6 @@ class adminAdministrador(DatabaseZ):
         return exito
     
     def getTopN(self, n = 5):
-        database = self.adminTrabajadores
         adminT = self.adminTrabajadores
         sql = f"""SELECT citas.Trabajador, count(distinct(citas.idCitas)) as sumCitas 
                 from citas  
@@ -147,7 +146,11 @@ class adminAdministrador(DatabaseZ):
         sql = """SELECT sum(monto) as total FROM hermes.pagos
                 where month(Fecha) = month(now());"""
         data = self.database.executeQuery(sql)
-        valor = Decimal(data[0][0])
+        if data[0][0] is None:
+            valor = Decimal(0.0)
+
+        else:
+            valor = Decimal(data[0][0])
         return valor
 
     def getTrabajadoresSinAcceso(self, limit = "30"):
@@ -159,6 +162,17 @@ class adminAdministrador(DatabaseZ):
         admin = self.adminTrabajadores
         trabajadores = admin.fetchAllWorkersByWord("1", limit, ['trabajadores.aceptado'], mode = modo, aprox = False, cat = False)
         return trabajadores
+    
+    def getImages(self):
+        sql = "SELECT * FROM hermes.imagenes;"
+        data = self.database.executeQuery(sql)
+        dicc = {
+            "logo": b64encode(data[0][1]).decode("utf-8"),
+            "pared": b64encode(data[1][1]).decode("utf-8"),
+            "icono": b64encode(data[2][1]).decode("utf-8"),
+            "logoYnombre": b64encode(data[3][1]).decode("utf-8")
+        }
+        return dicc
 
 class adminClientes(DatabaseZ):
     """Aministración de los clientes en la base de datos
@@ -248,6 +262,20 @@ class adminClientes(DatabaseZ):
         success = database.executeMany(sql,val)
         return success
 
+    def getDepartamentoMunicipioCliente(self,idCliente):
+        """ Obtiene el nombre del Departamento y Municipio de un cliente"""
+        database = self.database
+        sql=f"""SELECT clientes.idClientes,departamentos.Nombre,municipios.Nombre FROM hermes.clientes 
+                left join hermes.departamentos on clientes.Departamento= departamentos.idDepartamento 
+                left join hermes.municipios on clientes.Municipio=municipios.idMunicipio 
+                WHERE clientes.idClientes='{idCliente}';"""
+        data = database.executeQuery(sql)
+        for x in data:
+            Departamento = x[1]
+            Municipio=x[2]
+            
+        return Departamento,Municipio
+
 class adminTrabajadores(DatabaseZ):
     """
     Aministración de los trabajadores en la base de datos
@@ -323,7 +351,7 @@ class adminTrabajadores(DatabaseZ):
         """
         database = self.database 
         if aprox:
-            like = f"like  '%{word.upper()}%'"
+            like = f"like  '{word.upper()}%'"
         else:
             like = f"= '{word.upper()}'"
         final = []
@@ -338,15 +366,15 @@ class adminTrabajadores(DatabaseZ):
         for x in lista:
 
             sql = f"""  SELECT distinct {select}
-                    FROM categorias 
-                    right join trabajadores on trabajadores.idTrabajadores = categorias.Trabajador
-                    left join categoria on categoria.idCategoria = categorias.Categoria
+                    FROM categoriatrabajadores 
+                    right join trabajadores on trabajadores.idTrabajadores = categoriatrabajadores.Trabajador
+                    left join categoria on categoria.idCategoria = categoriatrabajadores.Categoria
                     inner join hermes.departamentos on departamentos.idDepartamento = trabajadores.Departamento
                     inner join hermes.municipios on municipios.idMunicipio = trabajadores.Municipio
                     inner join hermes.membresias on membresias.idMembresias = trabajadores.Membresia
                     where {x} {like}
                     order by {order} {mode} limit {limit};"""
-
+            # print(sql)
             
             data = database.executeQuery(sql)
             temporal = self.convertDataToList(data)
@@ -358,13 +386,15 @@ class adminTrabajadores(DatabaseZ):
         """De los datos devueltos de un select de trabajadores, devuelve una lista de diccionarios"""
         lista = []
         value = None
+        numero = 0
         if len(data) > 0:
             for x in data:
-                value = self.convertTuplaToDicc(x)
+                value = self.convertTuplaToDicc(x, numero = numero)
                 lista.append(value)
+                numero += 1
         return lista
 
-    def convertTuplaToDicc(self, tupla, picture = True):
+    def convertTuplaToDicc(self, tupla, picture = True, numero = 0):
         """Converts a tuple to a dictionary"""
         if picture:
             foto = b64encode(tupla[10]).decode("utf-8")
@@ -388,15 +418,16 @@ class adminTrabajadores(DatabaseZ):
                 "departamento": tupla[13],
                 "municipio": tupla[14],
                 "trabajos": tupla[15],
-                "Categoría": self.getCategoriasById(tupla[0])
+                "Categoría": self.getCategoriasById(tupla[0]),
+                "numero": numero
             }
         return lista
 
     def getCategoriasById(self, idTrabajador):
         """Retorna la lista de categorias a las que pertenece el trabajador con el id especificado"""
-        sql = f"""SELECT categoria.nombre FROM hermes.categorias
-            left join categoria on categoria.idCategoria = categorias.categoria
-            where categorias.Trabajador = '{idTrabajador}';"""
+        sql = f"""SELECT categoria.nombre FROM hermes.categoriatrabajadores
+            left join categoria on categoria.idCategoria = categoriatrabajadores.categoria
+            where categoriatrabajadores.Trabajador = '{idTrabajador}';"""
         
         data = self.database.executeQuery(sql)
         lista = []
@@ -467,6 +498,7 @@ class adminTrabajadores(DatabaseZ):
         return dicc
 
 class adminCategorias(DatabaseZ):
+    
     def __init__(self):
         self.database = DatabaseZ()
         

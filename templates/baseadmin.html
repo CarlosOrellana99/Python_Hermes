@@ -2,56 +2,176 @@
 <html>
     <head>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="shortcut icon" type="image/x-icon" href="data:;base64,{{ imagenes['icono'] }}" />
         <title>{% block title %}{% endblock %}</title>
+        <style>
+            body {
+              font-family: "Lato", sans-serif;
+            }
+            .sidebar {
+              height: 100%;
+              width: 0;
+              position: fixed;
+              z-index: 1;
+              top: 0;
+              left: 0;
+              background-color: black;
+              overflow-x: hidden;
+              transition: 0.5s;
+              padding-top: 60px;
+            }
+            .sidebar a {
+              padding: 8px 8px 8px 32px;
+              text-decoration: none;
+              font-size: 25px;
+              color: #818181;
+              display: block;
+              transition: 0.3s;
+            }
+            .sidebar a:hover {
+              color: #f1f1f1;
+            }
+            .sidebar .closebtn {
+              position: absolute;
+              top: 0;
+              right: 25px;
+              font-size: 36px;
+              margin-left: 50px;
+            }
+            .openbtn {
+              font-size: 20px;
+              cursor: pointer;
+              background-color: black;
+              color: white;
+              padding: 10px 15px;
+              border: none;
+            }
+            .openbtn:hover {
+              background-color: #444;
+            }
+            #main {
+              transition: margin-left .5s;
+            }
+            /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+            @media screen and (max-height: 450px) {
+              .sidebar {padding-top: 15px;}
+              .sidebar a {font-size: 18px;}
+            }
+            </style>
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #00c2cb">
-            <nav class="navbar h1" style="background-color: #00c2cb">
-                <a class="navbar-brand" href="#">
-                    <img src="https://i.imgur.com/Qvw6KIV.jpg" width="181" height="50"  alt="">
-                </a>
-            </nav>
-        
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Hammer.com/admin/conAcceso">Trabajadores con Acceso</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Hammer.com/admin/sinAcceso">Trabajadores sin Acceso</a>
-                    </li>
-                </ul>
-                <form class="form-inline my-2 my-lg-0" action="/Hammer.com/admin/buscar" method="GET">
-                    <input class="form-control mr-sm-2" type="search" name="wd" id="wd" placeholder="Buscar Trabajador" aria-label="Search">
-                    <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Buscar</button>
-                </form>
-            </div>
-        </nav>
-        <div class="container-fluid">
-            <div class="row">
-                <nav class="col-md-2 d-none d-md-block sidebar" style="background-color: #00c2cb">
-                    <div class="sidebar-sticky">
-                        <ul class="nav flex-column">
-                            <h3 class="title">Mi cuenta</h3>
-                            <br>
-                            <div class="media-left form-inline" style="float:right">
-                                <figure class="image">
-                                    <a><img src="data:;base64,{{ admin['foto'] }}" class="border" alt="Image" style="overflow:hidden ;height: 128px; width:128px"></a>
-                                </figure>
-                            </div>
-                            <p class="subtitle"><strong>Nombre de Contacto</strong></p>
-                            <p>{{ admin['nombre'] }} {{ admin['apellido'] }}</p>
-                            <p class="subtitle"><strong>Correo Electrónico</strong></p>
-                            <p>{{ admin['correo'] }} </p>
-                        </ul>
+        <div id="mySidebar" class="sidebar">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+            <div>
+                <ul>
+                    <h1 class="title" style="color: #02dce7;">Mi cuenta</h1>
+                    <br>
+                    <div>
+                        <figure class="image">
+                            <a><img src="data:;base64,{{ admin['foto'] }}" class="border" alt="Image" style="overflow:hidden; height: 128px; width:128px"></a>
+                        </figure>
                     </div>
-                </nav>
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-                    {% block contenidoInicioAdmin %}
-                    {% endblock %}
-                </main>
+                    <h5 class="title" style="color: white;"><strong>Nombre de Contacto</strong></h5>
+                    <p class="subtitle" style="color: white;">{{ admin['nombre'] }} {{ admin['apellido'] }}</p>
+                    <h5 class="title" style="color: white;"><strong>Correo Electrónico</strong></h5>
+                    <p class="subtitle" style="color: white;">{{ admin['correo'] }} </p>
+                </ul>
+            </div>
+            <div>
+                <a href="/"><button class="btn btn-outline-info my-2 my-sm-0"  style="color: white;" type="button">Cerrar sesión</button></a>
+
+                </button>
             </div>
         </div>
+                  
+        <div id="main">
+            <nav class="navbar navbar-expand-lg navbar-light" style="background-color: black;">
+                <button class="openbtn" onclick="openNav()" style="margin-right: 10px;">☰</button>
+                <nav class="navbar h1" style="background-color: black">
+                    <a class="navbar-brand" href="/Hammer.com/admin">
+                        <img src="data:;base64,{{ imagenes['logoYnombre'] }}" width="181" height="50"  alt="Image">
+                    </a>
+                </nav>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: white;" onblur="" href="/Hammer.com/admin/conAcceso">Trabajadores con Acceso</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" style="color: white;" href="/Hammer.com/admin/sinAcceso">Trabajadores sin Acceso</a>
+                        </li>
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0" action="/Hammer.com/admin/buscar" method="POST">
+                        <input class="form-control mr-sm-2" type="search" name="wd" id="wd" placeholder="Buscar Trabajador" required aria-label="Search">
+                        <button class="btn btn-outline-info my-2 my-sm-0"  style="color: white;" type="submit">Buscar</button>
+                    </form>
+                </div>
+            </nav>
+            <div style="margin: 10px; min-height: 800px;">
+                {% block contenidoInicioAdmin %}
+                {% endblock %}
+            </div>
+        </div>
+        <footer class="page-footer font-small text-white" style="background-color: black;clear: both;">
+            <div class="container text-center text-md-left">
+                <div class="row">
+                    <div class="col mx-auto">
+                        <h1><img src="data:;base64,{{ imagenes['logo'] }}" width="40" height="40" HSPACE="10" >HAMMER</h1>
+                        <h3>La solución en tus manos</h3>
+                    </div>
+                    <hr class="clearfix w-100 d-md-none">
+                    <div class="col mx-auto">
+                        <h1>Servicios en:</h1>
+                        <div class="row1">
+                            <label><a style="text-decoration:none; color:#C7C7C7;" href="">Fontanería</a></label>
+                        </div>
+        
+                        <div class="row1">
+                            <label><a style="text-decoration:none; color:#C7C7C7;" href="">Electricidad</a></label>
+                        </div>
+                        
+                        <div class="row1">
+                            <label><a style="text-decoration:none; color:#C7C7C7;" href="">Jardinería</a></label>
+                        </div>
+                        <div class="row1">
+                            <label><a style="text-decoration:none; color:#C7C7C7;" href="">Albañilería</a></label>
+                        </div>
+                        <div class="row1">
+                            <label><a style="text-decoration:none; color:#C7C7C7;" href="">Mantenimiento</a></label>
+                        </div>
+                    </div>
+                    <hr class="clearfix w-100 d-md-none">
+                    <div class="col-md-2 mx-auto">
+                        <h1>Contáctanos</h1>
+                        <div class="row1">
+                            <label>Número de teléfono</label>
+                            <br>
+                            <a href="tel:+503 1234-5678"><p>+503 1234-5678</p></a>
+                        </div>
+                    
+                        <div class="row1">
+                            <label>Correo Electrónico</label>
+                            <br>
+                            <a href="mailto:hammer.info@gmail.com"><p>hammer.info@gmail.com</p></a>
+                        </div>
+                    </div>
+                    <hr class="clearfix w-100 d-md-none">
+                </div>
+                <hr>
+            </div>
+            <div class="footer-copyright text-center py-3">HAMMER 2020 | Design by Hermes</div>
+        </footer>
+        <script>
+            function openNav() {
+                document.getElementById("mySidebar").style.width = "250px";
+                document.getElementById("main").style.marginLeft = "250px";
+            }
+            
+            function closeNav() {
+                document.getElementById("mySidebar").style.width = "0";
+                document.getElementById("main").style.marginLeft= "0";
+            }
+        </script>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
