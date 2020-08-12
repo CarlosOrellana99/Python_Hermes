@@ -5,12 +5,17 @@
             <a href="/Hammer.com/informacionEmpresa" style="color:rgb(0, 0, 128)"> Quienes Somos</a><br><br>
             <a href="/Hammer.com/citas" style="color:rgb(0, 0, 128)"> Trabajos Recientes</a><br><br>
             <a href="/Hammer.com/tu-Cuenta/" style="color:rgb(0, 0, 128)"> Tu Cuenta</a><br><br>
+            <a href="/Hammer.com/salirU" style="color:rgb(0, 0, 128)"> Cerrar Sesion</a><br>
         </div>
         <div >
             <h1>Agendar Cita</h1>
             <form action="/Hammer.com/agendarCita/agendar" method="post">
                 <label for="trabajador" style="font-size:20px;font-style:Perpetua">Trabajador: {{trabajadorCita[0]["nombre"]}} {{trabajadorCita[0]["apellido"]}}</label><br>
-                <label for="especialidades" style="font-size:20px;font-style:Perpetua">Especialidades: {{trabajadorCita[0]["Categoría"]}}</label><br>
+                <label for="especialidades" style="font-size:20px;font-style:Perpetua">Especialidades:</label>
+                {%for i in trabajadorCita[0]["Categoría"]%}
+                {{i }}
+                {%endfor%}
+                <br>
                 <label for="departamento" style="font-size:20px;font-style:Perpetua">Departamento: {{trabajadorCita[0]["departamento"]}}</label><br>
 
                 <label for="Descripcion Trabajo" style="font-size:20px;font-style:Perpetua">Describa el trabajo requerido:</label><br>

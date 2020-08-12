@@ -335,6 +335,10 @@ def CancelarCita():
 @app.route("/Hammer.com/informacionEmpresa")
 def quienesSomos():
     return render_template("informacionEmpresa.html")
+
+@app.route("/Hammer.com/salirU")
+def cerrarSesion():
+    return redirect("/")
 # Errors
 
 @app.route("/Hammer.com/notAccess")

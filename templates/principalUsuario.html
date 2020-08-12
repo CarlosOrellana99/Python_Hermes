@@ -12,6 +12,7 @@
     <a href="/Hammer.com/informacionEmpresa" style="color:rgb(0, 0, 128)"> Quienes Somos</a>
     <a href="/Hammer.com/citas" style="color:rgb(0, 0, 128)"> Trabajos Recientes</a>
     <a href="/Hammer.com/tu-Cuenta/" style="color:rgb(0, 0, 128)"> Tu Cuenta</a><br>
+    <a href="/Hammer.com/salirU" style="color:rgb(0, 0, 128)"> Cerrar Sesion</a><br>
 </div>
 <div>
     <p>{{usuarioactivo["nombre"]}} {{usuarioactivo["apellido"]}}</p>
@@ -47,8 +48,6 @@
 
 {% for i in categorias %}
     <form action="/Hammer.com/buscarTrabajadores/categoria" method="post">
-    <p>{{i["id"]}}</p>
-    <p>{{i["nombre"]}}</p>
     <button type="submit" id="categoriaButton" name="categoriaButton" value="{{i['id']}}"><img src="data:;base64,{{i['imagen']}}"/></button>
     </form>
     {% endfor %}

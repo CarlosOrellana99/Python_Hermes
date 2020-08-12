@@ -520,20 +520,21 @@ class adminTrabajadores(DatabaseZ):
         """Filtra una lista de trabajadores por su departamento y categoria"""
         listaFiltrada =[]
         for y in lista:
-            if departamento=="Todos":
-                if categoria=="Todos":
-                    listaFiltrada.append(y)
-                else:
-                    for x in y["Categoría"]:
-                        if x == categoria:
-                            listaFiltrada.append(y)
-            elif y["departamento"]==departamento:
-                if categoria=="Todos":
-                    listaFiltrada.append(y)
-                else:
-                    for x in y["Categoría"]:
-                        if x == categoria:
-                            listaFiltrada.append(y)
+            if y["vigencia"]==0 and y["aceptado"]==0:
+                if departamento=="Todos":
+                    if categoria=="Todos":
+                        listaFiltrada.append(y)
+                    else:
+                        for x in y["Categoría"]:
+                            if x == categoria:
+                                listaFiltrada.append(y)
+                elif y["departamento"]==departamento:
+                    if categoria=="Todos":
+                        listaFiltrada.append(y)
+                    else:
+                        for x in y["Categoría"]:
+                            if x == categoria:
+                                listaFiltrada.append(y)
         return listaFiltrada       
 
 class adminCategorias(DatabaseZ):
@@ -660,7 +661,7 @@ class adminCitas(DatabaseZ):
                     "Cliente": x[6],
                     "idTrabajadores": x[7],
                     "NombreTrabajador": x[8],  
-                    "ApellidoTrabajdor": x[9],
+                    "ApellidoTrabajador": x[9],
                     "DescripcionTrabajador": x[10],
                     "DepartamentoTrabajador": x[11],
                     "Municipiotrabajador": x[12],
