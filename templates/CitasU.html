@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Title of the document</title>
+</head>
+
+<body>
+<div class="tab">
+    <a href="/Hammer.com/u" style="color:rgb(0, 0, 128)"> Pagina Principal</a>
+    <a href="/Hammer.com/informacionEmpresa" style="color:rgb(0, 0, 128)"> Quienes Somos</a>
+    <a href="/Hammer.com/citas" style="color:rgb(0, 0, 128)"> Trabajos Recientes</a>
+    <a href="/Hammer.com/tu-Cuenta/" style="color:rgb(0, 0, 128)"> Tu Cuenta</a>
+    <a href="/Hammer.com/salirU" style="color:rgb(0, 0, 128)"> Cerrar Sesion</a><br>
+</div>
+<p>Citas Activas</p>
+{% for x in citaspendientes %}
+    <form action="/Hammer.com/eliminarCita" method="post">
+        <p>Fecha: {{x['Fecha']}}</p>
+        <p>Hora:{{x['Hora']}}</p>
+        <p>Trabajador: {{x['NombreTrabajador']}} {{x['ApellidoTrabajador']}}</p>
+        <p>Trabajo: {{x['DescripcionTrabajo']}}</p>
+        <input type= hidden name="idCita" id="idCita" value="{{x['idCitas']}}">
+        <input type="submit" value="Cancelar Cita">
+    </form>
+{% endfor %}
+<br>
+<p>Citas en espera de Confirmación</p>
+{% for y in citasnoconfirmadas %}
+    <form action="/Hammer.com/eliminarCita" method="post">  
+        <p>Fecha: {{y['Fecha']}}</p>
+        <p>Hora: {{y['Hora']}}</p>
+        <p>Trabajador: {{y['NombreTrabajador']}} {{y['ApellidoTrabajador']}}</p>
+        <p>Trabajo: {{y['DescripcionTrabajo']}}</p>
+        <input type= hidden name="idCita" id="idCita" value="{{y['idCitas']}}">
+        <input type="submit" value="Cancelar Cita">
+    </form>
+{% endfor %}
+<br>
+<p>Citas pasadas</p>
+{% for z in citaspasadas %}
+        <p>Fecha: {{z['Fecha']}}</p>
+        <p>Hora: {{z['Hora']}}</p>
+        <p>Trabajador: {{z['NombreTrabajador']}} {{z['ApellidoTrabajador']}}</p>
+        <p>Descripcion: {{z['DescripcionTrabajo']}}</p>
+{% endfor %}
+</body>
+
+</html>

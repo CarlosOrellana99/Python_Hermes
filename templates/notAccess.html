@@ -11,25 +11,26 @@
                 <h1><img src="data:;base64,{{ imagenes['logo'] }}" width="128" height="128">Hammer</h1>
             </div>
         </div>
-        <br><br><br>
-        
-        <br>
-        <br>
-        <br>
-        <div class="mx-auto align-middle" style="text-align: center; height: 500px;">
-            <form action="/servlet/login" class="form-signin mx-auto  align-middle" style="width: 20%;" method="POST">
-                <h1 class="h3 mb-3 font-weight-normal"><strong>Registrese a continuación</strong></h1>
-                <label for="correo" style="float: left"><strong>Correo electronico:</strong> </label>
-                <input type="email" id="correo" class="form-control" name="correo" placeholder="Email address" required="" autofocus="">
-                <br>
-                <label for="contra" style="float: left"><strong>Contraseña:</strong></label>
-                <input type="password" id="contra" class="form-control" name="contra" placeholder="Password" required="">
-                <br>
-                <button class="btn btn-lg btn-primary btn-block mx-auto" type="submit" style="width: 50%;">Ingresar</button>
-            </form>
+        <br><br><br><br><br><br><br><br>
+        <div class="alert alert-dark fade show" style="width: 70%" >
+            <h2><svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-person-badge-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm4.5 0a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zM8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm5 2.755C12.146 12.825 10.623 12 8 12s-4.146.826-5 1.755V14a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-.245z"/>
+            </svg>
+            ¡No te has registrado correctamente!</h2> <br>
+            <h5><svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-file-earmark-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M4 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V5.707A1 1 0 0 0 13.707 5L10 1.293A1 1 0 0 0 9.293 1H4zm5 1v3a1 1 0 0 0 1 1h3L9 2z"/>
+              </svg>
+              Por favor ve a nuestra <a href="/" class="alert-link"> página de inicio </a> e ingresa tus credenciales para disfrutar de todos nuestros servicios.</h5>
+            <hr>
+            <h6><svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-person-plus-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm7.5-3a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                <path fill-rule="evenodd" d="M13 7.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0v-2z"/>
+            </svg>
+            Si aún no tienes cuenta puedes regitrarte <a href="/register/user" class="alert-link">aquí</a></h6>
+            
         </div>
-        <br>
-
+        
+        <br><br><br><br><br><br><br><br>
 
         <footer class="page-footer font-small pt-4 text-white" style="background-color: black;">
             <div class="container text-center text-md-left">
@@ -37,15 +38,6 @@
                     <div class="col-md-4 mx-auto">
                         <h1><img src="data:;base64,{{ imagenes['logo'] }}" width="40" height="40" HSPACE="10" >HAMMER</h1>
                         <h3>La solución en tus manos</h3>
-                        <!--<div class="row1">
-                            <div class="container-image">
-                                <a style="text-decoration:none; color:#C7C7C7;" href=""><img src="https://i.imgur.com/gfWULM8.png" width="40" height="40" HSPACE="25" VSPACE="25"></a>
-                            
-                                <a style="text-decoration:none; color:#C7C7C7;" href=""><img style="border-radius: 10px;" src="https://i.imgur.com/8NYN8Ox.png" width="40" height="40" HSPACE="25" VSPACE="25"></a>
-                                
-                                <a style="text-decoration:none; color:#C7C7C7;" href=""><img style="border-radius: 10px;"  src="https://i.imgur.com/3hlDnsb.jpg" width="40" height="40" HSPACE="25" VSPACE="25"></a>
-                            </div>
-                        </div>-->
                     </div>
                     <hr class="clearfix w-100 d-md-none">
                     <div class="col-md-3 mx-auto">
@@ -93,7 +85,7 @@
                         <h5 class="mb-1">¿Eres nuevo usuario?</h5>
                     </li>
                     <li class="list-inline-item">
-                        <a href="/register/user" class="btn btn-danger btn-rounded">Registrate!</a>
+                        <a href="/register/user" class="btn btn-danger btn-rounded">¡Registrate!</a>
                     </li>
                 </ul>
                 <ul class="list-unstyled list-inline text-center py-2">
@@ -101,7 +93,7 @@
                         <h5 class="mb-1">¿Quieres trabajar con nosotros?</h5>
                     </li>
                     <li class="list-inline-item">
-                        <a href="/register/worker" class="btn btn-danger btn-rounded">Registrate!</a>
+                        <a href="/register/worker" class="btn btn-danger btn-rounded">¡Registrate!</a>
                     </li>
                 </ul>
                 <hr>

@@ -1,9 +1,6 @@
-import sys
-sys.path.append('d:\\78GDO\\Documents\\ProyectoProgramación\\Python_Hermes')
-from database.Logics import adminClientes, adminAdministrador, adminTrabajadores, adminOpciones
-from datetime import date
+
 # Escriba el número de test que desea correr
-test = '9'
+test = 'p'
 if test == '1':
     admin = adminClientes()
     data = admin.getUserbyCorreo("a")
@@ -61,10 +58,9 @@ elif test == '8':
     print(lista)
 
 elif test == 'p':
-    admin = adminTrabajadores()
-    admin.createMembresia()
+    print(0%2)
 
 elif test == '9':
-    admin = adminTrabajadores()
-    print(admin.generarMembresiaEnTrabajador("10"))
+    admin = adminAdministrador()
+    print(admin.getStats())
     

@@ -8,23 +8,49 @@
 <h1>Hammer</h1>
 <p>Bienvenido</p>
 <div class="tab">
-    <button class="tablinks" onclick="openCity(event, 'London')">Quienes Somos</button>
-    <button class="tablinks" onclick="openCity(event, 'Paris')">Tus trabajos Recientes</button>
-    <a href="/Hammer.com/tu-Cuenta/" style="color:rgb(0, 0, 128)"> Tu Cuenta</a><br><br>
-
+    <a href="/Hammer.com/u" style="color:rgb(0, 0, 128)"> Pagina Principal</a>
+    <a href="/Hammer.com/informacionEmpresa" style="color:rgb(0, 0, 128)"> Quienes Somos</a>
+    <a href="/Hammer.com/citas" style="color:rgb(0, 0, 128)"> Trabajos Recientes</a>
+    <a href="/Hammer.com/tu-Cuenta/" style="color:rgb(0, 0, 128)"> Tu Cuenta</a><br>
+    <a href="/Hammer.com/salirU" style="color:rgb(0, 0, 128)"> Cerrar Sesion</a><br>
+</div>
+<div>
+    <p>{{usuarioactivo["nombre"]}} {{usuarioactivo["apellido"]}}</p>
+    <img src="data:;base64,{{usuarioactivo['foto']}}"/>
 </div>
 
-<form action="" method="post" target="_blank">
+<form action="/Hammer.com/buscarTrabajadores/busqueda" method="post">
   <p>
-    Búsqueda: <input type="search" name="busquedamusica" placeholder="Trabajadores, departamentos, trabajos...">
-    <input type="submit" value="Buscar">
-  </p>
+    Búsqueda: <input type="text" id = "palabra" name="palabra">
 
+  </p>
+    <p>Filtros:</p>
+    <label for="departamento" style="font-size:20px;font-style:Perpetua">Departamento</label><br>
+                <select id="filtroDepartamento" name="filtroDepartamento">
+                    <option value="Todos">Todos</option>
+                    {% for departamento in departamentos %}
+                        {% if departamento['nombre'] == usuarioactivo['departamento']%}
+                            <option value="{{departamento['id']}}" selected>{{ departamento['nombre'] }}</option>
+                        {% else %}
+                            <option value="{{departamento['id']}}">{{ departamento['nombre'] }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select> <br><br>
+    <label for="departamento" style="font-size:20px;font-style:Perpetua">Categoria</label><br>
+                <select id="filtroCategoria" name="filtroCategoria">
+                    <option value="Todos">Todas</option>
+                    {% for categoria in categorias %}
+                            <option value="{{categoria['id']}}">{{ categoria['nombre'] }}</option>
+                    {% endfor %}
+                </select> <br><br>
+    <input type="submit" value="Buscar">
 </form>
+
 {% for i in categorias %}
-    <p>{{i["id"]}}</p>
-    <p>{{i["nombre"]}}</p>
-    <img src="data:;base64,{{i['imagen']}}" />
+    <form action="/Hammer.com/buscarTrabajadores/categoria" method="post">
+    <button type="submit" id="categoriaButton" name="categoriaButton" value="{{i['id']}}"><img src="data:;base64,{{i['imagen']}}"/></button>
+    </form>
     {% endfor %}
+    
 </body>
 </html>

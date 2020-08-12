@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<body>
+    <h1>Hammer</h1>
+    <p>Bienvenido</p>
+    <div class="tab">
+        <a href="/Hammer.com/u" style="color:rgb(0, 0, 128)"> Pagina Principal</a>
+        <a href="/Hammer.com/informacionEmpresa" style="color:rgb(0, 0, 128)"> Quienes Somos</a>
+        <a href="/Hammer.com/citas" style="color:rgb(0, 0, 128)"> Trabajos Recientes</a>
+        <a href="/Hammer.com/tu-Cuenta/" style="color:rgb(0, 0, 128)"> Tu Cuenta</a>
+        <a href="/Hammer.com/salirU" style="color:rgb(0, 0, 128)"> Cerrar Sesion</a><br>
+    
+    </div>
+       
+    {% for i in busqueda %}
+    <form action="/Hammer.com/agendarCita/form" method="post">
+    <p>Trabajador: {{i["nombre"]}} {{i["apellido"]}}</p>
+    <p>Especialidades:
+        {%for categoria in i["Categoría"] %}
+        {{categoria}}
+        {% endfor %}
+    </p>
+    <p>Departamento: {{i["departamento"]}}</p>
+    <p>Municipio: {{i["municipio"]}}</p>
+    <p>Descripcion: {{i["descripcion"]}}</p>
+    <img src="data:;base64,{{i['foto']}}"/>
+    <input type="hidden" name="Trabajador" id ="Trabajador" value="{{i['correo']}}"><br>
+    <input type="submit" value="Agendar Cita">
+    </form>
+    <div></div>
+    {% endfor %}
+    
+</body>
+</html>
