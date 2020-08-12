@@ -520,7 +520,7 @@ class adminTrabajadores(DatabaseZ):
         """Filtra una lista de trabajadores por su departamento y categoria"""
         listaFiltrada =[]
         for y in lista:
-            if y["vigencia"]==0 and y["aceptado"]==0:
+            if y["vigencia"]==1 and y["aceptado"]==1:
                 if departamento=="Todos":
                     if categoria=="Todos":
                         listaFiltrada.append(y)
