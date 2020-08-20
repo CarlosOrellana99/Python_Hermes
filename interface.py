@@ -249,7 +249,7 @@ def modificarcuenta():
         print("datos de vuenta modificados con exito")
         session['msg'] = "Sus datos de cuenta ha sido modificado con exito, vuelva a ingresar"
         session['idusuarioactual']=""
-        usuario=session['user']
+        session['user']
         if not correoactual== diccionariouser['correo'] or not passwordactual==diccionariouser['contra']:
             session['correoactual']=""
             session['passwordactual']=""
