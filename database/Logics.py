@@ -535,7 +535,13 @@ class adminTrabajadores(DatabaseZ):
                         for x in y["Categoría"]:
                             if x == categoria:
                                 listaFiltrada.append(y)
-        return listaFiltrada       
+        return listaFiltrada 
+
+    def HistorialTrabajadores(self, idTrabajador):
+        database = self.database
+        sql = f"""Select * from citas where Trabajador = '{idTrabajador}' """ 
+        data = database.executeQuery(sql)
+        return data        
 
 class adminCategorias(DatabaseZ):
     
