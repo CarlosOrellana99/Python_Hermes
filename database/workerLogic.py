@@ -5,7 +5,6 @@ class adminTrabajadores(DatabaseZ):
     Aministración de los trabajadores en la base de datos
     ----
     """
-
     def __init__(self):
         self.database = DatabaseZ()
 
@@ -246,4 +245,39 @@ class adminTrabajadores(DatabaseZ):
         database = self.database
         sql = f"""Select * from citas where Trabajador = '{idTrabajador}' """ 
         data = database.executeQuery(sql)
-        return data        
+        return data
+
+    def proximaCita(self, idTrabajador):
+        database = self.database
+        sql = f"""select * from citas
+        where Finalizada = 'False' and Confirmacion = 'True' and Trabajador = '{idTrabajador}'
+        order by fecha 
+        limit 1"""
+        data = database.executeQuery(sql)
+        return data
+
+    def solicitudCitas(self, idTrabajador):
+        database = self.database
+        sql = f"""select * from citas
+        where Finalizada = 'False' and Confirmacion = 'False' and Trabajador = '{idTrabajador}'
+        order by fecha """
+        data = database.executeQuery(sql)
+        return data
+
+    #Se vera un grafico con las citas de los ultimos 5 meses para cada trabajador para ver la evolucion
+    def citasPorMes(self, idTrabajador):
+        database = self.database
+        sql = f"""select count(*) from citas
+        where Trabajador = '{idTrabajador}'
+        group by month(Fecha)
+        limit 5"""  
+        data = database.executeQuery(sql)
+        return data
+
+    def citasMesActual(self, idTrabajador):
+        database = self.database
+        sql = f"""select count(*) from citas
+        where Trabajador = '{idTrabajador}' and month(Fecha) = month(now())
+        limit 1"""  
+        data = database.executeQuery(sql)
+        return data
