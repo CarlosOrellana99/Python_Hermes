@@ -1,84 +1,167 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <title>Hammer</title>
+        <link rel="shortcut icon" href="{{url_for('static', filename='images/logosinfondo.PNG')}}">
+        <link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.min.css">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/usuario.css')}}">
+    </head>
+
+
     <body style="background-color:rgb(245, 245, 245);" >
         <center>
             <div style="background-color:rgb(255, 255, 255);" >
                 <h2 style="font-size:50px;color:rgb(0, 0, 128);margin-top: 10px">HAMMER</h2>
             </div>
         </center>
-        <div class="tab">
-            <a href="/Hammer.com/u" style="color:rgb(0, 0, 128)"> Pagina Principal</a><br><br>
-            <a href="/Hammer.com/informacionEmpresa" style="color:rgb(0, 0, 128)"> Quienes Somos</a><br><br>
-            <a href="/Hammer.com/citas" style="color:rgb(0, 0, 128)"> Trabajos Recientes</a><br><br>
-            <a href="/Hammer.com/tu-Cuenta/" style="color:rgb(0, 0, 128)"> Tu Cuenta</a><br><br>
-            <a href="/Hammer.com/salirU" style="color:rgb(0, 0, 128)"> Cerrar Sesion</a><br>
-        </div>
-        <div >
-            <h1>Tu cuenta</h1>
-            <form action="/Hammer.com/servlet/tu-Cuenta/" method="post" enctype="multipart/form-data">
-                <label for="nombre" style="font-size:20px;font-style:Perpetua">Nombre y Apellido</label><br>
-                <input type="text" id="nombre" value="{{datosusuario['nombre']}}" name="nombre" size="100" required><br><br>
+        
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">HAMMER</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                  <a class="nav-link" href="/Hammer.com/u">Página principal</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/Hammer.com/informacionEmpresa">¿Quiénes somos?</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Hammer.com/citas">Trabajos recientes</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/Hammer.com/tu-Cuenta/">Cuenta</a>
+                  </li>
+                  
+              </ul>
+        
+        
+              <form class="form-inline my-2 my-lg-0" action="/Hammer.com/buscarTrabajadores/busqueda" method="POST">
+                <input class="form-control mr-sm-2" type="text" id = "palabra" name="palabra" placeholder="Búsqueda">
+                
+               
+                <select class="form-control mr-sm-4" id="filtroCategoria" name="filtroCategoria" placeholder="Categoría">
+                    <option value="Todos">Todas</option>
+                    {% for categoria in categorias %}
+                            <option value="{{categoria['id']}}">{{ categoria['nombre'] }}</option>
+                    {% endfor %}
+                </select>
+                <input class="btn btn-secondary" type="submit" value="Buscar">
+                
+              </form>
+              
+            </div>
+          </nav>
+
+        <div class="card card-body col-md-5 offset-md-4">
+            <div >
+                <h1>Tu cuenta</h1>
+                <form action="/Hammer.com/servlet/tu-Cuenta/" method="post" enctype="multipart/form-data">
                     
-                <label for="apellido" style="font-size:20px;font-style:Perpetua">Apellido</label><br>
-                <input type="text" id="apellido" value="{{datosusuario['apellido']}}" name="apellido" size="100" required><br><br>
-                
-                <label for="dui" style="font-size:20px;font-style:Perpetua">Numero de DUI</label><br>
-                <input type="text" id="dui" name="dui" size="100" value="{{datosusuario['dui']}}" required maxlength="9" required><br><br>
+                    <div class="form-group">
+                        <label for="nombre" style="font-size:20px;font-style:Perpetua">Nombre y Apellido</label><br>
+                        <input type="text" id="nombre" value="{{datosusuario['nombre']}}" name="nombre" size="100" required class="form-control"><br><br>
+                    </div>
+                        
+                    <div class="form-group">
+                        <label for="apellido" style="font-size:20px;font-style:Perpetua">Apellido</label><br>
+                        <input type="text" id="apellido" value="{{datosusuario['apellido']}}" name="apellido" size="100" required class="form-control"><br><br>  
+                    </div>
 
-                <label for="email" style="font-size:20px;font-style:Perpetua">Correo electronico</label><br>
-                <input type="email" id="email" value="{{datosusuario['correo']}}" name="email" size="100" required><br><br>
-                
-                <label for="contraseña" style="font-size:20px;font-style:Perpetua">Contraseña</label><br>
-                <input type="text" id="contraseña" value="{{datosusuario['contra']}}" name="contraseña" size="100" required><br><br>
-                
-                <label for="telefono" style="font-size:20px;font-style:Perpetua">Numero de Telefono Personal</label><br>
-                <input type="text" id="telefono" value="{{datosusuario['telefono']}}" name="telefono" size="100" required><br><br>
+                    <div class="form-group">
+                        <label for="dui" style="font-size:20px;font-style:Perpetua">Numero de DUI</label><br>
+                        <input type="text" id="dui" name="dui" size="100" value="{{datosusuario['dui']}}" required maxlength="9" required class="form-control"><br><br>
+                    </div>
 
-                <label for="genero" style="font-size:20px;font-style:Perpetua">Género</label><br>
-                <select id="genero" name="genero">
-                    {% if datosusuario['genero'] == "Masculino" %}
-                        <option value="Masculino" selected> Masculino</option>
-                    {% else %}
-                    <option value="Masculino">Masculino</option>
-                    {% endif %}
+                    <div class="form-group">
+                        <label for="email" style="font-size:20px;font-style:Perpetua">Correo electronico</label><br>
+                        <input type="email" id="email" value="{{datosusuario['correo']}}" name="email" size="100" required class="form-control"><br><br>
+                    </div>
 
-                    {% if datosusuario['genero'] == "Femenino" %}
-                        <option value="Femenino" selected>Femenino</option>
-                    {% else %}
-                        <option value="Femenino">Femenino</option>
-                    {% endif %}
-                </select><br><br>
-                
-                <label for="departamento" style="font-size:20px;font-style:Perpetua">Departamento</label><br>
-                <select id="departamento" name="departamento">
-                    {% for departamento in departamentos %}
-                        {% if departamento['nombre'] == datosusuario['departamento']%}
-                            <option value="{{departamento['id']}}" selected>{{ departamento['nombre'] }}</option>
+                    <div class="form-group">
+                        <label for="contraseña" style="font-size:20px;font-style:Perpetua">Contraseña</label><br>
+                    <input type="text" id="contraseña" value="{{datosusuario['contra']}}" name="contraseña" size="100" required class="form-control"><br><br>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="telefono" style="font-size:20px;font-style:Perpetua">Numero de Telefono Personal</label><br>
+                    <input type="text" id="telefono" value="{{datosusuario['telefono']}}" name="telefono" size="100" required class="form-control"><br><br>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="genero" style="font-size:20px;font-style:Perpetua">Género</label><br>
+                    <select id="genero" name="genero" class="form-control">
+                        {% if datosusuario['genero'] == "Masculino" %}
+                            <option value="Masculino" selected> Masculino</option>
                         {% else %}
-                            <option value="{{departamento['id']}}">{{ departamento['nombre'] }}</option>
+                        <option value="Masculino">Masculino</option>
                         {% endif %}
-                    {% endfor %}
-                </select> <br><br>
-                
-                <label for="municipio" style="font-size:20px;font-style:Perpetua">Municipio</label><br>
-                <select id="municipio" name="municipio">
-                    {% for municipio in municipios %}
-                        {% if municipio['nombre'] == datosusuario['municipio']%}
-                            <option value="{{municipio['id']}}" selected>{{ municipio['nombre'] }}</option>
+    
+                        {% if datosusuario['genero'] == "Femenino" %}
+                            <option value="Femenino" selected>Femenino</option>
                         {% else %}
-                            <option value="{{municipio['id']}}" >{{ municipio['nombre'] }}</option>
+                            <option value="Femenino">Femenino</option>
                         {% endif %}
-                    {% endfor %}
-                </select> <br><br>
+                    </select><br><br>
+                    </div>
+                    
+                    
+                    <div class="form-group">
+                        <label for="departamento" style="font-size:20px;font-style:Perpetua">Departamento</label><br>
+                        <select id="departamento" name="departamento" class="form-control">
+                            {% for departamento in departamentos %}
+                                {% if departamento['nombre'] == datosusuario['departamento']%}
+                                    <option value="{{departamento['id']}}" selected>{{ departamento['nombre'] }}</option>
+                                {% else %}
+                                    <option value="{{departamento['id']}}">{{ departamento['nombre'] }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select> <br><br>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="municipio" style="font-size:20px;font-style:Perpetua">Municipio</label><br>
+                        <select id="municipio" name="municipio" class="form-control">
+                            {% for municipio in municipios %}
+                                {% if municipio['nombre'] == datosusuario['municipio']%}
+                                    <option value="{{municipio['id']}}" selected>{{ municipio['nombre'] }}</option>
+                                {% else %}
+                                    <option value="{{municipio['id']}}" >{{ municipio['nombre'] }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select> <br><br>
+                    </div>
 
-                <label for="direccion" style="font-size:20px;font-style:Perpetua">Direccion</label><br>
-                <input type="text" id="direccion" value="{{datosusuario['direccion']}}" name="direccion" size="100" required><br><br>
-                
-                <label for="imagen" style="font-size:20px;font-style:Perpetua">Foto de perfil</label><br>
-                <input type="file" id="imagen" name="imagen" size="100"><br><br>
-                <input type="submit" value="Guardar Cambios">
-                <input type="submit" value="Cancelar">
-            </form> <br><br>
+                    <div class="form-group">
+                        <label for="direccion" style="font-size:20px;font-style:Perpetua">Direccion</label><br>
+                        <input type="text" id="direccion" value="{{datosusuario['direccion']}}" name="direccion" size="100" required class="form-control"><br><br>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="imagen" style="font-size:20px;font-style:Perpetua">Foto de perfil</label><br>
+                        <input type="file" id="imagen" name="imagen" size="100"><br><br>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Guardar Cambios" class="btn btn-primary">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Cancelar" class="btn btn-secondary">
+                    </div>
+
+                </form> <br><br>
+            </div>
         </div>
+        
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    
     </body>
 </html>

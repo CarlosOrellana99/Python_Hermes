@@ -1,15 +1,65 @@
 <!DOCTYPE html>
+<html>
+<head>
+    <title>Hammer</title>
+    <link rel="shortcut icon" href="{{url_for('static', filename='images/logosinfondo.PNG')}}">
+    <link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/usuario.css')}}">
+</head>
+
+
 <body>
     <h1>Hammer</h1>
     <p>Bienvenido</p>
-    <div class="tab">
-        <a href="/Hammer.com/u" style="color:rgb(0, 0, 128)"> Pagina Principal</a>
-        <a href="/Hammer.com/informacionEmpresa" style="color:rgb(0, 0, 128)"> Quienes Somos</a>
-        <a href="/Hammer.com/citas" style="color:rgb(0, 0, 128)"> Trabajos Recientes</a>
-        <a href="/Hammer.com/tu-Cuenta/" style="color:rgb(0, 0, 128)"> Tu Cuenta</a>
-        <a href="/Hammer.com/salirU" style="color:rgb(0, 0, 128)"> Cerrar Sesion</a><br>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">HAMMER</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/Hammer.com/u">Página principal</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/Hammer.com/informacionEmpresa">¿Quiénes somos?</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/Hammer.com/citas">Trabajos recientes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/Hammer.com/tu-Cuenta/">Cuenta</a>
+              </li>
+              
+          </ul>
     
-    </div>
+    
+          <form class="form-inline my-2 my-lg-0" action="/Hammer.com/buscarTrabajadores/busqueda" method="POST">
+            <input class="form-control mr-sm-2" type="text" id = "palabra" name="palabra" placeholder="Búsqueda">
+            
+            <select class="form-control mr-sm-5" id="filtroDepartamento" name="filtroDepartamento" placeholder="Departamento">
+                <option value="Todos">Todos</option>
+                {% for departamento in departamentos %}
+                    {% if departamento['nombre'] == usuarioactivo['departamento']%}
+                        <option value="{{departamento['id']}}" selected>{{ departamento['nombre'] }}</option>
+                    {% else %}
+                        <option value="{{departamento['id']}}">{{ departamento['nombre'] }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <select class="form-control mr-sm-4" id="filtroCategoria" name="filtroCategoria" placeholder="Categoría">
+                <option value="Todos">Todas</option>
+                {% for categoria in categorias %}
+                        <option value="{{categoria['id']}}">{{ categoria['nombre'] }}</option>
+                {% endfor %}
+            </select>
+            <input class="btn btn-secondary" type="submit" value="Buscar">
+            
+          </form>
+          
+        </div>
+      </nav>
        
     {% for i in busqueda %}
     <form action="/Hammer.com/agendarCita/form" method="post">
@@ -28,6 +78,12 @@
     </form>
     <div></div>
     {% endfor %}
+
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     
 </body>
 </html>
