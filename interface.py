@@ -366,5 +366,6 @@ def test2():
     stats = adminA.getStats()
     return render_template("busquedaAdmin.html", top5 = top5, admin =  admin, stats = stats)
 
+
 if __name__=='__main__':
     app.run(debug=True)
