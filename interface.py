@@ -98,7 +98,7 @@ def login(): # View function
         if tipo == "admin":
             return redirect("/Hammer.com/admin")
         elif tipo == "worker":
-            return "Registrado como trabajador"
+            return redirect("/Hammer.com/worker")
         elif tipo == "user":
             return redirect("/Hammer.com/u")
     else:
@@ -394,6 +394,15 @@ def test2():
     stats = adminA.getStats()
     return render_template("busquedaAdmin.html", top5 = top5, admin =  admin, stats = stats)
 
+#Worker UI
+
+@app.route("/Hammer.com/worker")
+def workerIndex():
+    adminT=adminTrabajadores()
+    worker = session['user']
+    print(worker)
+    trabajador= adminT.getWorkerbyCorreo(worker['correo'])
+    return render_template("trabajadoresHome.html", worker= trabajador)
 
 if __name__=='__main__':
     app.run(debug=True)

@@ -306,4 +306,6 @@ class adminTrabajadores(DatabaseZ):
             data2 = database.executeQuery(sql2)
             return data2
 
+    def actualizarPerfil:
+        
         
