@@ -9,6 +9,11 @@
 <body>
 <h1>Hammer</h1>
 <p>Bienvenido</p>
+<div class="Logout"> 
+  <img width="80" height="80" src="data:;base64,{{usuarioactivo['foto']}}"/>
+  <p>{{usuarioactivo["nombre"]}} {{usuarioactivo["apellido"]}}</p>
+  <a href="/Hammer.com/salirU" style="color:rgb(0, 0, 128)"> Cerrar Sesion</a>
+</div> 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">HAMMER</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

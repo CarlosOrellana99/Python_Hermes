@@ -11,6 +11,11 @@
 <body>
     <h1>Hammer</h1>
     <p>Bienvenido</p>
+    <div class="Logout"> 
+      <img width="80" height="80" src="data:;base64,{{usuarioactivo['foto']}}"/>
+      <p>{{usuarioactivo["nombre"]}} {{usuarioactivo["apellido"]}}</p>
+      <a href="/Hammer.com/salirU" style="color:rgb(0, 0, 128)"> Cerrar Sesion</a>
+  </div> 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">HAMMER</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +46,7 @@
             <select class="form-control mr-sm-5" id="filtroDepartamento" name="filtroDepartamento" placeholder="Departamento">
                 <option value="Todos">Todos</option>
                 {% for departamento in departamentos %}
-                    {% if departamento['nombre'] == usuarioactivo['departamento']%}
+                    {% if departamento['nombre'] == departamentobusqueda%}
                         <option value="{{departamento['id']}}" selected>{{ departamento['nombre'] }}</option>
                     {% else %}
                         <option value="{{departamento['id']}}">{{ departamento['nombre'] }}</option>
@@ -51,7 +56,11 @@
             <select class="form-control mr-sm-4" id="filtroCategoria" name="filtroCategoria" placeholder="Categoría">
                 <option value="Todos">Todas</option>
                 {% for categoria in categorias %}
-                        <option value="{{categoria['id']}}">{{ categoria['nombre'] }}</option>
+                      {% if categoria['nombre'] == categoriabusqueda%}
+                          <option value="{{categoria['id']}}" selected>{{ categoria['nombre'] }}</option>
+                      {% else %}
+                          <option value="{{categoria['id']}}">{{ categoria['nombre'] }}</option>
+                      {% endif %}
                 {% endfor %}
             </select>
             <input class="btn btn-secondary" type="submit" value="Buscar">
