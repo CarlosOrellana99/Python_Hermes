@@ -210,6 +210,7 @@ def paginaprincipalusuario():
 
 @app.route("/Hammer.com/tu-Cuenta/")
 def paginaprmodificarcuenta():
+    adminC=adminClientes()
     usuario = session['user']
     session['idusuarioactual']= usuario['id']
     session['correoactual']=usuario['correo']
@@ -217,7 +218,11 @@ def paginaprmodificarcuenta():
     admin = adminOpciones()
     ltsDepartamentos = admin.getDepartamentos()
     ltsMunicipios = admin.getMunicipios()
-    return render_template("modificarUsuario.html",departamentos = ltsDepartamentos, municipios = ltsMunicipios, datosusuario=usuario)
+    admincat = adminCategorias()
+    listacategorias = admincat.getCategoriaConFoto()
+    listacat = admincat.convertirimagenes(listacategorias)
+    usuarioi = adminC.getUserbyCorreo(usuario['correo'])
+    return render_template("modificarUsuario.html",departamentos = ltsDepartamentos,categorias=listacat, municipios = ltsMunicipios, datosusuario=usuarioi)
 
 @app.route("/Hammer.com/servlet/tu-Cuenta/", methods=['POST'])
 def modificarcuenta():
@@ -263,10 +268,25 @@ def CitasCliente():
     admincitas=adminCitas()
     usuario = session['user']
     citaspendientes,citasnoconfirmadas,citaspasadas=admincitas.getCitasCliente(usuario['id'])
-    return render_template("citasU.html",citaspendientes=citaspendientes,citasnoconfirmadas=citasnoconfirmadas,citaspasadas=citaspasadas)
+    adminC=adminClientes()
+    usuarioi = adminC.getUserbyCorreo(usuario['correo'])
+    admincat = adminCategorias()
+    listacategorias = admincat.getCategoriaConFoto()
+    listacat = admincat.convertirimagenes(listacategorias)
+    admin = adminOpciones()
+    ltsDepartamentos = admin.getDepartamentos()
+    return render_template("citasU.html",citaspendientes=citaspendientes,citasnoconfirmadas=citasnoconfirmadas,citaspasadas=citaspasadas,categorias=listacat,usuarioactivo=usuarioi,departamentos =ltsDepartamentos)
 
 @app.route("/Hammer.com/buscarTrabajadores/<form>",methods=['POST'])
 def busquedaTrabajadoresCliente(form):
+    adminC=adminClientes()
+    user = session['user']
+    usuario = adminC.getUserbyCorreo(user['correo'])
+    admincat = adminCategorias()
+    listacategorias = admincat.getCategoriaConFoto()
+    listacat = admincat.convertirimagenes(listacategorias)
+    admin = adminOpciones()
+    ltsDepartamentos = admin.getDepartamentos()
     adminworker = adminTrabajadores()
     adminoptions= adminOpciones()
     if form == "busqueda":
@@ -297,7 +317,7 @@ def busquedaTrabajadoresCliente(form):
 
     listafiltrada = adminworker.filtrarTrabajadoresByDepCat(getBusqueda,filtroDepartamento,filtroCategoria)
 
-    return render_template("busquedaTrabajadores.html",busqueda=listafiltrada)
+    return render_template("busquedaTrabajadores.html",busqueda=listafiltrada,categorias=listacat,usuarioactivo=usuario,departamentos =ltsDepartamentos,departamentobusqueda=filtroDepartamento,categoriabusqueda=filtroCategoria)
 
 @app.route("/Hammer.com/agendarCita/<funcion>",methods=['POST'])
 def agendarCita(funcion):
@@ -334,7 +354,15 @@ def CancelarCita():
 
 @app.route("/Hammer.com/informacionEmpresa")
 def quienesSomos():
-    return render_template("informacionEmpresa.html")
+    adminC=adminClientes()
+    user = session['user']
+    usuario = adminC.getUserbyCorreo(user['correo'])
+    admincat = adminCategorias()
+    listacategorias = admincat.getCategoriaConFoto()
+    listacat = admincat.convertirimagenes(listacategorias)
+    admin = adminOpciones()
+    ltsDepartamentos = admin.getDepartamentos()
+    return render_template("informacionEmpresa.html",categorias=listacat,usuarioactivo=usuario,departamentos =ltsDepartamentos)
 
 @app.route("/Hammer.com/salirU")
 def cerrarSesion():
