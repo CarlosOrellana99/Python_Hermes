@@ -95,6 +95,8 @@ def login(): # View function
     if encontrado and permitido:
         session['user'] = dictionary['user']
         session['kind'] = tipo
+
+
         if tipo == "admin":
             return redirect("/Hammer.com/admin")
         elif tipo == "worker":
