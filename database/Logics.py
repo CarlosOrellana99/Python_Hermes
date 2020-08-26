@@ -565,7 +565,18 @@ class adminTrabajadores(DatabaseZ):
                         for x in y["Categoría"]:
                             if x == categoria:
                                 listaFiltrada.append(y)
-        return listaFiltrada 
+        listaFiltrada1=self.eliminarBusquedaRepetida(listaFiltrada)
+        return listaFiltrada1 
+    
+    def eliminarBusquedaRepetida(self,lista):
+        """Elimina camos repetidos en la busqueda de trabajadores filtrados"""
+        listaFinal=[]
+        listaids=[]
+        for i in lista:
+            if i["id"] not in listaids:
+                listaids.append(i["id"])
+                listaFinal.append(i)
+        return listaFinal
 
     def HistorialTrabajadores(self, idTrabajador):
         database = self.database
