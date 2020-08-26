@@ -454,6 +454,15 @@ def workerHistorial():
     historial = adminT.HistorialTrabajadores(idTrabajador)
     return render_template("trabajadoresHistorial.html", historial=historial, worker=trabajador)
 
+@app.route("/Hammer.com/citasWorker")
+def workerCitas():
+    adminT=adminTrabajadores()
+    worker = session['user']
+    trabajador= adminT.getWorkerbyCorreo(worker['correo'])
+    idTrabajador = worker['id']
+    citasConfirmadas = adminT.citasConfirmadas(idTrabajador)
+    citasNoConfirmadas = adminT.citasNoConfirmadas(idTrabajador)
+    return render_template("trabajadoresCitas.html", worker=trabajador, confirmadas=citasConfirmadas, noConfirmadas=citasNoConfirmadas)
 
 @app.route('/Hammer.com/finalizarServicio/<idCliente>')    
 def finalizarServicio(idCliente=None):    
