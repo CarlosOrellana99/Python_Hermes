@@ -438,6 +438,13 @@ def workerConfiguracion():
 
 
 
+@app.route("/Hammer.com/workerHistorial")
+def workerHistorial():
+    adminT=adminTrabajadores()
+    worker = session['user']
+    trabajador= adminT.getWorkerbyCorreo(worker['correo'])
+    return render_template("trabajadoresHistorial.html", worker= trabajador)
+
 @app.route("/Hammer.com/perfil")    
 def workerPerfil():
     adminT=adminTrabajadores()
