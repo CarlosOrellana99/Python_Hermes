@@ -625,13 +625,28 @@ class adminTrabajadores(DatabaseZ):
 
     def citasNoConfirmadas(self, idTrabajador):
         database = self.database
-        sql = f"""select clientes.Nombre, clientes.Apellido, clientes.Celular, citas.Fecha, citas.Hora, citas.DescripcionTrabajo
+        sql = f"""select citas.idCitas, clientes.Nombre, clientes.Apellido, clientes.Celular, citas.Fecha, citas.Hora, citas.DescripcionTrabajo
                     from citas inner join clientes on
                         citas.Cliente = clientes.idClientes
                     where citas.Finalizada = 'False' and citas.Confirmacion = 'False' and citas.Trabajador = '{idTrabajador}'
                     order by citas.Fecha"""  
         data = database.executeQuery(sql)
         return data
+
+    def confirmarCita(self, idCita):
+        database = self.database
+        sql = f"""UPDATE citas SET Confirmacion = 'True' 
+                WHERE idCitas = '{idCita}'"""
+        data = database.executeNonQueryBool(sql)
+        return data
+
+    def declinarCita(self, idCita):
+        database = self.database
+        sql = f"""DELETE FROM citas
+                WHERE idCitas = '{idCita}'"""
+        data = database.executeNonQueryBool(sql)
+        return data
+
 
 class adminCategorias(DatabaseZ):
     

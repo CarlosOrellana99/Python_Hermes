@@ -131,15 +131,15 @@
                               </tr>                          
                             </thead>                          
                             <tbody>                          
-                              {% for i in Noconfirmadas: %}
+                              {% for i in noConfirmadas: %}
                               <tr class="mx-auto" style="width: 200px;">                          
-                                <td><h6 class="font-weight-bold">{{ i[0] }} {{ i[1] }}</h6></td>                          
-                                <td><h6 class="font-weight-bold">{{ i[2] }}</h6></td>                          
-                                <td><h6 class="font-weight-bold">{{ i[3] }}</h6></td>
+                                <td><h6 class="font-weight-bold">{{ i[1] }} {{ i[2] }}</h6></td>                          
+                                <td><h6 class="font-weight-bold">{{ i[3] }}</h6></td>                          
                                 <td><h6 class="font-weight-bold">{{ i[4] }}</h6></td>
                                 <td><h6 class="font-weight-bold">{{ i[5] }}</h6></td>
-                                <td><h6 class="font-weight-bold">Confirmar</h6></td>
-                                <td><h6 class="font-weight-bold">Rechazar</h6></td>                   
+                                <td><h6 class="font-weight-bold">{{ i[6] }}</h6></td>
+                                <td><a href="/Hammer.com/confirmacion/{{ i[0] }}"><button type="button" class="btn btn-warning">Confirmar</button></a></td>
+                                <td><a href="/Hammer.com/declinacion/{{ i[0] }}"><button type="button" class="btn btn-warning">Rechazar</button></a></td>                   
                               </tr>
                               {% endfor %}                                             
                             </tbody>                          
