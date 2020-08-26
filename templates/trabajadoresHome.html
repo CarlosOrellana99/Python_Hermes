@@ -91,14 +91,16 @@
                                 <div class="col-lg-3 col-md-6 d-flex stat my-3">
                                     <div class="mx-auto">
                                         <h3 class="text-muted">Proxima cita</h3>
+                                        {% for i in proximaCita: %}
                                         <h4 class="text-muted">Cliente</h4>
-                                        <h6 class="font-weight-bold">{{proximaCita[0][0]}} {{proximaCita[0][1]}}</h6>
+                                        <h6 class="font-weight-bold">{{ i[0] }} {{ i[1] }}</h6>
                                         <h4 class="text-muted">Celular</h4>
-                                        <h6 class="font-weight-bold">{{proximaCita[0][2]}}</h6>
+                                        <h6 class="font-weight-bold">{{ i[2] }}</h6>
                                         <h4 class="text-muted">Fecha</h4>
-                                        <h6 class="font-weight-bold">{{proximaCita[0][3]}}</h6>
+                                        <h6 class="font-weight-bold">{{ i[3] }}</h6>
                                         <h4 class="text-muted">Hora</h4>
-                                        <h6 class="font-weight-bold">{{proximaCita[0][4]}}</h6>
+                                        <h6 class="font-weight-bold">{{ i[4] }}</h6>
+                                        {% endfor %}
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-md-6 d-flex stat my-3">
@@ -112,8 +114,6 @@
                     </div>
                 </div>
               </section>
-
-              
 
         </div>
 
