@@ -78,34 +78,41 @@
                   </div>
               </section>
 
-              <section class="bg-mix py-3">
+              <div id="content" class="bg-grey w-100">
+
+              <section class="bg-mix py-2">
                 <div class="container">
                     <div class="card rounded-0">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-lg-3 col-md-6 d-flex stat my-3">
-                                    <div class="mx-auto">
-                                        <h3 class="text-muted">Historial</h3>
-                                        <h4 class="text-muted">Cliente</h4>
-                                        <h6 class="font-weight-bold">{{proximaCita[0][0]}} {{proximaCita[0][1]}}</h6>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6 d-flex stat my-3">
-                                    <div class="mx-auto">
-                                        <h3 class="text-muted">Tu rendimiento mes a mes</h3>
-                                        <canvas id="citasMes" width="400" height="300"></canvas>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="card-body"> 
+                          <table class="egt" width="100%"  cellspacing="10" cellpadding="10">
+                            <thead>
+                              <tr>                         
+                                <th><h6 class="text-muted">Fecha</h6></th>                          
+                                <th><h6 class="text-muted">Hora</h6></th>                            
+                                <th><h6 class="text-muted">Descripcion</h6></th>   
+                                <th><h6 class="text-muted">Cliente</h6></th>                            
+                                <th><h6 class="text-muted">Celular</h6></th>                        
+                              </tr>                          
+                            </thead>                          
+                            <tbody>                          
+                              {% for i in historial: %}
+                              <tr class="mx-auto" style="width: 200px;">                          
+                                <td><h6 class="font-weight-bold">{{ i[0] }}</h6></td>                          
+                                <td><h6 class="font-weight-bold">{{ i[1] }}</h6></td>                          
+                                <td><h6 class="font-weight-bold">{{ i[2] }}</h6></td>
+                                <td><h6 class="font-weight-bold">{{ i[3] }} {{ i[4] }}</h6></td>
+                                <td><h6 class="font-weight-bold">{{ i[5] }}</h6></td>                   
+                              </tr>
+                              {% endfor %}                                             
+                            </tbody>                          
+                          </table>
                         </div>
                     </div>
                 </div>
+
               </section>
-
-              
-
         </div>
-
+        </div>
         </div>
     </div>
 </body>
