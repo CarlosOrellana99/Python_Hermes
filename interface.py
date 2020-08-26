@@ -410,9 +410,42 @@ def test2():
 def workerIndex():
     adminT=adminTrabajadores()
     worker = session['user']
+    trabajador= adminT.getWorkerbyCorreo(worker['correo'])
+    return render_template("trabajadoresHome.html", worker= trabajador)
+
+@app.route("/Hammer.com/servicioActivo")    
+def workerServicioActivo():
+    adminT=adminTrabajadores()
+    worker = session['user']
+    idWorker= worker['id']
+    trabajador= adminT.getWorkerbyCorreo(worker['correo'])
+    servicio= adminT.ServicioActivo(idWorker)
+    return render_template("servicioActivo.html", worker= trabajador, servicio=servicio)
+
+@app.route("/Hammer.com/configuracion")    
+def workerConfiguracion():
+    adminT=adminTrabajadores()
+    worker = session['user']
     print(worker)
     trabajador= adminT.getWorkerbyCorreo(worker['correo'])
     return render_template("trabajadoresHome.html", worker= trabajador)
+
+@app.route("/Hammer.com/perfil")    
+def workerPerfil():
+    adminT=adminTrabajadores()
+    worker = session['user']
+    print(worker)
+    trabajador= adminT.getWorkerbyCorreo(worker['correo'])
+    return render_template("trabajadoresHome.html", worker= trabajador)
+
+@app.route('/Hammer.com/finalizarServicio/<idCliente>')    
+def finalizarServicio(idCliente=None):    
+    adminT=adminTrabajadores()
+    idCita= idCliente
+    print(idCita)
+    finalizar= adminT.finalizarServicio(idCita)
+    return redirect("/Hammer.com/servicioActivo")
+
 
 if __name__=='__main__':
     app.run(debug=True)

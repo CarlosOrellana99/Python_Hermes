@@ -282,30 +282,9 @@ class adminTrabajadores(DatabaseZ):
         data = database.executeQuery(sql)
         return data
 
+
 #Perfil
 #Configuracion
 #Cita Activa
 
-# metodos para Servicio Activo
-
-    def ServicioActivo(self, idTrabajador):
-        database = self.database
-        sql = f"""SELECT*
-        FROM citas inner join trabajadores on trabajadores.idTrabajadores = citas.Trabajador
-        where citas.Finalizada = 'False' and citas.Confirmacion = 'True' and citas.Trabajador = '{idTrabajador}' and citas.Iniciada='true';"""
-        data = database.executeQuery(sql)
-
-        if (data!=None):
-            return data
-        else:  
-            sql2= f"""SELECT*
-            FROM citas inner join trabajadores on trabajadores.idTrabajadores = citas.Trabajador
-            where citas.Finalizada = 'False' and citas.Confirmacion = 'True' and citas.Trabajador = '{idTrabajador}' and citas.Iniciada='false'
-            order by fecha
-            limit 1"""
-            data2 = database.executeQuery(sql2)
-            return data2
-
-    def actualizarPerfil:
-        
         
