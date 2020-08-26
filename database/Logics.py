@@ -294,6 +294,14 @@ class adminClientes(DatabaseZ):
             Municipio=x[2]
             
         return Departamento,Municipio
+    
+    def getUserbyID(self,idCliente):
+        database = self.database
+        sql=f"""SELECT * FROM hermes.clientes
+                where hermes.clientes.idClientes={idCliente};"""
+        data = database.executeQuery(sql)
+        return data
+        
 
 class adminTrabajadores(DatabaseZ):
     """
@@ -341,6 +349,25 @@ class adminTrabajadores(DatabaseZ):
         database = self.database
         success = database.executeMany(sql, val)
         return success
+
+    # metodos para Servicio Activo
+
+    def ServicioActivo(self, idTrabajador):
+
+        database = self.database
+        sql = f"""select hermes.citas.idCitas,hermes.citas.Fecha,hermes.citas.Hora,hermes.citas.Trabajador,hermes.citas.Cliente,hermes.citas.Finalizada,hermes.citas.DescripcionTrabajo,hermes.citas.Confirmacion,hermes.clientes.Nombre, hermes.clientes.Apellido, hermes.clientes.Direccion
+                from hermes.clientes 
+                inner join hermes.citas on hermes.citas.Cliente=hermes.clientes.idClientes
+                inner join hermes.trabajadores on hermes.trabajadores.idTrabajadores=hermes.citas.Trabajador
+                where hermes.citas.Trabajador={idTrabajador} and hermes.citas.Confirmacion= 'True' and hermes.citas.Finalizada= 'False';"""
+        data = database.executeQuery(sql)
+        return data
+
+    def finalizarServicio(self, idCita):
+        database = self.database
+        sql = f"""UPDATE `hermes`.`citas` SET `Finalizada` = 'True' WHERE (`idCitas` = {idCita});"""
+        data = database.executeNonQueryBool(sql)
+        return data
 
     def getWorkerbyCorreo(self, correo, picture = True):
 
