@@ -9,13 +9,21 @@
 
 
 <body>
-    <h1>Hammer</h1>
-    <p>Bienvenido</p>
+    
+  <div class="jumbotron jumbotron-fluid text-white" style="height: 175px; background-color: black;">
+    <div style="text-align: center; top: 50%;">
+        <h1>Hammer</h1>
+        <p>Bienvenido</p>
+    </div>
+
     <div class="Logout"> 
       <img width="80" height="80" src="data:;base64,{{usuarioactivo['foto']}}"/>
       <p>{{usuarioactivo["nombre"]}} {{usuarioactivo["apellido"]}}</p>
       <a href="/Hammer.com/salirU" style="color:rgb(0, 0, 128)"> Cerrar Sesion</a>
   </div> 
+</div>
+
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">HAMMER</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,24 +78,49 @@
         </div>
       </nav>
        
-    {% for i in busqueda %}
-    <form action="/Hammer.com/agendarCita/form" method="post">
-    <p>Trabajador: {{i["nombre"]}} {{i["apellido"]}}</p>
-    <p>Especialidades:
-        {%for categoria in i["Categoría"] %}
-        {{categoria}}
-        {% endfor %}
-    </p>
-    <p>Departamento: {{i["departamento"]}}</p>
-    <p>Municipio: {{i["municipio"]}}</p>
-    <p>Descripcion: {{i["descripcion"]}}</p>
-    <img src="data:;base64,{{i['foto']}}"/>
-    <input type="hidden" name="Trabajador" id ="Trabajador" value="{{i['correo']}}"><br>
-    <input type="submit" value="Agendar Cita">
-    </form>
-    <div></div>
-    {% endfor %}
 
+      <br><br>
+
+
+      <div class="col-md-8 offset-md-2">
+        <table class="table table-striped table-bordered bg-white table-sm">
+          <thead>
+            <tr>
+              <td>Trabajadores</td>
+              <td>Especialidades</td>
+              <td>Departamento</td>
+              <td>Municipio</td>
+              <td>Descripcion</td>
+              <td>Foto</td>
+              <td>Acción</td>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in busqueda %}
+            <form action="/Hammer.com/agendarCita/form" method="post">
+           
+            <tr>
+              <td>{{i["nombre"]}} {{i["apellido"]}}</td>
+              <td>
+                {%for categoria in i["Categoría"] %}
+                  {{categoria}}
+                {% endfor %}
+              </td>
+              <td>{{i["departamento"]}}</td>
+              <td>{{i["municipio"]}}</td>
+              <td>{{i["descripcion"]}}</td>
+              <td><img style="height: 100px; width: 100px;" src="data:;base64,{{i['foto']}}"/></td>
+              <td>
+                <input type="hidden" name="Trabajador" id ="Trabajador" value="{{i['correo']}}"><br>
+                <input class="btn btn-primary" type="submit" value="Agendar Cita">
+              </td>
+            </tr>
+            </form>
+            {% endfor %}
+          </tbody>
+        </table>        
+      </div>     
+    
 
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
