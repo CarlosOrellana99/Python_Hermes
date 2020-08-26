@@ -421,5 +421,12 @@ def workerIndex():
     print(citasMes[0], citasMes[1])
     return render_template("trabajadoresHome.html", worker= trabajador, proximaCita=proximaCita, citasMes=citasMes)
 
+@app.route("/Hammer.com/workerHistorial")
+def workerHistorial():
+    adminT=adminTrabajadores()
+    worker = session['user']
+    trabajador= adminT.getWorkerbyCorreo(worker['correo'])
+    return render_template("trabajadoresHistorial.html", worker= trabajador)
+
 if __name__=='__main__':
     app.run(debug=True)
