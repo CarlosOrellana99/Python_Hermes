@@ -615,7 +615,7 @@ class adminTrabajadores(DatabaseZ):
 
     def citasConfirmadas(self, idTrabajador):
         database = self.database
-        sql = f"""select clientes.Nombre, clientes.Apellido, clientes.Celular, citas.Fecha, citas.Hora
+        sql = f"""select clientes.Nombre, clientes.Apellido, clientes.Celular, citas.Fecha, citas.Hora, citas.DescripcionTrabajo
                     from citas inner join clientes on
                         citas.Cliente = clientes.idClientes
                     where citas.Finalizada = 'False' and citas.Confirmacion = 'True' and citas.Trabajador = '{idTrabajador}'
@@ -625,7 +625,7 @@ class adminTrabajadores(DatabaseZ):
 
     def citasNoConfirmadas(self, idTrabajador):
         database = self.database
-        sql = f"""select clientes.Nombre, clientes.Apellido, clientes.Celular, citas.Fecha, citas.Hora
+        sql = f"""select clientes.Nombre, clientes.Apellido, clientes.Celular, citas.Fecha, citas.Hora, citas.DescripcionTrabajo
                     from citas inner join clientes on
                         citas.Cliente = clientes.idClientes
                     where citas.Finalizada = 'False' and citas.Confirmacion = 'False' and citas.Trabajador = '{idTrabajador}'

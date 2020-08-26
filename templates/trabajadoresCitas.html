@@ -1,0 +1,160 @@
+{% extends 'sidebarWorker.html' %}
+
+<!doctype html>
+<html lang="en">
+
+{% block body %}
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="static/css/workStyle.css">
+
+    <!-- Google fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,700&display=swap" rel="stylesheet">
+
+    <!-- Ionic icons -->
+    <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+
+
+    <title>Historial</title>
+</head>
+
+<body>
+    
+    
+
+         <!-- Navbar -->
+         <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+            <div class="container">
+    
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+    
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                  <li class="nav-item dropdown">
+                    <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{worker['nombre']}}
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" href="#">Mi perfil</a>
+                      <a class="dropdown-item" href="#">Suscripciones</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#">Cerrar sesión</a>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+          <!-- Fin Navbar -->
+
+        <!-- Page Content -->
+        <div id="content" class="bg-grey w-100">
+
+              <section class="bg-light py-3">
+                  <div class="container">
+                      <div class="row">
+                          <div class="col-lg-9 col-md-8">
+                            <h1 class="font-weight-bold mb-0">Bienvenido {{worker['nombre']}}</h1>
+                            <div class="col-md-4">
+                                <img src="data:;base64,{{ worker['foto'] }}" class="card-img" alt="Image" style="overflow:hidden ;height: 180px; width:180px">
+                            </div>
+                            <p class="lead text-muted">Aquí están todas las citas confirmadas y por confirmar</p>
+                          </div>
+                      </div>
+                  </div>
+              </section>
+
+              <div id="content" class="bg-grey w-100">
+
+              <section class="bg-mix py-2">
+                <div class="container">
+                    <div class="card rounded-0">
+                        <div class="card-body">
+                        <p>Citas confirmadas</p> 
+                          <table class="egt" width="100%"  cellspacing="10" cellpadding="10">
+                            <thead>
+                              <tr>                         
+                                <th><h6 class="text-muted">Cliente</h6></th>                          
+                                <th><h6 class="text-muted">Celular</h6></th>                            
+                                <th><h6 class="text-muted">Fecha</h6></th>   
+                                <th><h6 class="text-muted">Hora</h6></th>                            
+                                <th><h6 class="text-muted">Descripcion</h6></th>                        
+                              </tr>                          
+                            </thead>                          
+                            <tbody>                          
+                              {% for i in confirmadas: %}
+                              <tr class="mx-auto" style="width: 200px;">                          
+                                <td><h6 class="font-weight-bold">{{ i[0] }} {{ i[1] }}</h6></td>                          
+                                <td><h6 class="font-weight-bold">{{ i[2] }}</h6></td>                          
+                                <td><h6 class="font-weight-bold">{{ i[3] }}</h6></td>
+                                <td><h6 class="font-weight-bold">{{ i[4] }}</h6></td>
+                                <td><h6 class="font-weight-bold">{{ i[5] }}</h6></td>                   
+                              </tr>
+                              {% endfor %}                                             
+                            </tbody>                          
+                          </table>
+                        </div>
+                    </div>
+                </div>
+
+              </section>
+        </div>
+        <div id="content" class="bg-grey w-100">
+
+              <section class="bg-mix py-2">
+                <div class="container">
+                    <div class="card rounded-0">
+                        <div class="card-body">
+                        <p>Citas por confirmar</p>  
+                          <table class="egt" width="100%"  cellspacing="10" cellpadding="10">
+                            <thead>
+                              <tr>                         
+                                <th><h6 class="text-muted">Cliente</h6></th>                          
+                                <th><h6 class="text-muted">Celular</h6></th>                            
+                                <th><h6 class="text-muted">Fecha</h6></th>   
+                                <th><h6 class="text-muted">Hora</h6></th>                            
+                                <th><h6 class="text-muted">Descripcion</h6></th>                        
+                              </tr>                          
+                            </thead>                          
+                            <tbody>                          
+                              {% for i in Noconfirmadas: %}
+                              <tr class="mx-auto" style="width: 200px;">                          
+                                <td><h6 class="font-weight-bold">{{ i[0] }} {{ i[1] }}</h6></td>                          
+                                <td><h6 class="font-weight-bold">{{ i[2] }}</h6></td>                          
+                                <td><h6 class="font-weight-bold">{{ i[3] }}</h6></td>
+                                <td><h6 class="font-weight-bold">{{ i[4] }}</h6></td>
+                                <td><h6 class="font-weight-bold">{{ i[5] }}</h6></td>
+                                <td><h6 class="font-weight-bold">Confirmar</h6></td>
+                                <td><h6 class="font-weight-bold">Rechazar</h6></td>                   
+                              </tr>
+                              {% endfor %}                                             
+                            </tbody>                          
+                          </table>
+                        </div>
+                    </div>
+                </div>
+
+              </section>
+        </div>
+        </div>
+        </div>
+    </div>
+</body>
+
+{% endblock %}
+
+</html>
