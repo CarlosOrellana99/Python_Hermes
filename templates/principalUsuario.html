@@ -13,12 +13,14 @@
             <h1>Hammer</h1>
             <p>Bienvenido</p>
         </div>
+
+        <div class="Logout"> 
+          <img width="80" height="80" src="data:;base64,{{usuarioactivo['foto']}}"/>
+          <p>{{usuarioactivo["nombre"]}} {{usuarioactivo["apellido"]}}</p>
+          <a href="/Hammer.com/salirU" style="color:rgb(0, 0, 128)"> Cerrar Sesion</a>
+      </div> 
     </div>
-    <div class="Logout"> 
-        <img width="80" height="80" src="data:;base64,{{usuarioactivo['foto']}}"/>
-        <p>{{usuarioactivo["nombre"]}} {{usuarioactivo["apellido"]}}</p>
-        <a href="/Hammer.com/salirU" style="color:rgb(0, 0, 128)"> Cerrar Sesion</a>
-    </div> 
+    
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">HAMMER</a>
@@ -29,7 +31,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="/Hammer.com/u">Página principal</a>
+          <a class="nav-link active" href="/Hammer.com/u">Página principal</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/Hammer.com/informacionEmpresa">¿Quiénes somos?</a>
@@ -81,9 +83,9 @@
     
         {% for i in categorias %}
     
-        <div class="column">
+        <div class="column" style="padding-bottom: 50px; padding-left: 4%;">
             <form action="/Hammer.com/buscarTrabajadores/categoria" method="post">
-                <button type="submit" id="categoriaButton" name="categoriaButton" value="{{i['id']}}"><img src="data:;base64,{{i['imagen']}}"/></button>
+                <button style="border-radius: 20%; " type="submit" id="categoriaButton" name="categoriaButton" value="{{i['id']}}"><img style="border-radius: 20%;" src="data:;base64,{{i['imagen']}}"/></button>
             </form>
         </div>
         

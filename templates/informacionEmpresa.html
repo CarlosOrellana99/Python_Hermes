@@ -7,13 +7,22 @@
         <link rel="stylesheet" href="{{url_for('static', filename='css/usuario.css')}}">
     </head>
 <body>
-<h1>Hammer</h1>
-<p>Bienvenido</p>
-<div class="Logout"> 
-  <img width="80" height="80" src="data:;base64,{{usuarioactivo['foto']}}"/>
-  <p>{{usuarioactivo["nombre"]}} {{usuarioactivo["apellido"]}}</p>
-  <a href="/Hammer.com/salirU" style="color:rgb(0, 0, 128)"> Cerrar Sesion</a>
-</div> 
+
+
+  <div class="jumbotron jumbotron-fluid text-white" style="height: 175px; background-color: black;">
+    <div style="text-align: center; top: 50%;">
+        <h1>Hammer</h1>
+        <p>Bienvenido</p>
+    </div>
+
+    <div class="Logout"> 
+      <img width="80" height="80" src="data:;base64,{{usuarioactivo['foto']}}"/>
+      <p>{{usuarioactivo["nombre"]}} {{usuarioactivo["apellido"]}}</p>
+      <a href="/Hammer.com/salirU" style="color:rgb(0, 0, 128)"> Cerrar Sesion</a>
+  </div> 
+</div>
+
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">HAMMER</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,7 +35,7 @@
           <a class="nav-link" href="/Hammer.com/u">Página principal</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/Hammer.com/informacionEmpresa">¿Quiénes somos?</a>
+          <a class="nav-link active" href="/Hammer.com/informacionEmpresa">¿Quiénes somos?</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/Hammer.com/citas">Trabajos recientes</a>
@@ -63,7 +72,28 @@
       
     </div>
   </nav>
-<p>SOMOS HAMMER</p>
+
+
+<div class="conten">
+  <div class="titulo">
+    <h1>¿Quiénes somos?</h1>
+  </div>
+
+  <div class="row">
+    <div class="column2" style="padding-bottom: 50px; padding-left: 4%;">
+      <img style="border-radius: 20%;" src="{{url_for('static', filename='images/Trabajador.jfif')}}">
+    </div>
+    <div class="column2" >
+      <p>
+        Hammer es un empresa que busca facilitar la vida a su familia, mediante la tecnología.
+        Buscamos satisfacer y solucionar todos los problemas. 
+      </p>
+    </div>
+  </div>
+
+
+</div>
+  
 
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

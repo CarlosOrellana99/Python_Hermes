@@ -267,12 +267,26 @@ class adminTrabajadores(DatabaseZ):
     #Se vera un grafico con las citas de los ultimos 5 meses para cada trabajador para ver la evolucion
     def citasPorMes(self, idTrabajador):
         database = self.database
-        sql = f"""select count(*) from citas
+        sql = f"""select month(Fecha), count(*) from citas
         where Trabajador = '{idTrabajador}'
         group by month(Fecha)
         limit 5"""  
         data = database.executeQuery(sql)
         return data
+
+    def citasToArray(self, data):
+        meses = []
+        cantidad = []
+        for x in data:
+            nuevoMes = x[0]
+            meses.append(nuevoMes)
+
+            nuevaCantidad = x[1]
+            cantidad.append(nuevaCantidad)
+        
+        arrayCitas = [meses, cantidad]
+        return arrayCitas
+
 
     def citasMesActual(self, idTrabajador):
         database = self.database

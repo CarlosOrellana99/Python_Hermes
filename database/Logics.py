@@ -574,7 +574,41 @@ class adminTrabajadores(DatabaseZ):
         database = self.database
         sql = f"""Select * from citas where Trabajador = '{idTrabajador}' """ 
         data = database.executeQuery(sql)
-        return data        
+        return data
+
+    def proximaCita(self, idTrabajador):
+        database = self.database
+        sql = f"""select clientes.Nombre, clientes.Apellido, clientes.Celular, citas.Fecha, citas.Hora
+                    from citas inner join clientes on
+                        citas.Cliente = clientes.idClientes
+                    where citas.Finalizada = 'False' and citas.Confirmacion = 'True' and citas.Trabajador = '{idTrabajador}'
+                    order by citas.Fecha
+                    limit 1"""
+        data = database.executeQuery(sql)
+        return data
+
+    def citasPorMes(self, idTrabajador):
+        database = self.database
+        sql = f"""select month(Fecha), count(*) from citas
+        where Trabajador = '{idTrabajador}'
+        group by month(Fecha)
+        limit 5"""  
+        data = database.executeQuery(sql)
+        return data
+
+    def citasToArray(self, data):
+        meses = []
+        cantidad = []
+        for x in data:
+            nuevoMes = x[0]
+            meses.append(nuevoMes)
+
+            nuevaCantidad = x[1]
+            cantidad.append(nuevaCantidad)
+        
+        arrayCitas = [meses, cantidad]
+        return arrayCitas
+            
 
 class adminCategorias(DatabaseZ):
     

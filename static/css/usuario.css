@@ -17,11 +17,31 @@ body{
     padding: 5px;
 
   }
+
+  .column2 {
+    float: left;
+    width: 40%;
+    padding: 5px;
+
+  }
+
+.column2 p{
+    font-size:21px;
+    color: white;
+}
+
 .column img{
     width: 300px;
     height: 300px;
     margin: auto;
 }
+
+.column2 img{
+    width: 400px;
+    height: 350px;
+    margin: auto;
+}
+
 .row{
     margin-bottom: 100px;
     margin-top: 100px;
@@ -71,4 +91,7 @@ body{
     text-transform:uppercase;
     font-size:11px;
     color: white;
+}
+.column img{
+    border-radius: 30px;
 }
