@@ -1,12 +1,72 @@
 <!DOCTYPE html>
-    <body>
-        <div class="tab">
-            <a href="/Hammer.com/u" style="color:rgb(0, 0, 128)"> Pagina Principal</a><br><br>
-            <a href="/Hammer.com/informacionEmpresa" style="color:rgb(0, 0, 128)"> Quienes Somos</a><br><br>
-            <a href="/Hammer.com/citas" style="color:rgb(0, 0, 128)"> Trabajos Recientes</a><br><br>
-            <a href="/Hammer.com/tu-Cuenta/" style="color:rgb(0, 0, 128)"> Tu Cuenta</a><br><br>
-            <a href="/Hammer.com/salirU" style="color:rgb(0, 0, 128)"> Cerrar Sesion</a><br>
-        </div>
+<html>
+    <head>
+        <title>Hammer</title>
+        <link rel="shortcut icon" href="{{url_for('static', filename='images/logosinfondo.PNG')}}">
+        <link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.min.css">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/usuario.css')}}">
+    </head>
+    <div class="Logout"> 
+        <img width="80" height="80" src="data:;base64,{{usuarioactivo['foto']}}"/>
+        <p>{{usuarioactivo["nombre"]}} {{usuarioactivo["apellido"]}}</p>
+        <a href="/Hammer.com/salirU" style="color:rgb(0, 0, 128)"> Cerrar Sesion</a>
+    </div>
+
+    <body style="background-color:rgb(245, 245, 245);" >
+        <center>
+            <div style="background-color:rgb(255, 255, 255);" >
+                <h2 style="font-size:50px;color:rgb(0, 0, 128);margin-top: 10px">HAMMER</h2>
+            </div>
+        </center>
+        
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">HAMMER</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                  <a class="nav-link" href="/Hammer.com/u">Página principal</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/Hammer.com/informacionEmpresa">¿Quiénes somos?</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Hammer.com/citas">Trabajos recientes</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/Hammer.com/tu-Cuenta/">Cuenta</a>
+                  </li>
+                  
+              </ul>
+        
+        
+              <form class="form-inline my-2 my-lg-0" action="/Hammer.com/buscarTrabajadores/busqueda" method="POST">
+                <input class="form-control mr-sm-2" type="text" id = "palabra" name="palabra" placeholder="Búsqueda">
+                
+                <select class="form-control mr-sm-5" id="filtroDepartamento" name="filtroDepartamento" placeholder="Departamento">
+                    <option value="Todos">Todos</option>
+                    {% for departamento in departamentos %}
+                        {% if departamento['nombre'] == usuarioactivo['departamento']%}
+                            <option value="{{departamento['id']}}" selected>{{ departamento['nombre'] }}</option>
+                        {% else %}
+                            <option value="{{departamento['id']}}">{{ departamento['nombre'] }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <select class="form-control mr-sm-4" id="filtroCategoria" name="filtroCategoria" placeholder="Categoría">
+                    <option value="Todos">Todas</option>
+                    {% for categoria in categorias %}
+                            <option value="{{categoria['id']}}">{{ categoria['nombre'] }}</option>
+                    {% endfor %}
+                </select>
+                <input class="btn btn-secondary" type="submit" value="Buscar">
+                
+              </form>
+            </div>
+        </nav>
         <div >
             <h1>Agendar Cita</h1>
             <form action="/Hammer.com/agendarCita/agendar" method="post">
@@ -19,7 +79,7 @@
                 <label for="departamento" style="font-size:20px;font-style:Perpetua">Departamento: {{trabajadorCita[0]["departamento"]}}</label><br>
 
                 <label for="Descripcion Trabajo" style="font-size:20px;font-style:Perpetua">Describa el trabajo requerido:</label><br>
-                <input class="form-control" type="text" id="descripcionTrabajo" name="descripcionTrabajo" size="150" required><br><br>
+                <input  type="text" id="descripcionTrabajo" name="descripcionTrabajo" size="100" required><br><br>
 
                 <label for="fechaPropuesta" style="font-size:20px;font-style:Perpetua">Proponga una fecha</label><br>
                 <input type="text" id="fechaPropuesta" name="fechaPropuesta" size="100" required><br><br>
