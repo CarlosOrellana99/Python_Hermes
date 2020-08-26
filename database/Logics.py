@@ -572,7 +572,11 @@ class adminTrabajadores(DatabaseZ):
 
     def HistorialTrabajadores(self, idTrabajador):
         database = self.database
-        sql = f"""Select * from citas where Trabajador = '{idTrabajador}' """ 
+        sql = f"""select citas.Fecha, citas.Hora, citas.DescripcionTrabajo, clientes.Nombre, clientes.Apellido, clientes.Celular 
+                    from citas inner join clientes on
+                        citas.Cliente = clientes.idClientes
+                    where citas.Finalizada = 'False' and citas.Confirmacion = 'True' and citas.Trabajador = '{idTrabajador}'
+                    order by citas.Fecha""" 
         data = database.executeQuery(sql)
         return data
 
