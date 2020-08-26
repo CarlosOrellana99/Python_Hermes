@@ -386,6 +386,27 @@ class adminTrabajadores(DatabaseZ):
         if len(data) > 0:
             lista = self.convertTuplaToDicc(data[0], picture)
         return lista
+        
+    def getWorkerbyId(self, idT, picture = True):
+
+        """Debuele una lista con los datos del usuario con ese correo"""
+        database = self.database
+        select = "trabajadores.idTrabajadores, trabajadores.DUI, trabajadores.Nombre, trabajadores.Apellido, trabajadores.Celular, trabajadores.Direccion, trabajadores.Correo, trabajadores.Contrasena, trabajadores.Descripcion, trabajadores.Genero, trabajadores.Foto, trabajadores.Aceptado,  membresias.Membresia, departamentos.nombre as depa, municipios.nombre as mun, trabajadores.trabajos, membresias.vigencia"
+
+        sql = f"""  SELECT distinct {select}
+                    FROM categoriatrabajadores 
+                    right join trabajadores on trabajadores.idTrabajadores = categoriatrabajadores.Trabajador
+                    left join categoria on categoria.idCategoria = categoriatrabajadores.Categoria
+                    inner join hermes.departamentos on departamentos.idDepartamento = trabajadores.Departamento
+                    inner join hermes.municipios on municipios.idMunicipio = trabajadores.Municipio
+                    inner join hermes.membresias on membresias.idMembresias = trabajadores.Membresia
+                    where trabajadores.idTrabajadores = '{idT}'
+                    limit 1;"""
+        data = database.executeQuery(sql)
+        lista = {}
+        if len(data) > 0:
+            lista = self.convertTuplaToDicc(data[0], picture)
+        return lista
 
     def fetchAllWorkersByWord(self, word, limit = str(20), kind = [], order = "fechaDeEntrada", mode = "desc", aprox=True, cat = True):
 

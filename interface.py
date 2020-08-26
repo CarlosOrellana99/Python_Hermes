@@ -54,6 +54,7 @@ def registerUser(kind): # View function
         admin = adminClientes()
 
         success = admin.insert(dui, nombre, apellido, celular, direccion, correo, contrasena, departamento, municipio, genero, foto)
+
     elif kind == "worker":
         success = False
         nombre = request.form.get('nombre')
@@ -196,6 +197,20 @@ def adminBuscarConfigurado():
     numero = len(lista)
     numeros = range(5,105,5)
     return render_template("busquedaAdmin.html", trabajadores = lista, admin = adminCompleto, numeros = numeros, word = word, imagenes= images, cantidad= numero)
+
+
+@app.route("/Hammer.com/admin/worker/visulize/<idT>")
+def workerVisualize(idT):
+    adminT = adminTrabajadores()
+    adminA = adminAdministrador()
+    imagenes = adminA.getImages()
+    trabajador = adminT.getWorkerbyId(idT)
+    admin = session['user']
+    tipo = session['kind']
+    adminCompleto = adminA.getAdminByCorreo(admin['correo'])
+    if not tipo == "admin":
+        return redirect("/Hammer.com/notAccess") 
+    return render_template("perfilDeTrabajadoresAdmin.html", worker = trabajador, imagenes = imagenes, admin = adminCompleto)
 
 
 # User UI
