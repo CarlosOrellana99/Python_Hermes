@@ -434,8 +434,15 @@ def workerServicioActivo():
 def workerConfiguracion():
     adminT=adminTrabajadores()
     worker = session['user']
-    print(worker)
+    trabajador= adminT.getWorkerbyCorreo(worker['correo'])
+    idTrabajador = worker['id']
 
+@app.route("/Hammer.com/perfil")    
+def workerConfiguracion():
+    adminT=adminTrabajadores()
+    worker = session['user']
+    trabajador= adminT.getWorkerbyCorreo(worker['correo'])
+    return render_template("workerPerfil.html",worker=trabajador)
 
 
 @app.route("/Hammer.com/workerHistorial")
@@ -445,13 +452,6 @@ def workerHistorial():
     trabajador= adminT.getWorkerbyCorreo(worker['correo'])
     return render_template("trabajadoresHistorial.html", worker= trabajador)
 
-@app.route("/Hammer.com/perfil")    
-def workerPerfil():
-    adminT=adminTrabajadores()
-    worker = session['user']
-    print(worker)
-    trabajador= adminT.getWorkerbyCorreo(worker['correo'])
-    return render_template("trabajadoresHome.html", worker= trabajador)
 
 @app.route('/Hammer.com/finalizarServicio/<idCliente>')    
 def finalizarServicio(idCliente=None):    
