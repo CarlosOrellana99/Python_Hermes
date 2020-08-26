@@ -195,7 +195,7 @@ class adminClientes(DatabaseZ):
         else:
             sql = """INSERT INTO hermes.clientes 
             (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Departamento`, `Municipio`, `Foto`, `Genero` ) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
 
             val = ( dui, nombre, apellido, celular, direccion, correo, contrasena, departamento, municipio, foto, genero)
 
@@ -312,13 +312,11 @@ class adminTrabajadores(DatabaseZ):
     def __init__(self):
         self.database = DatabaseZ()
 
-    def insert( self, dui, nombre, apellido, celular, direccion, correo, contrasena, descripcion, departamento, municipio, genero, aceptado, membresia="AAAA-0000-0000", foto=None,):
-        """ Inserta los componentes de un cliente en la base de datos
-        -------
-        Devuelve True si se ejecutó con éxito y false si no se hicieron cambios"""
+    def insert( self, dui, nombre, apellido, celular, direccion, correo, contrasena, descripcion, departamento, municipio, genero, aceptado, membresia="AAAA-0000-0000", foto=None):
+
         success = False
         fecha = date.today()
-        fechaF = fecha.strftime("%d-%m-%Y")
+        fechaF = fecha.strftime("%Y-%m-%d")
         if foto == "":
             sql = """INSERT INTO `hermes`.`trabajadores` 
             (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Descripcion`, `Departamento`, `Municipio`, `Genero`, `Aceptado`, `Membresia`, `fechaDeEntrada`) 
@@ -327,7 +325,7 @@ class adminTrabajadores(DatabaseZ):
         else:
             sql = """INSERT INTO `hermes`.`trabajadores` 
             (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Descripcion`, `Departamento`, `Municipio`, `Genero`, `Aceptado`, `Membresia`, `Foto`, `fechaDeEntrada`) 
-            VALUES (%s, s, %s, %s, %s, s, %s, %s, %s, %s, %s, %s, %s, %s );"""
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
             val = (
                 dui,
                 nombre,
@@ -349,7 +347,6 @@ class adminTrabajadores(DatabaseZ):
         database = self.database
         success = database.executeMany(sql, val)
         return success
-
     # metodos para Servicio Activo
 
     def ServicioActivo(self, idTrabajador):
