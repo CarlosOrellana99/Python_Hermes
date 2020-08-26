@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, flash, session, url_for
 from database.Logics import adminAdministrador, adminClientes, adminTrabajadores, adminOpciones,adminCategorias,adminCitas
+import json
 
 app = Flask(__name__) #Page 30
 app.secret_key = "Latrenge3456"
@@ -410,9 +411,15 @@ def test2():
 def workerIndex():
     adminT=adminTrabajadores()
     worker = session['user']
-    print(worker)
     trabajador= adminT.getWorkerbyCorreo(worker['correo'])
-    return render_template("trabajadoresHome.html", worker= trabajador)
+    idTrabajador = worker['id']
+    proximaCita = adminT.proximaCita(idTrabajador)
+    citas = adminT.citasPorMes(idTrabajador)
+    citasMes = adminT.citasToArray(citas)
+    meses = citasMes[0]
+    cantidades = citasMes[1]
+    print(citasMes[0], citasMes[1])
+    return render_template("trabajadoresHome.html", worker= trabajador, proximaCita=proximaCita, citasMes=citasMes)
 
 if __name__=='__main__':
     app.run(debug=True)
