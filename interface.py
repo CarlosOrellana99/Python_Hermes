@@ -450,7 +450,9 @@ def workerHistorial():
     adminT=adminTrabajadores()
     worker = session['user']
     trabajador= adminT.getWorkerbyCorreo(worker['correo'])
-    return render_template("trabajadoresHistorial.html", worker= trabajador)
+    idTrabajador = worker['id']
+    historial = adminT.HistorialTrabajadores(idTrabajador)
+    return render_template("trabajadoresHistorial.html", historial=historial, worker=trabajador)
 
 
 @app.route('/Hammer.com/finalizarServicio/<idCliente>')    
