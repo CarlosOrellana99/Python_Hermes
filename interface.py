@@ -321,7 +321,7 @@ def busquedaTrabajadoresCliente(form):
 
     listafiltrada = adminworker.filtrarTrabajadoresByDepCat(getBusqueda,filtroDepartamento,filtroCategoria)
 
-    return render_template("busquedaTrabajadores.html",busqueda=listafiltrada,categorias=listacat,usuarioactivo=usuario,departamentos =ltsDepartamentos,departamentobusqueda=filtroDepartamento,categoriabusqueda=filtroCategoria)
+    return render_template("busquedaTrabajadores.html",busqueda=listafiltrada,categorias=listacat,usuarioactivo=usuario,departamentos =ltsDepartamentos,departamentobusqueda=filtroDepartamento,categoriabusqueda=filtroCategoria,palabrabusqueda=palabra)
 
 @app.route("/Hammer.com/agendarCita/<funcion>",methods=['POST'])
 def agendarCita(funcion):
