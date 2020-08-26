@@ -3,7 +3,7 @@
         <div class="row justify-content-center align-items-center">
             <div class=" col-md-5">
                 <div class="card card-body card-group text-white" style="background-color: rgb(0, 0, 0);">
-                    <form action="/servlet/register/worker" method="POST">
+                    <form action="/servlet/register/worker" method="POST" enctype="multipart/form-data">
                         <div class="form-group" style="font-size:30px;font-style:Perpetua"><strong>Registrate como trabajadar<strong/></div>
 
                             <div class="form-row">
@@ -54,7 +54,7 @@
                                             <div class="input-group-prepend">
                                             <span class="input-group-text" id="dui">+ 503 </span>
                                             </div>
-                                            <input type="text" id="telefono" name="telefono" size="1000" placeholder="0000-0000" required maxlength="10" required class="form-control" aria-describedby="dui">
+                                            <input type="text" id="telefono" name="telefono" size="1000" placeholder="00000000" required maxlength="8" required class="form-control" aria-describedby="dui">
                                         </div>
                                     </div>
                                 </div>

@@ -49,8 +49,8 @@ def registerUser(kind): # View function
         departamento = int(request.form.get('departamento'))
         municipio = int(request.form.get('municipio'))
         direccion = request.form.get('direccion')
-        foto = request.form.get('imagen')
-
+        imagen = request.files['imagen']
+        foto = imagen.read()
         admin = adminClientes()
 
         success = admin.insert(dui, nombre, apellido, celular, direccion, correo, contrasena, departamento, municipio, genero, foto)
@@ -69,7 +69,8 @@ def registerUser(kind): # View function
         direccion = (request.form.get('direccion'))
         nombre = request.form.get('nombre')
         descripcion = request.form.get('descripcion')
-        foto = request.form.get('imagen')
+        imagen = request.files['imagen']
+        foto = imagen.read()
         aceptado = 0 # Siempre se inicia sin estar aceptado
         membresia = 1 # La membresía 1 es una membresía siempre inactiva
 
