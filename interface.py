@@ -398,7 +398,7 @@ def test2():
 
 #Worker UI
 
-@app.route("/Hammer.com/worker")
+@app.route("/Hammer.com/worker")    
 def workerIndex():
     adminT=adminTrabajadores()
     worker = session['user']
