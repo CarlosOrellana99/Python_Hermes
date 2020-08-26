@@ -329,7 +329,15 @@ def agendarCita(funcion):
         correoTrabajador=request.form.get('Trabajador')
         busquedacorreos=["trabajadores.Correo"]
         diccTrabajador = adminworkers.fetchAllWorkersByWord(correoTrabajador,kind=busquedacorreos,aprox=False)
-        return render_template("agendarCita.html", trabajadorCita=diccTrabajador)
+        adminC=adminClientes()
+        user = session['user']
+        usuario = adminC.getUserbyCorreo(user['correo'])
+        admincat = adminCategorias()
+        listacategorias = admincat.getCategoriaConFoto()
+        listacat = admincat.convertirimagenes(listacategorias)
+        admin = adminOpciones()
+        ltsDepartamentos = admin.getDepartamentos()
+        return render_template("agendarCita.html", trabajadorCita=diccTrabajador,categorias=listacat,usuarioactivo=usuario,departamentos =ltsDepartamentos)
     
     if funcion=="agendar":
         usuario = session['user']
