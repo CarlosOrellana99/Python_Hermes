@@ -412,7 +412,14 @@ def workerIndex():
     adminT=adminTrabajadores()
     worker = session['user']
     trabajador= adminT.getWorkerbyCorreo(worker['correo'])
-    return render_template("trabajadoresHome.html", worker= trabajador)
+    idTrabajador = worker['id']
+    proximaCita = adminT.proximaCita(idTrabajador)
+    citas = adminT.citasPorMes(idTrabajador)
+    citasMes = adminT.citasToArray(citas)
+    meses = citasMes[0]
+    cantidades = citasMes[1]
+    print(citasMes[0], citasMes[1])
+    return render_template("trabajadoresHome.html", worker= trabajador, proximaCita=proximaCita, citasMes=citasMes)
 
 @app.route("/Hammer.com/servicioActivo")    
 def workerServicioActivo():
@@ -429,15 +436,14 @@ def workerConfiguracion():
     worker = session['user']
     print(worker)
 
+
+
+@app.route("/Hammer.com/workerHistorial")
+def workerHistorial():
+    adminT=adminTrabajadores()
+    worker = session['user']
     trabajador= adminT.getWorkerbyCorreo(worker['correo'])
-    idTrabajador = worker['id']
-    proximaCita = adminT.proximaCita(idTrabajador)
-    citas = adminT.citasPorMes(idTrabajador)
-    citasMes = adminT.citasToArray(citas)
-    meses = citasMes[0]
-    cantidades = citasMes[1]
-    print(citasMes[0], citasMes[1])
-    return render_template("trabajadoresHome.html", worker= trabajador, proximaCita=proximaCita, citasMes=citasMes)
+    return render_template("trabajadoresHistorial.html", worker= trabajador)
 
 @app.route("/Hammer.com/perfil")    
 def workerPerfil():
@@ -451,7 +457,6 @@ def workerPerfil():
 def finalizarServicio(idCliente=None):    
     adminT=adminTrabajadores()
     idCita= idCliente
-    print(idCita)
     finalizar= adminT.finalizarServicio(idCita)
     return redirect("/Hammer.com/servicioActivo")
 
