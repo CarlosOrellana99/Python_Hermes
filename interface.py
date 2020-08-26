@@ -465,6 +465,18 @@ def workerCitas():
     citasNoConfirmadas = adminT.citasNoConfirmadas(idTrabajador)
     return render_template("trabajadoresCitas.html", worker=trabajador, confirmadas=citasConfirmadas, noConfirmadas=citasNoConfirmadas)
 
+@app.route('/Hammer.com/confirmacion/<idCita>')    
+def confirmar(idCita=None):    
+    adminT=adminTrabajadores()
+    finalizar= adminT.confirmarCita(idCita)
+    return redirect("/Hammer.com/citasWorker")
+
+@app.route('/Hammer.com/declinacion/<idCita>')    
+def declinar(idCita=None):    
+    adminT=adminTrabajadores()
+    finalizar= adminT.declinarCita(idCita)
+    return redirect("/Hammer.com/citasWorker")
+
 @app.route('/Hammer.com/finalizarServicio/<idCliente>')    
 def finalizarServicio(idCliente=None):    
     adminT=adminTrabajadores()
