@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Hammer</title>
+        <link rel="shortcut icon" href="{{url_for('static', filename='images/logosinfondo.PNG')}}">
+        <link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.min.css">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/usuario.css')}}">
+    </head>
+    
+
+    <body style="background-color:rgb(245, 245, 245);" >
+        <div class="jumbotron jumbotron-fluid text-white" style="height: 175px; background-color: black;">
+            <div style="text-align: center; top: 50%;">
+                <h1>Hammer</h1>
+                <p>Bienvenido</p>
+            </div>
+        
+            <div class="Logout"> 
+              <img width="80" height="80" src="data:;base64,{{usuarioactivo['foto']}}"/>
+              <p>{{usuarioactivo["nombre"]}} {{usuarioactivo["apellido"]}}</p>
+              <a href="/Hammer.com/salirU" style="color:rgb(0, 0, 128)"> Cerrar Sesion</a>
+          </div> 
+        </div>
+        
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">HAMMER</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                  <a class="nav-link" href="/Hammer.com/u">Página principal</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/Hammer.com/informacionEmpresa">¿Quiénes somos?</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Hammer.com/citas">Trabajos recientes</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/Hammer.com/tu-Cuenta/">Cuenta</a>
+                  </li>
+                  
+              </ul>
+        
+        
+              <form class="form-inline my-2 my-lg-0" action="/Hammer.com/buscarTrabajadores/busqueda" method="POST">
+                <input class="form-control mr-sm-2" type="text" id = "palabra" name="palabra" placeholder="Búsqueda">
+                
+                <select class="form-control mr-sm-5" id="filtroDepartamento" name="filtroDepartamento" placeholder="Departamento">
+                    <option value="Todos">Todos</option>
+                    {% for departamento in departamentos %}
+                        {% if departamento['nombre'] == usuarioactivo['departamento']%}
+                            <option value="{{departamento['id']}}" selected>{{ departamento['nombre'] }}</option>
+                        {% else %}
+                            <option value="{{departamento['id']}}">{{ departamento['nombre'] }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <select class="form-control mr-sm-4" id="filtroCategoria" name="filtroCategoria" placeholder="Categoría">
+                    <option value="Todos">Todas</option>
+                    {% for categoria in categorias %}
+                            <option value="{{categoria['id']}}">{{ categoria['nombre'] }}</option>
+                    {% endfor %}
+                </select>
+                <input class="btn btn-secondary" type="submit" value="Buscar">
+                
+              </form>
+            </div>
+        </nav>
+        
+        <br><br>
+
+        <div class="card card-body col-md-5 offset-md-4">
+            <h1>Agendar Cita</h1>
+            <form action="/Hammer.com/agendarCita/agendar" method="post">
+                
+                <div class="form-group">
+                    <label for="trabajador" style="font-size:20px;font-style:Perpetua" class="form-control">Trabajador: {{trabajadorCita[0]["nombre"]}} {{trabajadorCita[0]["apellido"]}}</label>
+                </div>
+                <div class="form-group">
+                    <label for="especialidades" style="font-size:20px;font-style:Perpetua" class="form-control">Especialidades: {%for i in trabajadorCita[0]["Categoría"]%}
+                    {{i }} |
+                    {%endfor%}</label>
+                </div>
+                <div class="form-group">
+                    <label for="departamento" style="font-size:20px;font-style:Perpetua" class="form-control">Departamento: {{trabajadorCita[0]["departamento"]}}</label>
+                </div>
+                <div class="form-group">
+                    <label for="Descripcion Trabajo" style="font-size:20px;font-style:Perpetua" class="form-control">Describa el trabajo requerido:</label>
+                    <input  type="text" id="descripcionTrabajo" name="descripcionTrabajo" size="100" required class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="fechaPropuesta" style="font-size:20px;font-style:Perpetua" class="form-control">Proponga una fecha</label>
+                    <input type="text" id="fechaPropuesta" name="fechaPropuesta" size="100" required class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="horaPropuesta" style="font-size:20px;font-style:Perpetua" class="form-control">Proponga una hora</label>
+                    <input type="text" id="horaPropuesta" name="horaPropuesta" size="100" required class="form-control">
+                </div>
+                <div class="form-group">
+
+                </div>
+                <div class="form-group">
+                    
+                    <input type="hidden" name="idTrabajador" id ="idTrabajador" value="{{trabajadorCita[0]['id']}}">
+                    <input class="btn btn-primary btn-block" type="submit" value="Agregar Cita">
+                </div>
+                <div class="form-group">
+                    <input class="btn btn-secondary btn-block" type="submit" value="Cancelar">
+                </div>
+         
+            </form>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,164 @@
+{% extends 'sidebarWorker.html' %}
+
+<!doctype html>
+<html lang="en">
+
+{% block body %}
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="static/css/workStyle.css">
+
+    <!-- Google fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,700&display=swap" rel="stylesheet">
+
+    <!-- Ionic icons -->
+    <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+
+
+    <title>Home</title>
+</head>
+
+<body>
+    
+    
+
+         <!-- Navbar -->
+         <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+            <div class="container">
+    
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+    
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+
+
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      {{worker["nombre"]}} {{worker["apellido"]}}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" href="#">Mi perfil</a>
+                      <a class="dropdown-item" href="#">Suscripciones</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="/Hammer.com/salirU">Cerrar sesión</a>
+                    </div>
+                  </li>
+
+                  
+                </ul>
+              </div>
+            </div>
+          </nav>
+          <!-- Fin Navbar -->
+
+        <!-- Page Content -->
+        <div id="content" class="bg-grey w-100">
+
+              <section class="bg-light py-3">
+                  <div class="container">
+                      <div class="row">
+                          <div class="col-lg-9 col-md-8">
+
+                            <h1 class="font-weight-bold mb-0">Bienvenido {{worker['nombre']}}</h1>
+                            <div class="col-md-4">
+                                <img src="data:;base64,{{ worker['foto'] }}" class="card-img" alt="Image" style="overflow:hidden ;height: 180px; width:180px">
+                            </div>
+
+                            <p class="lead text-muted">Revisa la última información</p>
+                          </div>
+                      </div>
+                  </div>
+              </section>
+
+              <section class="bg-mix py-3">
+                <div class="container">
+                    <div class="card rounded-0">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-6 d-flex stat my-3">
+                                    <div class="mx-auto">
+                                        <h3 class="text-muted">Proxima cita</h3>
+                                        {% for i in proximaCita: %}
+                                        <h4 class="text-muted">Cliente</h4>
+                                        <h6 class="font-weight-bold">{{ i[0] }} {{ i[1] }}</h6>
+                                        <h4 class="text-muted">Celular</h4>
+                                        <h6 class="font-weight-bold">{{ i[2] }}</h6>
+                                        <h4 class="text-muted">Fecha</h4>
+                                        <h6 class="font-weight-bold">{{ i[3] }}</h6>
+                                        <h4 class="text-muted">Hora</h4>
+                                        <h6 class="font-weight-bold">{{ i[4] }}</h6>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-md-6 d-flex stat my-3">
+                                    <div class="mx-auto">
+                                        <h3 class="text-muted">Tu rendimiento mes a mes</h3>
+                                        <canvas id="citasMes" width="400" height="300"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              </section>
+
+        </div>
+
+        </div>
+    </div>
+</body>
+<script>
+let fuente = document.getElementById("citasMes").getContext("2d")
+
+var chart = new Chart(fuente, {
+	type:"bar",
+	data: {
+		labels: {{citasMes[0]}},
+		datasets:[
+			{
+				label:"Evolución de citas por mes",
+				backgroundColor:"rgb(140,220,240)",
+				data: {{citasMes[1]}}
+			}
+		]
+	},
+  options:{
+                scales:{
+                    yAxes:[{
+                            ticks:{
+                                beginAtZero:true
+                            },
+                            scaleLabel:{
+                              display: true,
+                              labelString: 'Cantidad de citas',
+                            }
+                    }],
+                    xAxes:[{
+                            scaleLabel:{
+                              display: true,
+                              labelString: 'Numero del mes',
+                            }
+                    }]
+                }
+            }
+})
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+{% endblock %}
+
+</html>

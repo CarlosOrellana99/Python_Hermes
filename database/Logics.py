@@ -195,7 +195,7 @@ class adminClientes(DatabaseZ):
         else:
             sql = """INSERT INTO hermes.clientes 
             (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Departamento`, `Municipio`, `Foto`, `Genero` ) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
 
             val = ( dui, nombre, apellido, celular, direccion, correo, contrasena, departamento, municipio, foto, genero)
 
@@ -242,24 +242,43 @@ class adminClientes(DatabaseZ):
     def updateusuario(self, datanueva):
         """ actualiza los campos de la cuenta de un usuario recibiendo un diccionario con los nuevos campos y el id"""
         database = self.database
-        sql = """UPDATE hermes.clientes SET
-            DUI=%s , Nombre=%s, Apellido=%s, Celular=%s, Direccion=%s, Correo=%s ,
-            Contrasena=%s , Departamento=%s , Municipio=%s, Genero=%s WHERE idClientes=%s;"""
-        val = (
-            datanueva['dui'],
-             datanueva['nombre'],
-             datanueva['apellido'],
-            datanueva['telefono'],
-            datanueva['direccion'],
-            datanueva['correo'],
-            datanueva['contra'],
-            datanueva['departamento'],
-            datanueva['municipio'],
-            datanueva['genero'],
-            datanueva['id']
-            )
-            
-        success = database.executeMany(sql,val)
+        if datanueva['foto']==None:
+            sql = """UPDATE hermes.clientes SET
+                DUI=%s , Nombre=%s, Apellido=%s, Celular=%s, Direccion=%s, Correo=%s ,
+                Contrasena=%s , Departamento=%s , Municipio=%s, Genero=%s WHERE idClientes=%s;"""
+            val = (
+                datanueva['dui'],
+                datanueva['nombre'],
+                datanueva['apellido'],
+                datanueva['telefono'],
+                datanueva['direccion'],
+                datanueva['correo'],
+                datanueva['contra'],
+                datanueva['departamento'],
+                datanueva['municipio'],
+                datanueva['genero'],
+                datanueva['id']
+                )
+            success = database.executeMany(sql,val)
+        else:
+            sql = """UPDATE hermes.clientes SET
+                DUI=%s , Nombre=%s, Apellido=%s, Celular=%s, Direccion=%s, Correo=%s ,
+                Contrasena=%s , Departamento=%s , Municipio=%s, Genero=%s, Foto=%s WHERE idClientes=%s;"""
+            val = (
+                datanueva['dui'],
+                datanueva['nombre'],
+                datanueva['apellido'],
+                datanueva['telefono'],
+                datanueva['direccion'],
+                datanueva['correo'],
+                datanueva['contra'],
+                datanueva['departamento'],
+                datanueva['municipio'],
+                datanueva['genero'],
+                datanueva['foto'],
+                datanueva['id']
+                )
+            success = database.executeMany(sql,val)
         return success
 
     def getDepartamentoMunicipioCliente(self,idCliente):
@@ -275,6 +294,14 @@ class adminClientes(DatabaseZ):
             Municipio=x[2]
             
         return Departamento,Municipio
+    
+    def getUserbyID(self,idCliente):
+        database = self.database
+        sql=f"""SELECT * FROM hermes.clientes
+                where hermes.clientes.idClientes={idCliente};"""
+        data = database.executeQuery(sql)
+        return data
+        
 
 class adminTrabajadores(DatabaseZ):
     """
@@ -285,13 +312,11 @@ class adminTrabajadores(DatabaseZ):
     def __init__(self):
         self.database = DatabaseZ()
 
-    def insert( self, dui, nombre, apellido, celular, direccion, correo, contrasena, descripcion, departamento, municipio, genero, aceptado, membresia="AAAA-0000-0000", foto=None,):
-        """ Inserta los componentes de un cliente en la base de datos
-        -------
-        Devuelve True si se ejecutó con éxito y false si no se hicieron cambios"""
+    def insert( self, dui, nombre, apellido, celular, direccion, correo, contrasena, descripcion, departamento, municipio, genero, aceptado, membresia="AAAA-0000-0000", foto=None):
+
         success = False
         fecha = date.today()
-        fechaF = fecha.strftime("%d-%m-%Y")
+        fechaF = fecha.strftime("%Y-%m-%d")
         if foto == "":
             sql = """INSERT INTO `hermes`.`trabajadores` 
             (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Descripcion`, `Departamento`, `Municipio`, `Genero`, `Aceptado`, `Membresia`, `fechaDeEntrada`) 
@@ -300,7 +325,7 @@ class adminTrabajadores(DatabaseZ):
         else:
             sql = """INSERT INTO `hermes`.`trabajadores` 
             (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Descripcion`, `Departamento`, `Municipio`, `Genero`, `Aceptado`, `Membresia`, `Foto`, `fechaDeEntrada`) 
-            VALUES (%s, s, %s, %s, %s, s, %s, %s, %s, %s, %s, %s, %s, %s );"""
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
             val = (
                 dui,
                 nombre,
@@ -322,16 +347,40 @@ class adminTrabajadores(DatabaseZ):
         database = self.database
         success = database.executeMany(sql, val)
         return success
+    # metodos para Servicio Activo
+
+    def ServicioActivo(self, idTrabajador):
+
+        database = self.database
+        sql = f"""select hermes.citas.idCitas,hermes.citas.Fecha,hermes.citas.Hora,hermes.citas.Trabajador,hermes.citas.Cliente,hermes.citas.Finalizada,hermes.citas.DescripcionTrabajo,hermes.citas.Confirmacion,hermes.clientes.Nombre, hermes.clientes.Apellido, hermes.clientes.Direccion
+                from hermes.clientes 
+                inner join hermes.citas on hermes.citas.Cliente=hermes.clientes.idClientes
+                inner join hermes.trabajadores on hermes.trabajadores.idTrabajadores=hermes.citas.Trabajador
+                where hermes.citas.Trabajador={idTrabajador} and hermes.citas.Confirmacion= 'True' and hermes.citas.Finalizada= 'False';"""
+        data = database.executeQuery(sql)
+        return data
+
+    def finalizarServicio(self, idCita):
+        database = self.database
+        sql = f"""UPDATE `hermes`.`citas` SET `Finalizada` = 'True' WHERE (`idCitas` = {idCita});"""
+        data = database.executeNonQueryBool(sql)
+        return data
 
     def getWorkerbyCorreo(self, correo, picture = True):
 
         """Debuele una lista con los datos del usuario con ese correo"""
         database = self.database
-        sql = f"""
-                SELECT trabajadores.*, departamentos.Nombre as dep, municipios.Nombre as mun FROM hermes.trabajadores 
-                inner join hermes.departamentos on departamentos.idDepartamento = trabajadores.Departamento
-                inner join hermes.municipios on municipios.idMunicipio = trabajadores.Municipio
-                where trabajadores.Correo = '{correo}' limit 1;"""
+        select = "trabajadores.idTrabajadores, trabajadores.DUI, trabajadores.Nombre, trabajadores.Apellido, trabajadores.Celular, trabajadores.Direccion, trabajadores.Correo, trabajadores.Contrasena, trabajadores.Descripcion, trabajadores.Genero, trabajadores.Foto, trabajadores.Aceptado,  membresias.Membresia, departamentos.nombre as depa, municipios.nombre as mun, trabajadores.trabajos, membresias.vigencia"
+
+        sql = f"""  SELECT distinct {select}
+                    FROM categoriatrabajadores 
+                    right join trabajadores on trabajadores.idTrabajadores = categoriatrabajadores.Trabajador
+                    left join categoria on categoria.idCategoria = categoriatrabajadores.Categoria
+                    inner join hermes.departamentos on departamentos.idDepartamento = trabajadores.Departamento
+                    inner join hermes.municipios on municipios.idMunicipio = trabajadores.Municipio
+                    inner join hermes.membresias on membresias.idMembresias = trabajadores.Membresia
+                    where trabajadores.Correo = '{correo}'
+                    limit 1;"""
         data = database.executeQuery(sql)
         lista = {}
         if len(data) > 0:
@@ -361,7 +410,7 @@ class adminTrabajadores(DatabaseZ):
         else:
             lista = kind
 
-        select = "trabajadores.idTrabajadores, trabajadores.DUI, trabajadores.Nombre, trabajadores.Apellido, trabajadores.Celular, trabajadores.Direccion, trabajadores.Correo, trabajadores.Contrasena, trabajadores.Descripcion, trabajadores.Genero, trabajadores.Foto, trabajadores.Aceptado,  membresias.Membresia, departamentos.nombre as depa, municipios.nombre as mun, trabajadores.trabajos"
+        select = "trabajadores.idTrabajadores, trabajadores.DUI, trabajadores.Nombre, trabajadores.Apellido, trabajadores.Celular, trabajadores.Direccion, trabajadores.Correo, trabajadores.Contrasena, trabajadores.Descripcion, trabajadores.Genero, trabajadores.Foto, trabajadores.Aceptado,  membresias.Membresia, departamentos.nombre as depa, municipios.nombre as mun, trabajadores.trabajos, membresias.vigencia"
         # Búsquedas generales
         for x in lista:
 
@@ -415,6 +464,7 @@ class adminTrabajadores(DatabaseZ):
                 "foto":  foto,
                 "aceptado": tupla[11],
                 "membresia": tupla[12],
+                "vigencia":tupla[16],
                 "departamento": tupla[13],
                 "municipio": tupla[14],
                 "trabajos": tupla[15],
@@ -496,6 +546,104 @@ class adminTrabajadores(DatabaseZ):
         "terceraParte": membresia[8:12] 
         }
         return dicc
+    def filtrarTrabajadoresByDepCat(self,lista,departamento,categoria):
+        """Filtra una lista de trabajadores por su departamento y categoria"""
+        listaFiltrada =[]
+        for y in lista:
+            if y["vigencia"]==1 and y["aceptado"]==1:
+                if departamento=="Todos":
+                    if categoria=="Todos":
+                        listaFiltrada.append(y)
+                    else:
+                        for x in y["Categoría"]:
+                            if x == categoria:
+                                listaFiltrada.append(y)
+                elif y["departamento"]==departamento:
+                    if categoria=="Todos":
+                        listaFiltrada.append(y)
+                    else:
+                        for x in y["Categoría"]:
+                            if x == categoria:
+                                listaFiltrada.append(y)
+        return listaFiltrada 
+
+    def HistorialTrabajadores(self, idTrabajador):
+        database = self.database
+        sql = f"""select citas.Fecha, citas.Hora, citas.DescripcionTrabajo, clientes.Nombre, clientes.Apellido, clientes.Celular 
+                    from citas inner join clientes on
+                        citas.Cliente = clientes.idClientes
+                    where citas.Finalizada = 'True' and citas.Confirmacion = 'True' and citas.Trabajador = '{idTrabajador}'
+                    order by citas.Fecha""" 
+        data = database.executeQuery(sql)
+        return data
+
+    def proximaCita(self, idTrabajador):
+        database = self.database
+        sql = f"""select clientes.Nombre, clientes.Apellido, clientes.Celular, citas.Fecha, citas.Hora
+                    from citas inner join clientes on
+                        citas.Cliente = clientes.idClientes
+                    where citas.Finalizada = 'False' and citas.Confirmacion = 'True' and citas.Trabajador = '{idTrabajador}'
+                    order by citas.Fecha
+                    limit 1"""
+        data = database.executeQuery(sql)
+        return data
+
+    def citasPorMes(self, idTrabajador):
+        database = self.database
+        sql = f"""select month(Fecha), count(*) from citas
+        where Trabajador = '{idTrabajador}' and Confirmacion = 'True'
+        group by month(Fecha)
+        limit 5"""  
+        data = database.executeQuery(sql)
+        return data
+
+    def citasToArray(self, data):
+        meses = []
+        cantidad = []
+        for x in data:
+            nuevoMes = x[0]
+            meses.append(nuevoMes)
+
+            nuevaCantidad = x[1]
+            cantidad.append(nuevaCantidad)
+        
+        arrayCitas = [meses, cantidad]
+        return arrayCitas
+
+    def citasConfirmadas(self, idTrabajador):
+        database = self.database
+        sql = f"""select clientes.Nombre, clientes.Apellido, clientes.Celular, citas.Fecha, citas.Hora, citas.DescripcionTrabajo
+                    from citas inner join clientes on
+                        citas.Cliente = clientes.idClientes
+                    where citas.Finalizada = 'False' and citas.Confirmacion = 'True' and citas.Trabajador = '{idTrabajador}'
+                    order by citas.Fecha"""  
+        data = database.executeQuery(sql)
+        return data
+
+    def citasNoConfirmadas(self, idTrabajador):
+        database = self.database
+        sql = f"""select citas.idCitas, clientes.Nombre, clientes.Apellido, clientes.Celular, citas.Fecha, citas.Hora, citas.DescripcionTrabajo
+                    from citas inner join clientes on
+                        citas.Cliente = clientes.idClientes
+                    where citas.Finalizada = 'False' and citas.Confirmacion = 'False' and citas.Trabajador = '{idTrabajador}'
+                    order by citas.Fecha"""  
+        data = database.executeQuery(sql)
+        return data
+
+    def confirmarCita(self, idCita):
+        database = self.database
+        sql = f"""UPDATE citas SET Confirmacion = 'True' 
+                WHERE idCitas = '{idCita}'"""
+        data = database.executeNonQueryBool(sql)
+        return data
+
+    def declinarCita(self, idCita):
+        database = self.database
+        sql = f"""DELETE FROM citas
+                WHERE idCitas = '{idCita}'"""
+        data = database.executeNonQueryBool(sql)
+        return data
+
 
 class adminCategorias(DatabaseZ):
     
@@ -560,6 +708,36 @@ class adminOpciones(DatabaseZ):
             dicc = {"id": x[0], "nombre": x[1]}
             lista.append(dicc)
         return lista
+    
+    def getDepartamentoById(self,idDepartamento):
+        """Busca un departamento por su id y devuelve una lista con sus datos (id,nombre)"""
+        database = self.database
+        sql = f"SELECT idDepartamento, Nombre FROM hermes.departamentos WHERE idDepartamento='{idDepartamento}';"
+        data = database.executeQuery(sql)
+        lista = self.listToDicc(data)
+        departamento =None
+        for x in lista:
+            departamento = x["nombre"]
+        return departamento
+    
+    def getMunicipioById(self,idMunicipio):
+        """Busca un municipio por su id y devuelve una lista con sus datos (id,nombre)"""
+        database = self.database
+        sql = f"SELECT idMunicipio, Nombre FROM hermes.municipios WHERE idMunicipio='{idMunicipio}';"
+        data = database.executeQuery(sql)
+        lista = self.listToDicc(data)
+        return lista
+
+    def getCategoriaById(self,idCategoria):
+        """Busca un categoria por su id y devuelve una lista con sus datos (id,nombre)"""
+        database = self.database
+        sql = f"SELECT idCategoria,Nombre FROM hermes.categoria WHERE idCategoria='{idCategoria}';"
+        data = database.executeQuery(sql)
+        lista = self.listToDicc(data)
+        categoria =None
+        for x in lista:
+            categoria = x["nombre"]
+        return categoria
 
 class adminCitas(DatabaseZ):
     def __init__(self):
@@ -591,7 +769,7 @@ class adminCitas(DatabaseZ):
                     "Cliente": x[6],
                     "idTrabajadores": x[7],
                     "NombreTrabajador": x[8],  
-                    "ApellidoTrabajdor": x[9],
+                    "ApellidoTrabajador": x[9],
                     "DescripcionTrabajador": x[10],
                     "DepartamentoTrabajador": x[11],
                     "Municipiotrabajador": x[12],
@@ -616,4 +794,47 @@ class adminCitas(DatabaseZ):
                     citaspasadas.append(cita)
 
             return citaspendientes,citasnoconfirmadas,citaspasadas
+            
+    def deleteCita(self,idCita):
+        """Elimina una Cita"""
+        database = self.database
+        sql = f"DELETE FROM `hermes`.`citas` WHERE (`idCitas` = {idCita});"
+        success = database.executeNonQueryBool(sql)
+        return success
+
+    def insertCita(self, datanueva):
+        """Agrega una citas y returna True si se realiza correctamente"""
+        database = self.database
+        sql = """INSERT INTO hermes.citas (`Fecha`, `Hora`, `Trabajador`, `Cliente`, `Finalizada`,`DescripcionTrabajo`, `Confirmacion`) 
+                 VALUES ( %s, %s, %s, %s, %s, %s, %s);"""
+        val = (
+            datanueva['Fecha'],
+            datanueva['Hora'],
+            datanueva['Trabajador'],
+            datanueva['Cliente'],
+            datanueva['Finalizada'],
+            datanueva['DescripcionTrabajo'],
+            datanueva['Confirmacion']
+            )
+        success = database.executeMany(sql,val)
+        return success
+
+    def updateCitas(self, datanueva):
+        """Actualiza la informacion de las citas y returna True si se realiza correctamente"""
+        database = self.database
+        sql = """UPDATE hermes.citas SET
+            Fecha=%s , Hora=%s, Trabajador=%s, Cliente=%s, Finalizada=%s, DescripcionTrabajo=%s ,
+            Confirmacion=%s WHERE idCitas=%s;"""
+        val = (
+            datanueva['Fecha'],
+            datanueva['Hora'],
+            datanueva['Trabajador'],
+            datanueva['Cliente'],
+            datanueva['Finalizada'],
+            datanueva['DescripcionTrabajo'],
+            datanueva['Confirmacion'],
+            datanueva['idCitas']
+            )
+        success = database.executeMany(sql,val)
+        return success
 
