@@ -673,8 +673,16 @@ class adminTrabajadores(DatabaseZ):
         database = self.database
         sql = f"""DELETE FROM citas
                 WHERE idCitas = '{idCita}'"""
+
         data = database.executeNonQueryBool(sql)
         return data
+
+    def setAcceso(self, idT, value):
+        database = self.database
+        sql = f"""UPDATE `hermes`.`trabajadores` SET `Aceptado` = '{value}' WHERE (`idTrabajadores` = '{idT}');"""
+        print(sql)
+        succes = database.executeNonQueryBool(sql)
+        return sql
 
 
 class adminCategorias(DatabaseZ):

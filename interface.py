@@ -152,16 +152,31 @@ def adminServlet():
     tipo = session['kind']
     if not tipo == "admin":
         return f"""<h1>You do not have access to this page</h1><br>
-                    <h2>Please sing up in this </h2><a href="/">link</a>""", 402    
+                    <h2>Please sing up in this </h2><a href="/">link</a>""", 402   
     else:
         idForm = request.form.get('id')
+        adminA = adminAdministrador()
+        adminT = adminTrabajadores()
         if idForm== '1':
-            adminA = adminAdministrador()
             exito = adminA.revocarLicenciaDeudores()
             if exito:
                 return redirect("/Hammer.com/admin")
             else:
                 return "Process failed. Either there are no licences to revoque or an internal problem has occurred"
+        if idForm == '2':
+            idT = request.form.get('idT')
+            adminT.setAcceso(idT, 1)
+            render = f"/Hammer.com/admin/worker/visulize/{idT}"
+            
+            return redirect(render)
+
+        if idForm == '3':
+            idT = request.form.get('idT')
+            success = adminT.setAcceso(idT, 0)
+            print(success)
+            render = f"/Hammer.com/admin/worker/visulize/{idT}"
+            print(render)
+            return redirect(render)
 
 @app.route("/Hammer.com/admin/buscar", methods=['POST'])
 def adminBuscar():
@@ -208,9 +223,10 @@ def workerVisualize(idT):
     admin = session['user']
     tipo = session['kind']
     adminCompleto = adminA.getAdminByCorreo(admin['correo'])
+    historial = adminT.HistorialTrabajadores(idT)
     if not tipo == "admin":
         return redirect("/Hammer.com/notAccess") 
-    return render_template("perfilDeTrabajadoresAdmin.html", worker = trabajador, imagenes = imagenes, admin = adminCompleto)
+    return render_template("perfilDeTrabajadoresAdmin.html", worker = trabajador, imagenes = imagenes, admin = adminCompleto, historial = historial)
 
 
 # User UI

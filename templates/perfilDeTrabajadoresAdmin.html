@@ -19,18 +19,34 @@
                             <div class="card-header bg-light">
                                 <h6 class="font-weight-bold mb-0">Información</h6>
                             </div>
-                        <form name="form1" >
-                            <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Nombre: </h6></label> {{worker["nombre"]}}<br>
-                            <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Apellido: </h6></label> {{worker["apellido"]}}<br>
-                            <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Telefono: </h6></label> {{worker["telefono"]}}<br>
-                            <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Direccion: </h6></label> {{worker["direccion"]}}<br>
-                            <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Correo: </h6></label> {{worker["correo"]}}<br>
-                            <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Descripcion: </h6></label> {{worker["descripcion"]}}<br>
-                            <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Genero: </h6></label> {{worker["genero"]}}<br>
-                        </form>
+                            <form name="form1" >
+                                <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Nombre: </h6></label> {{worker["nombre"]}}<br>
+                                <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Apellido: </h6></label> {{worker["apellido"]}}<br>
+                                <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Teléfono: </h6></label> {{worker["telefono"]}}<br>
+                                <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Dirección: </h6></label> {{worker["direccion"]}}<br>
+                                <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Correo: </h6></label> {{worker["correo"]}}<br>
+                                <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Descripción: </h6></label> {{worker["descripcion"]}}<br>
+                                <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Género: </h6></label> {{worker["genero"]}}<br>
+                            </form>
+
                             <div class="card-body">     
                                 <canvas id="myChart" width="300" height="150"></canvas>
                             </div>
+                            <form action="/Hammer.com/admin/servlet" method="POST">
+                                <div>
+                                    {% if worker['aceptado']== 0: %}
+                                    <button>Dar acceso</button>
+                                    <input type="hidden" value="2" id="id" name="id">
+                                    <input type="hidden" value="{{worker['id']}}" id="idT" name="idT">
+                                    {% else %}
+                                    <button>Revocar acceso</button>
+                                    <input type="hidden" value="3" id="id" name="id">
+                                    <input type="hidden" value="{{worker['id']}}" id="idT" name="idT">
+                                    {% endif %}
+                                </div>
+                            </form>
+                            
+
                         </div>
                     </div>
                     <div class="col-lg-4 my-3">
@@ -43,6 +59,74 @@
                             </div>
                         </div>
                     </div>
+                    {% if worker['aceptado']== 1: %}
+                    <div>
+                        <section class="bg-mix py-2">
+                            <div class="container">
+                                <div class="card rounded-0">
+                                    <div class="card-body"> 
+                                      <table class="egt" width="100%"  cellspacing="10" cellpadding="10">
+                                        <thead>
+                                          <tr>                         
+                                            <th><h6 class="text-muted">Fecha</h6></th>                          
+                                            <th><h6 class="text-muted">Hora</h6></th>                            
+                                            <th><h6 class="text-muted">Descripcion</h6></th>   
+                                            <th><h6 class="text-muted">Cliente</h6></th>                            
+                                            <th><h6 class="text-muted">Direccion</h6></th>                        
+                                          </tr>                          
+                                        </thead>                          
+                                        <tbody>                          
+                                          {% for i in servicio: %}
+                                          <tr class="mx-auto" style="width: 200px;">                          
+                                            <td><h6 class="font-weight-bold">{{ i[1] }}</h6></td>                          
+                                            <td><h6 class="font-weight-bold">{{ i[2] }}</h6></td>                          
+                                            <td><h6 class="font-weight-bold">{{ i[6] }}</h6></td>
+                                            <td><h6 class="font-weight-bold">{{ i[8] }} {{ i[9] }}</h6></td>
+                                            <td><h6 class="font-weight-bold">{{ i[10] }}</h6></td>
+                                            <td><a href="/Hammer.com/finalizarServicio/{{ i[0] }}"><button type="button" class="btn btn-warning">Finalizar</button></a></td>                    
+                                          </tr>
+                                          {% endfor %}                                             
+                                        </tbody>                          
+                                      </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div>
+                        <section class="bg-mix py-2">
+                            <div class="container">
+                                <div class="card rounded-0">
+                                    <div class="card-body"> 
+                                      <table class="egt" width="100%"  cellspacing="10" cellpadding="10">
+                                        <thead>
+                                          <tr>                         
+                                            <th><h6 class="text-muted">Fecha</h6></th>                          
+                                            <th><h6 class="text-muted">Hora</h6></th>                            
+                                            <th><h6 class="text-muted">Descripcion</h6></th>   
+                                            <th><h6 class="text-muted">Cliente</h6></th>                            
+                                            <th><h6 class="text-muted">Celular</h6></th>                        
+                                          </tr>                          
+                                        </thead>                          
+                                        <tbody>                          
+                                          {% for i in historial: %}
+                                          <tr class="mx-auto" style="width: 200px;">                          
+                                            <td><h6 class="font-weight-bold">{{ i[0] }}</h6></td>                          
+                                            <td><h6 class="font-weight-bold">{{ i[1] }}</h6></td>                          
+                                            <td><h6 class="font-weight-bold">{{ i[2] }}</h6></td>
+                                            <td><h6 class="font-weight-bold">{{ i[3] }} {{ i[4] }}</h6></td>
+                                            <td><h6 class="font-weight-bold">{{ i[5] }}</h6></td>                   
+                                          </tr>
+                                          {% endfor %}                                             
+                                        </tbody>                          
+                                      </table>
+                                    </div>
+                                </div>
+                            </div>
+            
+                        </section>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </section>
