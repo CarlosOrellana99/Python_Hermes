@@ -612,7 +612,26 @@ class adminTrabajadores(DatabaseZ):
         
         arrayCitas = [meses, cantidad]
         return arrayCitas
-            
+
+    def citasConfirmadas(self, idTrabajador):
+        database = self.database
+        sql = f"""select clientes.Nombre, clientes.Apellido, clientes.Celular, citas.Fecha, citas.Hora
+                    from citas inner join clientes on
+                        citas.Cliente = clientes.idClientes
+                    where citas.Finalizada = 'False' and citas.Confirmacion = 'True' and citas.Trabajador = '{idTrabajador}'
+                    order by citas.Fecha"""  
+        data = database.executeQuery(sql)
+        return data
+
+    def citasNoConfirmadas(self, idTrabajador):
+        database = self.database
+        sql = f"""select clientes.Nombre, clientes.Apellido, clientes.Celular, citas.Fecha, citas.Hora
+                    from citas inner join clientes on
+                        citas.Cliente = clientes.idClientes
+                    where citas.Finalizada = 'False' and citas.Confirmacion = 'False' and citas.Trabajador = '{idTrabajador}'
+                    order by citas.Fecha"""  
+        data = database.executeQuery(sql)
+        return data
 
 class adminCategorias(DatabaseZ):
     
