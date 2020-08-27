@@ -92,38 +92,34 @@
                           {% endfor %}
                       </div>
                       <div class="col-md-6">
-                        <section>
-                          <div class="title is-parent">
+                        <section class="card">
+                          <div class="title is-parent" style="margin: 10px;">
                             <p>Registre una nueva tarjeta de credito:</p>
                           </div>
             
-                          <div class="box" style="border: lightgray 2px inset">
-                            <form method="POST" action="/anadirTarjeta">
+                          <div class="card" style="border-color: #355BC1;">
+                            <form method="POST" action="/anadirTarjeta" style="margin: 10px;">
             
-                                <label for="owner">Dueño de la tarjeta de crédito</label>
+                                <label for="owner">Dueño de la tarjeta de crédito:</label>
                                 <input type="text" class="form-control" id="Dueno" name="titular" placeholder="" required>
                                 <br><br>
-                                <label for="Tipo">Tipo de tarjeta de crédito</label>
-            
-                              <div class="select is-info">
+                                <label for="Tipo">Tipo de tarjeta de crédito:</label>
                                   <select  id="Tipo" name="tipo" required>
                                   <option value="Visa">Visa</option>
                                   <option value="American Express">American Express</option>
                                   <option value="Mastercard">Mastercard</option>
                                   </select>
-                                <br>
-                              </div>
                               <br><br>
             
-                              <label for="numero">Número de la tarjeta de crédito</label>
-                              <input type="text" class="form-control" id="numero" name="numero" pattern=".{16,16}" placeholder="0000000000000000" required>
+                              <label for="numero">Número de la tarjeta de crédito:</label>
+                              <input type="text" style="width: fit-content;" class="form-control" id="numero" name="numero" pattern=".{16,16}" placeholder="0000000000000000" required>
                               <br><br>
             
-                              <label for="código">Código de la tarjeta de crédito</label>
-                              <input type="text" class="form-control" id="codigo" name="cvv" pattern=".{4,4}" placeholder="0000" required>
+                              <label for="código">Código de la tarjeta de crédito:</label>
+                              <input type="text" style="width: fit-content;" class="form-control" id="codigo" name="cvv" pattern=".{4,4}" placeholder="0000" required>
                               <br><br>
             
-                              <label for="mes">Mes de vencimieto</label>
+                              <label for="mes">Mes de vencimieto:</label>
                               <select name="dia" id="mes" required>
                                 {% for mes in meses %}
                                 <option value="{{mes}}">{{mes}} </option>
@@ -131,7 +127,7 @@
                               </select>
                               <br><br>
             
-                              <label for="anno">Año de vencimieto</label>
+                              <label for="anno">Año de vencimieto:</label>
             
                               <select name="mes" id="anno" required>
                                   {% for anno in annos %}
@@ -142,7 +138,7 @@
                               <input type ="hidden" value ="3" name="formid" id="formid">
                               <input type="hidden" value="<%= usuario.getIdUsuario() %>" name="idCliente" id="idCliente">
                               <div>
-                                <button  type="submit" class="button is-link">Ingresar tarjeta de crédito</button>
+                                <button class="btn my-2 my-sm-0"  style="color: #355BC1;outline-color: #C7C7C7;" type="button">Ingresar tarjeta de crédito</button>
                               </div>
                             </form>
                           </div>
