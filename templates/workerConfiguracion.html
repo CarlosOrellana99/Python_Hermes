@@ -80,7 +80,7 @@
                                     <div class="card-header bg-light">
                                       <h6 class="font-weight-bold mb-0">Configuracion de perfil</h6>
                                     </div>
-                                <form name="form1" action="/Hammer.com/configuracion">
+                                <form name="form1" action="/Hammer.com/updatePerfil" method="POST">
                                   
                                   <div class="col-md-11" style="padding-top: 20px; padding-left: 20px">
                                     <div class="form-group">
@@ -111,7 +111,10 @@
                                     </div>
                                     <div class="form-group">
                                       <label for="fname"><h6 class="font-weight-bold">Genero: </h6></label> 
-                                      <input class="form-control" type="text" name="genero" value= '{{worker["genero"]}}' ></input>
+                                      <select name="genero" value='{{worker["genero"]}}'>
+                                        <option>Femenino</option>
+                                        <option>Masculino</option>
+                                        </select>
                                     </div>
 
                                   </div>

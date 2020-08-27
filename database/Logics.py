@@ -372,6 +372,12 @@ class adminTrabajadores(DatabaseZ):
         data = database.executeNonQueryBool(sql)
         return data
 
+    def updateWorker(self, idWorker, nombre, apellido, telefono, direccion, correo, descripcion, genero):
+        database = self.database
+        sql = f"""UPDATE `hermes`.`trabajadores` SET `Nombre` = '{nombre}', `Apellido` = '{apellido}', `Celular` = '{telefono}', `Direccion` = '{direccion}', `Correo` = '{correo}', `Descripcion` = '{descripcion}', `Genero` = '{genero}' WHERE (`idTrabajadores` = {idWorker});"""
+        data = database.executeNonQueryBool(sql)
+        return data
+
     def getWorkerbyCorreo(self, correo, picture = True):
 
         """Debuele una lista con los datos del usuario con ese correo"""
