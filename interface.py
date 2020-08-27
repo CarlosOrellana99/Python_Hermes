@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, flash, session, url_for
 from database.Logics import adminAdministrador, adminClientes, adminTrabajadores, adminOpciones,adminCategorias,adminCitas
-import json
+import base64
 
 app = Flask(__name__) #Page 30
 app.secret_key = "Latrenge3456"
@@ -466,17 +466,50 @@ def workerServicioActivo():
 def workerConfiguracion():
     adminT=adminTrabajadores()
     worker = session['user']
+    idWorker= worker['id']
     trabajador= adminT.getWorkerbyCorreo(worker['correo'])
+    servicio= adminT.ServicioActivo(idWorker)
     return render_template("workerConfiguracion.html", worker= trabajador)
+
+@app.route("/Hammer.com/updatePerfil",methods=['POST'])    
+def workerUpdatePerfil():
+    adminT=adminTrabajadores()
+    worker = session['user']
+    idWorker= worker['id']
+    trabajador= adminT.getWorkerbyCorreo(worker['correo'])
+
+    print(type(idWorker))
+    nombre= request.form.get('nombre')
+    apellido= request.form.get('apellido')
+    telefono= request.form.get('telefono')
+    direccion= request.form.get('direccion')
+    correo= request.form.get('correo')
+    descripcion= request.form.get('descripcion')
+    genero= request.form.get('genero')
+
+    print(nombre)
+    print(apellido)
+    print(telefono)
+    print(direccion)
+    print(correo)
+    print(descripcion)
+    print(genero)
+
+    update= adminT.updateWorker(idWorker,nombre,apellido,telefono,direccion,correo,descripcion,genero)
+
+    return redirect("/Hammer.com/perfil")
+
 
 @app.route("/Hammer.com/cambiarFoto", methods=['POST'])    
 def workerCambiarFoto():
     adminT=adminTrabajadores()
     worker = session['user']
     trabajador= adminT.getWorkerbyCorreo(worker['correo'])
-    foto= request.form.get('imagen')
-    idWorker= trabajador['id']
-    cambiarFoto= adminT.cambiarFoto(idWorker,foto)
+    imagen = request.files['imagen']
+    foto = imagen.read()
+    print(foto)
+    idWorker= worker['id']
+    cambiarFoto= adminT.cambiarFoto(idWorker, foto)
     trabajador2=adminT.getWorkerbyCorreo(worker['correo'])
     return render_template("workerConfiguracion.html", worker= trabajador2)
 

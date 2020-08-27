@@ -21,6 +21,9 @@
 
     <!-- Ionic icons -->
     <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 
     <title>Perfil</title>
 </head>
@@ -80,7 +83,7 @@
                                     <div class="card-header bg-light">
                                       <h6 class="font-weight-bold mb-0">Configuracion de perfil</h6>
                                     </div>
-                                <form name="form1" action="/Hammer.com/configuracion">
+                                <form name="form1" action="/Hammer.com/updatePerfil" method="POST">
                                   
                                   <div class="col-md-11" style="padding-top: 20px; padding-left: 20px">
                                     <div class="form-group">
@@ -111,7 +114,10 @@
                                     </div>
                                     <div class="form-group">
                                       <label for="fname"><h6 class="font-weight-bold">Genero: </h6></label> 
-                                      <input class="form-control" type="text" name="genero" value= '{{worker["genero"]}}' ></input>
+                                      <select name="genero" value='{{worker["genero"]}}'>
+                                        <option>Femenino</option>
+                                        <option>Masculino</option>
+                                        </select>
                                     </div>
 
                                   </div>
@@ -134,17 +140,21 @@
                                         <img src="data:;base64,{{ worker['foto'] }}" class="card-img" alt="Image" style="overflow:hidden ;height: 180px; width:180px">
                                       </div>
                                       <div class="input-group mb-3">
-                                          <div class="custom-file">
-                                              <input type="file" class="custom-file-input" id="imagen" name="imagen" aria-describedby="inputGroupFileAddon01">
-                                              <label class="custom-file-label" for="imagen">Elija un archivo</label>
-                                          </div>
-                                      </div>
-                                      <script type="application/javascript">
-                                          $('input[type="file"]').change(function(e){
-                                              var fileName = e.target.files[0].name;
-                                              $('.custom-file-label').html(fileName);
-                                          });
-                                      </script>
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroupFileAddon01">Update</span>
+                                </div>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="imagen" name="imagen" aria-describedby="inputGroupFileAddon01">
+                                    <label class="custom-file-label" for="imagen">Elija un archivo</label>
+                                </div>
+                            </div>
+                            <script type="application/javascript">
+                                $('input[type="file"]').change(function(e){
+                                    var fileName = e.target.files[0].name;
+                                    $('.custom-file-label').html(fileName);
+                                });
+                            </script>
+                            <br>
                                       <button class="btn btn-primary w-100" type="submit">Cambiar foto</button>
                                 </form>
                               </div>
