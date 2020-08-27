@@ -73,11 +73,16 @@
                                 <img src="data:;base64,{{ worker['foto'] }}" class="card-img" alt="Image" style="overflow:hidden ;height: 180px; width:180px">
                             </div>
                             <p class="lead text-muted">No olvides pagar a tiempo tu membresía para que no te quedes sin ofrecer tus serviecios.</p>
+                            {% if debe %}
+                            <p style="color: red;">Tu membresía ha expirado. Recuerda pagar tus cuentas añadiendo una tarjeta de crédito o débito y precionando en el botón de pagar.</p>
+                            <p style="color: green;">El costo por la membresía es de $ 14.99 al mes.</p>
+                            {% else %}
+                            <p style="color: green;">Estás al día con tus pagos</p>
+                            {% endif %}
                           </div>
                       </div>
                   </div>
               </section>
-
               <section>
                   <div class="row mb-2">
                       <div class="col-md-6">
@@ -87,7 +92,7 @@
                               <p><strong> Tipo de tarjeta de credito: </strong> {{ tarj['Tipo'] }} </p>
                               <p><strong> Numero de tarjeta de credito: </strong> {{ tarj['Numero'] }} </p>
                               <p><strong> Fecha: </strong> {{ tarj['Dia'] }}-{{ tarj['Mes'] }} </p>
-                              <a href="/pagar"><button>Pagar con esta tarjeta</button></a>
+                              <form action="/pagar" method="POST"><button class="btn btn-success" type="submit" {% if not debe %} disabled {% endif %}>Pagar con esta tarjeta</button><input type="hidden" value="{{tarj['id']}}" name="tarjeta"></form>
                           </div>
                           {% endfor %}
                       </div>
@@ -135,10 +140,9 @@
                                 {% endfor %}
                               </select>
                               <br><br>
-                              <input type ="hidden" value ="3" name="formid" id="formid">
-                              <input type="hidden" value="<%= usuario.getIdUsuario() %>" name="idCliente" id="idCliente">
+                              
                               <div>
-                                <button class="btn my-2 my-sm-0"  style="color: #355BC1;outline-color: #C7C7C7;" type="button">Ingresar tarjeta de crédito</button>
+                                <button type="submit" class="btn btn-success"   type="button">Ingresar tarjeta de crédito</button>
                               </div>
                             </form>
                           </div>

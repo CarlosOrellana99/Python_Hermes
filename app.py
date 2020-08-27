@@ -564,7 +564,7 @@ def pagar():
     trabajador= adminT.getWorkerbyCorreo(worker['correo'])
     idTrabajador = worker['id']
     idTarjeta = request.form.get('tarjeta')
-    adminTrabajadores.pagarMes(idTrabajador, idTarjeta)
+    adminT.pagarMes(idTrabajador, idTarjeta)
     return redirect('/Hammer.com/workePpagos')
 
 @app.route("/Hammer.com/citasWorker")
