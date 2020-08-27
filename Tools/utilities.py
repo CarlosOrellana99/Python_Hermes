@@ -1,3 +1,0 @@
-class Utilities():
-    pass
-    
