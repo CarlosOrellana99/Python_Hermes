@@ -57,7 +57,7 @@ class adminAdministrador(DatabaseZ):
     def getAdminByCorreo(self, correo, picture = True):
         """Debuele una lista con los datos del usuario con ese correo"""
         database = self.database
-        sql = f"SELECT * FROM heroku_b8872d099c2f07e.administradoes where administradoes.Correo = '{correo}' limit 1;"
+        sql = f"SELECT * FROM hermes.administradoes where administradoes.Correo = '{correo}' limit 1;"
         data = database.executeQuery(sql)
         lista = {}
         if len(data) > 0:
@@ -97,7 +97,7 @@ class adminAdministrador(DatabaseZ):
         lista = admin.fetchAllWorkersByWord(word, limit)
 
     def revocarLicenciaDeudores(self):
-        sql = "update heroku_b8872d099c2f07e.membresias set membresias.Vigencia = 0 where datediff(now(), UltimoPago) > 31 and membresias.vigencia = 1;"
+        sql = "update hermes.membresias set membresias.Vigencia = 0 where datediff(now(), UltimoPago) > 31 and membresias.vigencia = 1;"
         exito = self.database.executeNonQueryBool(sql)
         return exito
     
@@ -126,7 +126,7 @@ class adminAdministrador(DatabaseZ):
         return dicc
 
     def getNumeroTrabajadoresMora(self):
-        sql = """SELECT count(distinct(membresias.idMembresias)) as morosos FROM heroku_b8872d099c2f07e.trabajadores 
+        sql = """SELECT count(distinct(membresias.idMembresias)) as morosos FROM hermes.trabajadores 
                 inner join membresias on membresias.idMembresias = trabajadores.Membresia
                 where datediff(now(), membresias.UltimoPago) > 31 and membresias.vigencia = 1;"""
         data = self.database.executeQuery(sql)
@@ -134,7 +134,7 @@ class adminAdministrador(DatabaseZ):
         return valor
     
     def getNumeroTrabajadoresNoAcceso(self):
-        sql = """SELECT count(distinct(membresias.idMembresias)) as morosos FROM heroku_b8872d099c2f07e.trabajadores 
+        sql = """SELECT count(distinct(membresias.idMembresias)) as morosos FROM hermes.trabajadores 
                 inner join membresias on membresias.idMembresias = trabajadores.Membresia
                 where membresias.Membresia = "AAAA-0000-0000";"""
             
@@ -143,7 +143,7 @@ class adminAdministrador(DatabaseZ):
         return valor
 
     def ingresosMes(self):
-        sql = """SELECT sum(monto) as total FROM heroku_b8872d099c2f07e.pagos
+        sql = """SELECT sum(monto) as total FROM hermes.pagos
                 where month(Fecha) = month(now());"""
         data = self.database.executeQuery(sql)
         if data[0][0] is None:
@@ -164,7 +164,7 @@ class adminAdministrador(DatabaseZ):
         return trabajadores
     
     def getImages(self):
-        sql = "SELECT * FROM heroku_b8872d099c2f07e.imagenes;"
+        sql = "SELECT * FROM hermes.imagenes;"
         data = self.database.executeQuery(sql)
         dicc = {
             "logo": b64encode(data[0][1]).decode("utf-8"),
@@ -188,12 +188,12 @@ class adminClientes(DatabaseZ):
         Devuelve True si se ejecutó con éxito y false si no se hicieron cambios"""
         success = False
         if  foto == "":
-            sql = """INSERT INTO heroku_b8872d099c2f07e.clientes 
+            sql = """INSERT INTO hermes.clientes 
             (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Departamento`, `Municipio`, `Genero` )  
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
             val = (dui, nombre, apellido, celular, direccion, correo, contrasena, departamento, municipio, genero)
         else:
-            sql = """INSERT INTO heroku_b8872d099c2f07e.clientes 
+            sql = """INSERT INTO hermes.clientes 
             (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Departamento`, `Municipio`, `Foto`, `Genero` ) 
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
 
@@ -206,9 +206,9 @@ class adminClientes(DatabaseZ):
     def getUserbyCorreo(self, correo, picture = True):
         """Debuele una lista con los datos del usuario con ese correo"""
         database = self.database
-        sql = f"""SELECT clientes.*, departamentos.Nombre as dep, municipios.Nombre as mun FROM heroku_b8872d099c2f07e.clientes 
-                    inner join heroku_b8872d099c2f07e.departamentos on departamentos.idDepartamento = clientes.Departamento
-                    inner join heroku_b8872d099c2f07e.municipios on municipios.idMunicipio = clientes.Municipio
+        sql = f"""SELECT clientes.*, departamentos.Nombre as dep, municipios.Nombre as mun FROM hermes.clientes 
+                    inner join hermes.departamentos on departamentos.idDepartamento = clientes.Departamento
+                    inner join hermes.municipios on municipios.idMunicipio = clientes.Municipio
                     where clientes.Correo = '{correo}' limit 1;"""
         data = database.executeQuery(sql)
         lista = {}
@@ -243,7 +243,7 @@ class adminClientes(DatabaseZ):
         """ actualiza los campos de la cuenta de un usuario recibiendo un diccionario con los nuevos campos y el id"""
         database = self.database
         if datanueva['foto']==None:
-            sql = """UPDATE heroku_b8872d099c2f07e.clientes SET
+            sql = """UPDATE hermes.clientes SET
                 DUI=%s , Nombre=%s, Apellido=%s, Celular=%s, Direccion=%s, Correo=%s ,
                 Contrasena=%s , Departamento=%s , Municipio=%s, Genero=%s WHERE idClientes=%s;"""
             val = (
@@ -261,7 +261,7 @@ class adminClientes(DatabaseZ):
                 )
             success = database.executeMany(sql,val)
         else:
-            sql = """UPDATE heroku_b8872d099c2f07e.clientes SET
+            sql = """UPDATE hermes.clientes SET
                 DUI=%s , Nombre=%s, Apellido=%s, Celular=%s, Direccion=%s, Correo=%s ,
                 Contrasena=%s , Departamento=%s , Municipio=%s, Genero=%s, Foto=%s WHERE idClientes=%s;"""
             val = (
@@ -284,9 +284,9 @@ class adminClientes(DatabaseZ):
     def getDepartamentoMunicipioCliente(self,idCliente):
         """ Obtiene el nombre del Departamento y Municipio de un cliente"""
         database = self.database
-        sql=f"""SELECT clientes.idClientes,departamentos.Nombre,municipios.Nombre FROM heroku_b8872d099c2f07e.clientes 
-                left join heroku_b8872d099c2f07e.departamentos on clientes.Departamento= departamentos.idDepartamento 
-                left join heroku_b8872d099c2f07e.municipios on clientes.Municipio=municipios.idMunicipio 
+        sql=f"""SELECT clientes.idClientes,departamentos.Nombre,municipios.Nombre FROM hermes.clientes 
+                left join hermes.departamentos on clientes.Departamento= departamentos.idDepartamento 
+                left join hermes.municipios on clientes.Municipio=municipios.idMunicipio 
                 WHERE clientes.idClientes='{idCliente}';"""
         data = database.executeQuery(sql)
         for x in data:
@@ -297,8 +297,8 @@ class adminClientes(DatabaseZ):
     
     def getUserbyID(self,idCliente):
         database = self.database
-        sql=f"""SELECT * FROM heroku_b8872d099c2f07e.clientes
-                where heroku_b8872d099c2f07e.clientes.idClientes={idCliente};"""
+        sql=f"""SELECT * FROM hermes.clientes
+                where hermes.clientes.idClientes={idCliente};"""
         data = database.executeQuery(sql)
         return data
         
@@ -318,12 +318,12 @@ class adminTrabajadores(DatabaseZ):
         fecha = date.today()
         fechaF = fecha.strftime("%Y-%m-%d")
         if foto == "":
-            sql = """INSERT INTO `heroku_b8872d099c2f07e`.`trabajadores` 
+            sql = """INSERT INTO `hermes`.`trabajadores` 
             (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Descripcion`, `Departamento`, `Municipio`, `Genero`, `Aceptado`, `Membresia`, `fechaDeEntrada`) 
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
             val = ( dui, nombre, apellido, celular, direccion, correo, contrasena, descripcion, departamento, municipio, genero, aceptado, membresia, fechaF)
         else:
-            sql = """INSERT INTO `heroku_b8872d099c2f07e`.`trabajadores` 
+            sql = """INSERT INTO `hermes`.`trabajadores` 
             (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Descripcion`, `Departamento`, `Municipio`, `Genero`, `Aceptado`, `Membresia`, `Foto`, `fechaDeEntrada`) 
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
             val = (
@@ -352,34 +352,35 @@ class adminTrabajadores(DatabaseZ):
     def ServicioActivo(self, idTrabajador):
 
         database = self.database
-        sql = f"""select heroku_b8872d099c2f07e.citas.idCitas,heroku_b8872d099c2f07e.citas.Fecha,heroku_b8872d099c2f07e.citas.Hora,heroku_b8872d099c2f07e.citas.Trabajador,heroku_b8872d099c2f07e.citas.Cliente,heroku_b8872d099c2f07e.citas.Finalizada,heroku_b8872d099c2f07e.citas.DescripcionTrabajo,heroku_b8872d099c2f07e.citas.Confirmacion,heroku_b8872d099c2f07e.clientes.Nombre, heroku_b8872d099c2f07e.clientes.Apellido, heroku_b8872d099c2f07e.clientes.Direccion
-                from heroku_b8872d099c2f07e.clientes 
-                inner join heroku_b8872d099c2f07e.citas on heroku_b8872d099c2f07e.citas.Cliente=heroku_b8872d099c2f07e.clientes.idClientes
-                inner join heroku_b8872d099c2f07e.trabajadores on heroku_b8872d099c2f07e.trabajadores.idTrabajadores=heroku_b8872d099c2f07e.citas.Trabajador
-                where heroku_b8872d099c2f07e.citas.Trabajador={idTrabajador} and heroku_b8872d099c2f07e.citas.Confirmacion= 'True' and heroku_b8872d099c2f07e.citas.Finalizada= 'False';"""
+        sql = f"""select hermes.citas.idCitas,hermes.citas.Fecha,hermes.citas.Hora,hermes.citas.Trabajador,hermes.citas.Cliente,hermes.citas.Finalizada,hermes.citas.DescripcionTrabajo,hermes.citas.Confirmacion,hermes.clientes.Nombre, hermes.clientes.Apellido, hermes.clientes.Direccion
+                from hermes.clientes 
+                inner join hermes.citas on hermes.citas.Cliente=hermes.clientes.idClientes
+                inner join hermes.trabajadores on hermes.trabajadores.idTrabajadores=hermes.citas.Trabajador
+                where hermes.citas.Trabajador={idTrabajador} and hermes.citas.Confirmacion= 'True' and hermes.citas.Finalizada= 'False';"""
         data = database.executeQuery(sql)
         return data
 
     def finalizarServicio(self, idCita):
         database = self.database
-        sql = f"""UPDATE `heroku_b8872d099c2f07e`.`citas` SET `Finalizada` = 'True' WHERE (`idCitas` = {idCita});"""
+        sql = f"""UPDATE `hermes`.`citas` SET `Finalizada` = 'True' WHERE (`idCitas` = {idCita});"""
         data = database.executeNonQueryBool(sql)
         return data
     
     def cambiarFoto(self, idWorker, foto=None):
         database = self.database
         if foto=="":
-            data = False
+            data = False #UPDATE `hermes`.`trabajadores` SET `Foto` = ? WHERE (`idTrabajadores` = '11');
         else:
-            sql = f""" UPDATE trabajadores SET Foto = {foto} 
+            sql = f""" UPDATE trabajadores SET Foto = %s 
                         WHERE idTrabajadores = '{idWorker}' """
-            data = database.executeNonQueryBool(sql)
+            val = tuple(foto)
+            data = database.executeMany(sql, val)
         
         return data
 
     def updateWorker(self, idWorker, nombre, apellido, telefono, direccion, correo, descripcion, genero):
         database = self.database
-        sql = f"""UPDATE `heroku_b8872d099c2f07e`.`trabajadores` SET `Nombre` = '{nombre}', `Apellido` = '{apellido}', `Celular` = '{telefono}', `Direccion` = '{direccion}', `Correo` = '{correo}', `Descripcion` = '{descripcion}', `Genero` = '{genero}' WHERE (`idTrabajadores` = {idWorker});"""
+        sql = f"""UPDATE `hermes`.`trabajadores` SET `Nombre` = '{nombre}', `Apellido` = '{apellido}', `Celular` = '{telefono}', `Direccion` = '{direccion}', `Correo` = '{correo}', `Descripcion` = '{descripcion}', `Genero` = '{genero}' WHERE (`idTrabajadores` = {idWorker});"""
         data = database.executeNonQueryBool(sql)
         return data
 
@@ -393,9 +394,9 @@ class adminTrabajadores(DatabaseZ):
                     FROM categoriatrabajadores 
                     right join trabajadores on trabajadores.idTrabajadores = categoriatrabajadores.Trabajador
                     left join categoria on categoria.idCategoria = categoriatrabajadores.Categoria
-                    inner join heroku_b8872d099c2f07e.departamentos on departamentos.idDepartamento = trabajadores.Departamento
-                    inner join heroku_b8872d099c2f07e.municipios on municipios.idMunicipio = trabajadores.Municipio
-                    inner join heroku_b8872d099c2f07e.membresias on membresias.idMembresias = trabajadores.Membresia
+                    inner join hermes.departamentos on departamentos.idDepartamento = trabajadores.Departamento
+                    inner join hermes.municipios on municipios.idMunicipio = trabajadores.Municipio
+                    inner join hermes.membresias on membresias.idMembresias = trabajadores.Membresia
                     where trabajadores.Correo = '{correo}'
                     limit 1;"""
         data = database.executeQuery(sql)
@@ -414,9 +415,9 @@ class adminTrabajadores(DatabaseZ):
                     FROM categoriatrabajadores 
                     right join trabajadores on trabajadores.idTrabajadores = categoriatrabajadores.Trabajador
                     left join categoria on categoria.idCategoria = categoriatrabajadores.Categoria
-                    inner join heroku_b8872d099c2f07e.departamentos on departamentos.idDepartamento = trabajadores.Departamento
-                    inner join heroku_b8872d099c2f07e.municipios on municipios.idMunicipio = trabajadores.Municipio
-                    inner join heroku_b8872d099c2f07e.membresias on membresias.idMembresias = trabajadores.Membresia
+                    inner join hermes.departamentos on departamentos.idDepartamento = trabajadores.Departamento
+                    inner join hermes.municipios on municipios.idMunicipio = trabajadores.Municipio
+                    inner join hermes.membresias on membresias.idMembresias = trabajadores.Membresia
                     where trabajadores.idTrabajadores = '{idT}'
                     limit 1;"""
         data = database.executeQuery(sql)
@@ -456,9 +457,9 @@ class adminTrabajadores(DatabaseZ):
                     FROM categoriatrabajadores 
                     right join trabajadores on trabajadores.idTrabajadores = categoriatrabajadores.Trabajador
                     left join categoria on categoria.idCategoria = categoriatrabajadores.Categoria
-                    inner join heroku_b8872d099c2f07e.departamentos on departamentos.idDepartamento = trabajadores.Departamento
-                    inner join heroku_b8872d099c2f07e.municipios on municipios.idMunicipio = trabajadores.Municipio
-                    inner join heroku_b8872d099c2f07e.membresias on membresias.idMembresias = trabajadores.Membresia
+                    inner join hermes.departamentos on departamentos.idDepartamento = trabajadores.Departamento
+                    inner join hermes.municipios on municipios.idMunicipio = trabajadores.Municipio
+                    inner join hermes.membresias on membresias.idMembresias = trabajadores.Membresia
                     where {x} {like}
                     order by {order} {mode} limit {limit};"""
             # print(sql)
@@ -513,7 +514,7 @@ class adminTrabajadores(DatabaseZ):
 
     def getCategoriasById(self, idTrabajador):
         """Retorna la lista de categorias a las que pertenece el trabajador con el id especificado"""
-        sql = f"""SELECT categoria.nombre FROM heroku_b8872d099c2f07e.categoriatrabajadores
+        sql = f"""SELECT categoria.nombre FROM hermes.categoriatrabajadores
             left join categoria on categoria.idCategoria = categoriatrabajadores.categoria
             where categoriatrabajadores.Trabajador = '{idTrabajador}';"""
         
@@ -531,7 +532,7 @@ class adminTrabajadores(DatabaseZ):
         last = self.getLastMembresia()
         if membActual == "AAAA-0000-0000": # Esto significa que aún no se le ha asignado ninguna membresía
             new = self.createMembresia(last)
-            sql = f"""  UPDATE heroku_b8872d099c2f07e.membresias inner join heroku_b8872d099c2f07e.trabajadores on trabajadores.Membresia = membresias.idMembresias
+            sql = f"""  UPDATE hermes.membresias inner join hermes.trabajadores on trabajadores.Membresia = membresias.idMembresias
                         set membresias.Membresia = '{new}'
                         where trabajadores.idTrabajadores = '{idW}';"""
             exito = self.database.executeNonQueryBool(sql)
@@ -566,8 +567,8 @@ class adminTrabajadores(DatabaseZ):
     def getLastMembresia(self):
         """Devuelve el valor de la última membresía ingresada"""
         database = self.database
-        sql = """   SELECT membresias.Membresia FROM heroku_b8872d099c2f07e.trabajadores 
-                    inner join heroku_b8872d099c2f07e.membresias on membresias.idMembresias = trabajadores.Membresia
+        sql = """   SELECT membresias.Membresia FROM hermes.trabajadores 
+                    inner join hermes.membresias on membresias.idMembresias = trabajadores.Membresia
                     order by membresias.Membresia desc limit 1;"""
         data = database.executeQuery(sql)
         membresia = data[0][0]
@@ -696,7 +697,7 @@ class adminTrabajadores(DatabaseZ):
 
     def setAcceso(self, idT, value):
         database = self.database
-        sql = f"""UPDATE `heroku_b8872d099c2f07e`.`trabajadores` SET `Aceptado` = '{value}' WHERE (`idTrabajadores` = '{idT}');"""
+        sql = f"""UPDATE `hermes`.`trabajadores` SET `Aceptado` = '{value}' WHERE (`idTrabajadores` = '{idT}');"""
         print(sql)
         succes = database.executeNonQueryBool(sql)
         return sql
@@ -710,7 +711,7 @@ class adminCategorias(DatabaseZ):
     def getCategoriaConFoto(self):
         """Retorna una lista con los datos completos de las categorias (id,nombre,foto)"""
         database = self.database
-        sql = "SELECT * FROM heroku_b8872d099c2f07e.categoria;"
+        sql = "SELECT * FROM hermes.categoria;"
         data = database.executeQuery(sql)
         return data
 
@@ -734,7 +735,7 @@ class adminOpciones(DatabaseZ):
     def getMunicipios(self):
         """Retorna una lista de diccionarios con los datos de los municipios (id, nombre)"""
         database = self.database
-        sql = "SELECT idMunicipio, Nombre FROM heroku_b8872d099c2f07e.municipios;"
+        sql = "SELECT idMunicipio, Nombre FROM hermes.municipios;"
         data = database.executeQuery(sql)
         lista = self.listToDicc(data)
         return lista
@@ -742,7 +743,7 @@ class adminOpciones(DatabaseZ):
     def getDepartamentos(self):
         """Retorna una lista de diccionarios con los datos de los municipios (id, nombre)"""
         database = self.database
-        sql = "SELECT idDepartamento, Nombre FROM heroku_b8872d099c2f07e.departamentos;"
+        sql = "SELECT idDepartamento, Nombre FROM hermes.departamentos;"
         data = database.executeQuery(sql)
         lista = self.listToDicc(data)
         return lista
@@ -750,7 +751,7 @@ class adminOpciones(DatabaseZ):
     def getCategorias(self):
         """Retorna una lista de diccionarios con los datos de las categorias (id, nombre)"""
         database = self.database
-        sql = "SELECT idCategoria,Nombre FROM heroku_b8872d099c2f07e.categoria;"
+        sql = "SELECT idCategoria,Nombre FROM hermes.categoria;"
         data = database.executeQuery(sql)
         lista = self.listToDicc(data)
         return lista
@@ -769,7 +770,7 @@ class adminOpciones(DatabaseZ):
     def getDepartamentoById(self,idDepartamento):
         """Busca un departamento por su id y devuelve una lista con sus datos (id,nombre)"""
         database = self.database
-        sql = f"SELECT idDepartamento, Nombre FROM heroku_b8872d099c2f07e.departamentos WHERE idDepartamento='{idDepartamento}';"
+        sql = f"SELECT idDepartamento, Nombre FROM hermes.departamentos WHERE idDepartamento='{idDepartamento}';"
         data = database.executeQuery(sql)
         lista = self.listToDicc(data)
         departamento =None
@@ -780,7 +781,7 @@ class adminOpciones(DatabaseZ):
     def getMunicipioById(self,idMunicipio):
         """Busca un municipio por su id y devuelve una lista con sus datos (id,nombre)"""
         database = self.database
-        sql = f"SELECT idMunicipio, Nombre FROM heroku_b8872d099c2f07e.municipios WHERE idMunicipio='{idMunicipio}';"
+        sql = f"SELECT idMunicipio, Nombre FROM hermes.municipios WHERE idMunicipio='{idMunicipio}';"
         data = database.executeQuery(sql)
         lista = self.listToDicc(data)
         return lista
@@ -788,7 +789,7 @@ class adminOpciones(DatabaseZ):
     def getCategoriaById(self,idCategoria):
         """Busca un categoria por su id y devuelve una lista con sus datos (id,nombre)"""
         database = self.database
-        sql = f"SELECT idCategoria,Nombre FROM heroku_b8872d099c2f07e.categoria WHERE idCategoria='{idCategoria}';"
+        sql = f"SELECT idCategoria,Nombre FROM hermes.categoria WHERE idCategoria='{idCategoria}';"
         data = database.executeQuery(sql)
         lista = self.listToDicc(data)
         categoria =None
@@ -804,8 +805,8 @@ class adminCitas(DatabaseZ):
         """Retorna una lista de diccionarios con los datos de las citas y trabajadores"""
         database = self.database
         sql = f"""SELECT idCitas,Fecha,Hora,Finalizada,DescripcionTrabajo,Confirmacion,Cliente,idTrabajadores,
-                Nombre,Apellido,Descripcion,Departamento,Municipio,Foto,trabajos,fechaDeEntrada FROM heroku_b8872d099c2f07e.citas 
-                left outer join heroku_b8872d099c2f07e.trabajadores on trabajador=idTrabajadores WHERE Cliente='{idCliente}';"""
+                Nombre,Apellido,Descripcion,Departamento,Municipio,Foto,trabajos,fechaDeEntrada FROM hermes.citas 
+                left outer join hermes.trabajadores on trabajador=idTrabajadores WHERE Cliente='{idCliente}';"""
         data = database.executeQuery(sql)
         CitasCliente= self.creardiccsCitasClientes(data)
         CitasClienteTipos = self.clasificarcitasCliente(CitasCliente)
@@ -855,14 +856,14 @@ class adminCitas(DatabaseZ):
     def deleteCita(self,idCita):
         """Elimina una Cita"""
         database = self.database
-        sql = f"DELETE FROM `heroku_b8872d099c2f07e`.`citas` WHERE (`idCitas` = {idCita});"
+        sql = f"DELETE FROM `hermes`.`citas` WHERE (`idCitas` = {idCita});"
         success = database.executeNonQueryBool(sql)
         return success
 
     def insertCita(self, datanueva):
         """Agrega una citas y returna True si se realiza correctamente"""
         database = self.database
-        sql = """INSERT INTO heroku_b8872d099c2f07e.citas (`Fecha`, `Hora`, `Trabajador`, `Cliente`, `Finalizada`,`DescripcionTrabajo`, `Confirmacion`) 
+        sql = """INSERT INTO hermes.citas (`Fecha`, `Hora`, `Trabajador`, `Cliente`, `Finalizada`,`DescripcionTrabajo`, `Confirmacion`) 
                  VALUES ( %s, %s, %s, %s, %s, %s, %s);"""
         val = (
             datanueva['Fecha'],
@@ -879,7 +880,7 @@ class adminCitas(DatabaseZ):
     def updateCitas(self, datanueva):
         """Actualiza la informacion de las citas y returna True si se realiza correctamente"""
         database = self.database
-        sql = """UPDATE heroku_b8872d099c2f07e.citas SET
+        sql = """UPDATE hermes.citas SET
             Fecha=%s , Hora=%s, Trabajador=%s, Cliente=%s, Finalizada=%s, DescripcionTrabajo=%s ,
             Confirmacion=%s WHERE idCitas=%s;"""
         val = (

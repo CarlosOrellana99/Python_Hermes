@@ -8,14 +8,24 @@ class DatabaseZ:
 
     def __init__(self):
         self.params = {
+            "host":"localhost",
+            "user": "root",
+            "passwd": "12345",
+            "database": "hermes"
+        }
+        self.connection = self.createConnection()
+        self.cursor = self.createCurosor()
+        
+    """ def __init__(self):
+        self.params = {
             "host":"us-cdbr-east-02.cleardb.com",
             "user": "bee6aa6dff68fc",
             "passwd": "5c8bc190",
             "database": "heroku_b8872d099c2f07e"
         }
         self.connection = self.createConnection()
-        self.cursor = self.createCurosor()
-    
+        self.cursor = self.createCurosor() """
+
     def createConnection(self):
         conn = pymysql.connect(
             host = self.params["host"],
