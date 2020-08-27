@@ -529,12 +529,44 @@ def workerCitas():
     idTrabajador = worker['id']
     citasConfirmadas = adminT.citasConfirmadas(idTrabajador)
     citasNoConfirmadas = adminT.citasNoConfirmadas(idTrabajador)
-    return render_template("trabajadoresCitas.html", worker=trabajador, confirmadas=citasConfirmadas, noConfirmadas=citasNoConfirmadas)
+    idUpdate="0"
+    return render_template("trabajadoresCitas.html", worker=trabajador, confirmadas=citasConfirmadas, noConfirmadas=citasNoConfirmadas,idUpdate=idUpdate)
 
 @app.route('/Hammer.com/confirmacion/<idCita>')    
 def confirmar(idCita=None):    
     adminT=adminTrabajadores()
     finalizar= adminT.confirmarCita(idCita)
+    return redirect("/Hammer.com/citasWorker")
+
+@app.route('/Hammer.com/modificaCita/<idCita>')    
+def modificarCitaForm(idCita):    
+    adminT=adminTrabajadores()
+    worker = session['user']
+    trabajador= adminT.getWorkerbyCorreo(worker['correo'])
+    idTrabajador = worker['id']
+    citasConfirmadas = adminT.citasConfirmadas(idTrabajador)
+    citasNoConfirmadas = adminT.citasNoConfirmadas(idTrabajador)
+    idUpdate=int(idCita)
+    return render_template("trabajadoresCitas.html", worker=trabajador, confirmadas=citasConfirmadas, noConfirmadas=citasNoConfirmadas,idUpdateCita=idUpdate)
+
+@app.route("/Hammer.com/servlet/updateCita", methods=['POST'])
+def modificarCita(): 
+    adminCita= adminCitas()
+    idUpdate = int(request.form.get('Updateid'))
+    FechaUpdate = request.form.get('UpdateFecha')
+    HoraUpdate=request.form.get('UpdateHora')
+    citaActual= adminCita.getCitasById(idUpdate)
+    dataUpdate={
+                    "idCitas": idUpdate,
+                    "Fecha": FechaUpdate,
+                    "Hora": HoraUpdate,
+                    "Trabajador": citaActual['Trabajador'],
+                    "Cliente": citaActual['Cliente'],
+                    "Finalizada":"False",
+                    "DescripcionTrabajo": citaActual['Descripciontrabajo'],
+                    "Confirmacion":"True"
+                }
+    successUpdate=adminCita.updateCitas(dataUpdate)
     return redirect("/Hammer.com/citasWorker")
 
 @app.route('/Hammer.com/declinacion/<idCita>')    

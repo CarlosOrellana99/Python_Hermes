@@ -132,6 +132,21 @@
                             </thead>                          
                             <tbody>                          
                               {% for i in noConfirmadas: %}
+                                {%if i[0]==idUpdateCita:%}
+                              <form action="/Hammer.com/servlet/updateCita" method="post" enctype="multipart/form-data">
+                              <tr class="mx-auto" style="width: 200px;">                          
+                                <td><h6 class="font-weight-bold">{{ i[1] }} {{ i[2] }}</h6></td>                          
+                                <td><h6 class="font-weight-bold">{{ i[3] }}</h6></td>                       
+                                <td><input type="text" id="UpdateFecha" value="{{i[4]}}" name="UpdateFecha" size="20" required class="form-control"></td>
+                                <td><input type="text" id="UpdateHora" value="{{i[5]}}" name="UpdateHora" size="20" required class="form-control"></td>
+                                <td><h6 class="font-weight-bold">{{ i[6] }}</h6></td>
+                                <input type="hidden" id="Updateid" value="{{i[0]}}" name="Updateid" size="20" required class="form-control">
+                                <td><button type="submit" class="btn btn-success">Aceptar</button></a></td>
+                              </form>
+                              <td><a href="/Hammer.com/citasWorker"><button type="button" class="btn btn-danger">Cancelar</button></a></td>               
+                              </tr>
+                            
+                                {%else%}
                               <tr class="mx-auto" style="width: 200px;">                          
                                 <td><h6 class="font-weight-bold">{{ i[1] }} {{ i[2] }}</h6></td>                          
                                 <td><h6 class="font-weight-bold">{{ i[3] }}</h6></td>                          
@@ -139,8 +154,10 @@
                                 <td><h6 class="font-weight-bold">{{ i[5] }}</h6></td>
                                 <td><h6 class="font-weight-bold">{{ i[6] }}</h6></td>
                                 <td><a href="/Hammer.com/confirmacion/{{ i[0] }}"><button type="button" class="btn btn-success">Confirmar</button></a></td>
+                                <td><a href="/Hammer.com/modificaCita/{{ i[0] }}"><button type="button" class="btn btn-danger">Modificar</button></a></td>
                                 <td><a href="/Hammer.com/declinacion/{{ i[0] }}"><button type="button" class="btn btn-danger">Rechazar</button></a></td>                   
                               </tr>
+                                {%endif%}
                               {% endfor %}                                             
                             </tbody>                          
                           </table>
