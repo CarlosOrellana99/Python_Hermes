@@ -537,6 +537,8 @@ def workerPagos():
     return render_template("pagosTrabajadores.html", worker = trabajador )
 
 @app.route('anadirTarjeta', methods=['POST'])
+def anadirTarjeta():
+    pass
 
 @app.route("/Hammer.com/citasWorker")
 def workerCitas():

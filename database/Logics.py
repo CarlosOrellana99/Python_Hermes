@@ -133,6 +133,9 @@ class adminAdministrador(DatabaseZ):
         valor = int(data[0][0])
         return valor
     
+    
+
+
     def getNumeroTrabajadoresNoAcceso(self):
         sql = """SELECT count(distinct(trabajadores.idTrabajadores)) as something 
         FROM hermes.trabajadores where trabajadores.Aceptado = '0';"""
@@ -358,6 +361,13 @@ class adminTrabajadores(DatabaseZ):
                 where hermes.citas.Trabajador={idTrabajador} and hermes.citas.Confirmacion= 'True' and hermes.citas.Finalizada= 'False';"""
         data = database.executeQuery(sql)
         return data
+
+    def crearTarjeta(self, idTrabajador, numero, dia, mes, cvv, tipo, titular):
+        database = self.database
+        sql = f"""INSERT INTO `hermes`.`tarjetas` (`Trabajador`, `Numero`, `DiaVencimiento`, `MesVencimiento`, `CVV`, `Tipo`, `Titular`) 
+        VALUES ('{idTrabajador}', '{numero}', '{dia}', '{mes}', '{cvv}', '{tipo}', '{titular}');"""
+        success = database.executeNonQueryBool(sql)
+        return success
 
     def finalizarServicio(self, idCita):
         database = self.database
