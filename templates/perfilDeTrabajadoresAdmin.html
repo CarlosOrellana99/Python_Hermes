@@ -32,11 +32,11 @@
                             <form action="/Hammer.com/admin/servlet" method="POST">
                                 <div style="text-align:center;">
                                     {% if worker['aceptado']== 0: %}
-                                    <button type="button" class="btn btn-outline-info">Dar acceso</button>
+                                    <button type="submit" class="btn btn-outline-info">Dar acceso</button>
                                     <input type="hidden" value="2" id="id" name="id">
                                     <input type="hidden" value="{{worker['id']}}" id="idT" name="idT">
                                     {% else %}
-                                    <button type="button" class="btn btn-outline-danger">Revocar acceso</button>
+                                    <button type="submit" class="btn btn-outline-danger">Revocar acceso</button>
                                     <input type="hidden" value="3" id="id" name="id">
                                     <input type="hidden" value="{{worker['id']}}" id="idT" name="idT">
                                     {% endif %}
