@@ -474,7 +474,7 @@ def workerCambiarFoto():
     adminT=adminTrabajadores()
     worker = session['user']
     trabajador= adminT.getWorkerbyCorreo(worker['correo'])
-    foto= request.form.get('foto')
+    foto= request.form.get('imagen')
     idWorker= trabajador['id']
     cambiarFoto= adminT.cambiarFoto(idWorker,foto)
     trabajador2=adminT.getWorkerbyCorreo(worker['correo'])
