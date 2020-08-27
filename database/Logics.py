@@ -366,10 +366,15 @@ class adminTrabajadores(DatabaseZ):
         data = database.executeNonQueryBool(sql)
         return data
     
-    def cambiarFoto(self, idWorker, foto):
+    def cambiarFoto(self, idWorker, foto=None):
         database = self.database
-        sql = f"""UPDATE `hermes`.`trabajadores` SET `Foto` = {foto} WHERE (`idTrabajadores` = {idWorker});"""
-        data = database.executeNonQueryBool(sql)
+        if foto=="":
+            data = False
+        else:
+            sql = f""" UPDATE trabajadores SET Foto = {foto} 
+                        WHERE idTrabajadores = '{idWorker}' """
+            data = database.executeNonQueryBool(sql)
+        
         return data
 
     def updateWorker(self, idWorker, nombre, apellido, telefono, direccion, correo, descripcion, genero):
