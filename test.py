@@ -2,7 +2,7 @@
 from database.Logics import adminClientes, adminAdministrador, adminTrabajadores, adminOpciones
 from datetime import date
 # Escriba el número de test que desea correr
-test = 'p'
+test = '11'
 if test == '1':
     admin = adminClientes()
     data = admin.getUserbyCorreo("a")
@@ -67,3 +67,9 @@ elif test == '9':
     admin = adminAdministrador()
     print(admin.getStats())
     
+elif test == '11':
+    admin = adminTrabajadores()
+    tarjetas = admin.buscarTarjetas(6)
+    print(len(tarjetas))
+    print(tarjetas)
+    len(tarjetas)

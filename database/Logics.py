@@ -362,6 +362,29 @@ class adminTrabajadores(DatabaseZ):
         data = database.executeQuery(sql)
         return data
 
+    def buscarTarjetas(self, idT):
+        database = self.database
+        sql = f"""SELECT * FROM hermes.tarjetas
+        where Trabajador = '{idT}';"""
+        data = database.executeQuery(sql)
+        lista = []
+        print(data)
+        print(sql)
+        for x in data:
+             dicc = {
+                 "id": x[0],
+                 "Trabajador": x[1],
+                 "Numero": x[2],
+                 "Dia": x[3],
+                 "Mes": x[4],
+                 "cvv": x[5],
+                 "Tipo": x[6],
+                 "Titular": x[7]
+             }
+             lista.append(dicc)
+
+        return lista
+
     def crearTarjeta(self, idTrabajador, numero, dia, mes, cvv, tipo, titular):
         database = self.database
         sql = f"""INSERT INTO `hermes`.`tarjetas` (`Trabajador`, `Numero`, `DiaVencimiento`, `MesVencimiento`, `CVV`, `Tipo`, `Titular`) 
