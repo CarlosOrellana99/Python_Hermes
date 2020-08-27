@@ -62,9 +62,9 @@
                         <h6 class="card-title"><strong>Teléfono:</strong></h6>
                         <p class="card-text">{{ x['telefono'] }}</p>
                         {% if x['aceptado']== 0: %}
-                        <a href="#"><button type="button" class="btn btn-outline-danger">Ir al perfil del trabajador</button></a>
+                        <a href="/Hammer.com/admin/worker/visulize/{{x['id']}}"><button type="button" class="btn btn-outline-danger">Ir al perfil del trabajador</button></a>
                         {% else: %}
-                        <a href="#"><button type="button" class="btn btn-outline-success">Ir al perfil del trabajador</button></a>
+                        <a href="/Hammer.com/admin/worker/visulize/{{x['id']}}"><button type="button" class="btn btn-outline-success">Ir al perfil del trabajador</button></a>
                         {% endif %}
                     </div>
                 </div>
