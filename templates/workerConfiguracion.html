@@ -81,13 +81,42 @@
                                       <h6 class="font-weight-bold mb-0">Información</h6>
                                     </div>
                                 <form name="form1" action="/Hammer.com/configuracion">
-                                  <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Nombre: </h6></label> <input type="text" name="nombre" value= {{worker["nombre"]}} ></input> <br>
-                                  <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Apellido: </h6></label> <input type="text" name="apellido" value= {{worker["apellido"]}} ></input><br>
-                                  <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Telefono: </h6></label> <input type="text" name="telefono" value= {{worker["telefono"]}} ></input><br>
-                                  <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Direccion: </h6></label> <input type="text" name="direccion" value= {{worker["direccion"]}} ></input><br>
-                                  <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Correo: </h6></label> <input type="text" name="correo" value= {{worker["correo"]}} ></input><br>
-                                  <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Descripcion: </h6></label> <input type="text" name="descripcion" value= {{worker["descripcion"]}} ></input><br>
-                                  <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Genero: </h6></label> <input type="text" name="genero" value= {{worker["genero"]}} ></input><br>
+                                  
+                                  <div class="col-md-8" style="padding-top: 20px; padding-left: 20px">
+                                    <div class="form-group">
+                                      <label for="fname" ><h6 class="font-weight-bold">Nombre: </h6> </label>
+                                      <input class="form-control" type="text" name="nombre" value= {{worker["nombre"]}} ></input>
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="fname"><h6 class="font-weight-bold">Apellido: </h6></label> 
+                                      <input class="form-control" type="text" name="apellido" value= {{worker["apellido"]}} ></input>
+                                  
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="fname"><h6 class="font-weight-bold">Telefono: </h6></label> 
+                                      <input class="form-control" type="text" name="telefono" value= {{worker["telefono"]}} ></input>
+                                  
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="fname"><h6 class="font-weight-bold">Direccion: </h6></label> 
+                                      <input class="form-control" type="text" name="direccion" value= {{worker["direccion"]}} ></input>
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="fname"><h6 class="font-weight-bold">Correo: </h6></label> 
+                                      <input class="form-control" type="text" name="correo" value= {{worker["correo"]}} ></input>
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="fname"><h6 class="font-weight-bold">Descripcion: </h6></label> 
+                                      <input class="form-control" type="text" name="descripcion" value= {{worker["descripcion"]}} ></input>
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="fname"><h6 class="font-weight-bold">Genero: </h6></label> 
+                                      <input class="form-control" type="text" name="genero" value= {{worker["genero"]}} ></input>
+                                    </div>
+
+                                  </div>
+                                  
+                                  
                                   <div class="card-body pt-2">
                                     <button class="btn btn-primary w-100" type="submit">Guardar Cambios</button>
                                 </div>
