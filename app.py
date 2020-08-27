@@ -535,7 +535,10 @@ def workerPagos():
     trabajador= adminT.getWorkerbyCorreo(worker['correo'])
     idTrabajador = worker['id']
     tarjetas = adminT.buscarTarjetas(idTrabajador)
-    return render_template("pagosTrabajadores.html", worker = trabajador, tarjetas = tarjetas)
+    dias = range(1,32)
+    meses = range(1,13)
+
+    return render_template("pagosTrabajadores.html", worker = trabajador, tarjetas = tarjetas, dias = dias, meses = meses)
 
 @app.route('/anadirTarjeta', methods=['POST'])
 def anadirTarjeta():

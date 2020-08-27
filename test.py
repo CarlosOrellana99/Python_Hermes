@@ -73,3 +73,6 @@ elif test == '11':
     print(len(tarjetas))
     print(tarjetas)
     len(tarjetas)
+    rango = range(1,31)
+    for x in rango:
+        print(x)
