@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, flash, session, url_for
 from database.Logics import adminAdministrador, adminClientes, adminTrabajadores, adminOpciones,adminCategorias,adminCitas
-import json
+import base64
 
 app = Flask(__name__) #Page 30
 app.secret_key = "Latrenge3456"
@@ -474,9 +474,11 @@ def workerCambiarFoto():
     adminT=adminTrabajadores()
     worker = session['user']
     trabajador= adminT.getWorkerbyCorreo(worker['correo'])
-    foto= request.form.get('imagen')
-    idWorker= trabajador['id']
-    cambiarFoto= adminT.cambiarFoto(idWorker,foto)
+    imagen = request.files['imagen']
+    foto = imagen.read()
+    print(foto)
+    idWorker= worker['id']
+    cambiarFoto= adminT.cambiarFoto(idWorker, foto)
     trabajador2=adminT.getWorkerbyCorreo(worker['correo'])
     return render_template("workerConfiguracion.html", worker= trabajador2)
 
