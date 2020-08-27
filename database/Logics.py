@@ -373,8 +373,8 @@ class adminTrabajadores(DatabaseZ):
         else:
             sql = f""" UPDATE trabajadores SET Foto = %s 
                         WHERE idTrabajadores = '{idWorker}' """
-            val = tuple(foto)
-            data = database.executeMany(sql, val)
+            foto
+            data = database.executeMany(sql, foto)
         
         return data
 
