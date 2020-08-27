@@ -487,13 +487,6 @@ def workerUpdatePerfil():
     descripcion= request.form.get('descripcion')
     genero= request.form.get('genero')
 
-    print(nombre)
-    print(apellido)
-    print(telefono)
-    print(direccion)
-    print(correo)
-    print(descripcion)
-    print(genero)
 
     update= adminT.updateWorker(idWorker,nombre,apellido,telefono,direccion,correo,descripcion,genero)
 
@@ -504,14 +497,12 @@ def workerUpdatePerfil():
 def workerCambiarFoto():
     adminT=adminTrabajadores()
     worker = session['user']
-    trabajador= adminT.getWorkerbyCorreo(worker['correo'])
     imagen = request.files['imagen']
-    foto = imagen.read()
-    print(foto)
+    foto = imagen.read() 
     idWorker= worker['id']
     cambiarFoto= adminT.cambiarFoto(idWorker, foto)
     trabajador2=adminT.getWorkerbyCorreo(worker['correo'])
-    return render_template("workerConfiguracion.html", worker= trabajador2)
+    return redirect("/Hammer.com/configuracion")
 
 @app.route("/Hammer.com/perfil")    
 def workerPerfil():
