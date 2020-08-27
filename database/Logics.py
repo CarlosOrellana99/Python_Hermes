@@ -373,8 +373,8 @@ class adminTrabajadores(DatabaseZ):
         else:
             sql = f""" UPDATE trabajadores SET Foto = %s 
                         WHERE idTrabajadores = '{idWorker}' """
-            val = tuple(foto)
-            data = database.executeMany(sql, val)
+            foto
+            data = database.executeMany(sql, foto)
         
         return data
 
@@ -800,7 +800,25 @@ class adminOpciones(DatabaseZ):
 class adminCitas(DatabaseZ):
     def __init__(self):
         self.database = DatabaseZ()
-    
+    def getCitasById(self, idCita):
+        """Retorna un diccionario con la cita bsucada por su id"""
+        database = self.database
+        sql = f"""SELECT idCitas,Fecha,Hora,Trabajador,Cliente,Finalizada,DescripcionTrabajo,Confirmacion FROM hermes.citas 
+                 WHERE idCitas='{idCita}';"""
+        data = database.executeQuery(sql)
+        for x in data:
+             dicc = {
+                    "idCitas": x[0],
+                    "Fecha": x[1],
+                    "Hora": x[2],
+                    "Trabajador": x[3],
+                    "Cliente": x[4],
+                    "Finalizada": x[5],
+                    "Descripciontrabajo": x[6],
+                    "Confirmacion": x[7]
+                }
+        return dicc
+
     def getCitasCliente(self, idCliente):
         """Retorna una lista de diccionarios con los datos de las citas y trabajadores"""
         database = self.database
