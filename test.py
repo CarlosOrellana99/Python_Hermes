@@ -76,3 +76,8 @@ elif test == '11':
     rango = range(1,31)
     for x in rango:
         print(x)
+
+    debe = admin.getDeuda(25)
+    print(debe)
+    debe = admin.getDeuda(26)
+    print(debe)
