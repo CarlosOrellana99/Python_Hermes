@@ -134,9 +134,8 @@ class adminAdministrador(DatabaseZ):
         return valor
     
     def getNumeroTrabajadoresNoAcceso(self):
-        sql = """SELECT count(distinct(membresias.idMembresias)) as morosos FROM hermes.trabajadores 
-                inner join membresias on membresias.idMembresias = trabajadores.Membresia
-                where membresias.Membresia = "AAAA-0000-0000";"""
+        sql = """SELECT count(distinct(trabajadores.idTrabajadores)) as something 
+        FROM hermes.trabajadores where trabajadores.Aceptado = '0';"""
             
         data = self.database.executeQuery(sql)
         valor = int(data[0][0])
