@@ -49,11 +49,12 @@ def registerUser(kind): # View function
         departamento = int(request.form.get('departamento'))
         municipio = int(request.form.get('municipio'))
         direccion = request.form.get('direccion')
-        foto = request.form.get('imagen')
-
+        imagen = request.files['imagen']
+        foto = imagen.read()
         admin = adminClientes()
 
         success = admin.insert(dui, nombre, apellido, celular, direccion, correo, contrasena, departamento, municipio, genero, foto)
+
     elif kind == "worker":
         success = False
         nombre = request.form.get('nombre')
@@ -69,7 +70,8 @@ def registerUser(kind): # View function
         direccion = (request.form.get('direccion'))
         nombre = request.form.get('nombre')
         descripcion = request.form.get('descripcion')
-        foto = request.form.get('imagen')
+        imagen = request.files['imagen']
+        foto = imagen.read()
         aceptado = 0 # Siempre se inicia sin estar aceptado
         membresia = 1 # La membresía 1 es una membresía siempre inactiva
 
@@ -150,16 +152,31 @@ def adminServlet():
     tipo = session['kind']
     if not tipo == "admin":
         return f"""<h1>You do not have access to this page</h1><br>
-                    <h2>Please sing up in this </h2><a href="/">link</a>""", 402    
+                    <h2>Please sing up in this </h2><a href="/">link</a>""", 402   
     else:
         idForm = request.form.get('id')
+        adminA = adminAdministrador()
+        adminT = adminTrabajadores()
         if idForm== '1':
-            adminA = adminAdministrador()
             exito = adminA.revocarLicenciaDeudores()
             if exito:
                 return redirect("/Hammer.com/admin")
             else:
                 return "Process failed. Either there are no licences to revoque or an internal problem has occurred"
+        if idForm == '2':
+            idT = request.form.get('idT')
+            adminT.setAcceso(idT, 1)
+            render = f"/Hammer.com/admin/worker/visulize/{idT}"
+            
+            return redirect(render)
+
+        if idForm == '3':
+            idT = request.form.get('idT')
+            success = adminT.setAcceso(idT, 0)
+            print(success)
+            render = f"/Hammer.com/admin/worker/visulize/{idT}"
+            print(render)
+            return redirect(render)
 
 @app.route("/Hammer.com/admin/buscar", methods=['POST'])
 def adminBuscar():
@@ -195,6 +212,21 @@ def adminBuscarConfigurado():
     numero = len(lista)
     numeros = range(5,105,5)
     return render_template("busquedaAdmin.html", trabajadores = lista, admin = adminCompleto, numeros = numeros, word = word, imagenes= images, cantidad= numero)
+
+
+@app.route("/Hammer.com/admin/worker/visulize/<idT>")
+def workerVisualize(idT):
+    adminT = adminTrabajadores()
+    adminA = adminAdministrador()
+    imagenes = adminA.getImages()
+    trabajador = adminT.getWorkerbyId(idT)
+    admin = session['user']
+    tipo = session['kind']
+    adminCompleto = adminA.getAdminByCorreo(admin['correo'])
+    historial = adminT.HistorialTrabajadores(idT)
+    if not tipo == "admin":
+        return redirect("/Hammer.com/notAccess") 
+    return render_template("perfilDeTrabajadoresAdmin.html", worker = trabajador, imagenes = imagenes, admin = adminCompleto, historial = historial)
 
 
 # User UI
@@ -320,7 +352,7 @@ def busquedaTrabajadoresCliente(form):
 
     listafiltrada = adminworker.filtrarTrabajadoresByDepCat(getBusqueda,filtroDepartamento,filtroCategoria)
 
-    return render_template("busquedaTrabajadores.html",busqueda=listafiltrada,categorias=listacat,usuarioactivo=usuario,departamentos =ltsDepartamentos,departamentobusqueda=filtroDepartamento,categoriabusqueda=filtroCategoria)
+    return render_template("busquedaTrabajadores.html",busqueda=listafiltrada,categorias=listacat,usuarioactivo=usuario,departamentos =ltsDepartamentos,departamentobusqueda=filtroDepartamento,categoriabusqueda=filtroCategoria,palabrabusqueda=palabra)
 
 @app.route("/Hammer.com/agendarCita/<funcion>",methods=['POST'])
 def agendarCita(funcion):
@@ -454,6 +486,27 @@ def workerHistorial():
     historial = adminT.HistorialTrabajadores(idTrabajador)
     return render_template("trabajadoresHistorial.html", historial=historial, worker=trabajador)
 
+@app.route("/Hammer.com/citasWorker")
+def workerCitas():
+    adminT=adminTrabajadores()
+    worker = session['user']
+    trabajador= adminT.getWorkerbyCorreo(worker['correo'])
+    idTrabajador = worker['id']
+    citasConfirmadas = adminT.citasConfirmadas(idTrabajador)
+    citasNoConfirmadas = adminT.citasNoConfirmadas(idTrabajador)
+    return render_template("trabajadoresCitas.html", worker=trabajador, confirmadas=citasConfirmadas, noConfirmadas=citasNoConfirmadas)
+
+@app.route('/Hammer.com/confirmacion/<idCita>')    
+def confirmar(idCita=None):    
+    adminT=adminTrabajadores()
+    finalizar= adminT.confirmarCita(idCita)
+    return redirect("/Hammer.com/citasWorker")
+
+@app.route('/Hammer.com/declinacion/<idCita>')    
+def declinar(idCita=None):    
+    adminT=adminTrabajadores()
+    finalizar= adminT.declinarCita(idCita)
+    return redirect("/Hammer.com/citasWorker")
 
 @app.route('/Hammer.com/finalizarServicio/<idCliente>')    
 def finalizarServicio(idCliente=None):    

@@ -46,7 +46,7 @@
                   <li class="nav-item dropdown">
                     <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{worker['nombre']}} {{worker["apellido"]}}
+                    {{worker['nombre']}}
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                       <a class="dropdown-item" href="#">Mi perfil</a>
@@ -72,7 +72,7 @@
                             <div class="col-md-4">
                                 <img src="data:;base64,{{ worker['foto'] }}" class="card-img" alt="Image" style="overflow:hidden ;height: 180px; width:180px">
                             </div>
-                            <p class="lead text-muted">Mira el historial de todos los servicios que has brindado a través de nuestra plataforma</p>
+                            <p class="lead text-muted">Aquí están todas las citas confirmadas y por confirmar</p>
                           </div>
                       </div>
                   </div>
@@ -83,25 +83,63 @@
               <section class="bg-mix py-2">
                 <div class="container">
                     <div class="card rounded-0">
-                        <div class="card-body"> 
+                        <div class="card-body">
+                        <p>Citas confirmadas</p> 
                           <table class="egt" width="100%"  cellspacing="10" cellpadding="10">
                             <thead>
                               <tr>                         
-                                <th><h6 class="text-muted">Fecha</h6></th>                          
+                                <th><h6 class="text-muted">Cliente</h6></th>                          
+                                <th><h6 class="text-muted">Celular</h6></th>                            
+                                <th><h6 class="text-muted">Fecha</h6></th>   
                                 <th><h6 class="text-muted">Hora</h6></th>                            
-                                <th><h6 class="text-muted">Descripcion</h6></th>   
-                                <th><h6 class="text-muted">Cliente</h6></th>                            
-                                <th><h6 class="text-muted">Celular</h6></th>                        
+                                <th><h6 class="text-muted">Descripcion</h6></th>                        
                               </tr>                          
                             </thead>                          
                             <tbody>                          
-                              {% for i in historial: %}
+                              {% for i in confirmadas: %}
                               <tr class="mx-auto" style="width: 200px;">                          
-                                <td><h6 class="font-weight-bold">{{ i[0] }}</h6></td>                          
-                                <td><h6 class="font-weight-bold">{{ i[1] }}</h6></td>                          
-                                <td><h6 class="font-weight-bold">{{ i[2] }}</h6></td>
-                                <td><h6 class="font-weight-bold">{{ i[3] }} {{ i[4] }}</h6></td>
+                                <td><h6 class="font-weight-bold">{{ i[0] }} {{ i[1] }}</h6></td>                          
+                                <td><h6 class="font-weight-bold">{{ i[2] }}</h6></td>                          
+                                <td><h6 class="font-weight-bold">{{ i[3] }}</h6></td>
+                                <td><h6 class="font-weight-bold">{{ i[4] }}</h6></td>
                                 <td><h6 class="font-weight-bold">{{ i[5] }}</h6></td>                   
+                              </tr>
+                              {% endfor %}                                             
+                            </tbody>                          
+                          </table>
+                        </div>
+                    </div>
+                </div>
+
+              </section>
+        </div>
+        <div id="content" class="bg-grey w-100">
+
+              <section class="bg-mix py-2">
+                <div class="container">
+                    <div class="card rounded-0">
+                        <div class="card-body">
+                        <p>Citas por confirmar</p>  
+                          <table class="egt" width="100%"  cellspacing="10" cellpadding="10">
+                            <thead>
+                              <tr>                         
+                                <th><h6 class="text-muted">Cliente</h6></th>                          
+                                <th><h6 class="text-muted">Celular</h6></th>                            
+                                <th><h6 class="text-muted">Fecha</h6></th>   
+                                <th><h6 class="text-muted">Hora</h6></th>                            
+                                <th><h6 class="text-muted">Descripcion</h6></th>                        
+                              </tr>                          
+                            </thead>                          
+                            <tbody>                          
+                              {% for i in noConfirmadas: %}
+                              <tr class="mx-auto" style="width: 200px;">                          
+                                <td><h6 class="font-weight-bold">{{ i[1] }} {{ i[2] }}</h6></td>                          
+                                <td><h6 class="font-weight-bold">{{ i[3] }}</h6></td>                          
+                                <td><h6 class="font-weight-bold">{{ i[4] }}</h6></td>
+                                <td><h6 class="font-weight-bold">{{ i[5] }}</h6></td>
+                                <td><h6 class="font-weight-bold">{{ i[6] }}</h6></td>
+                                <td><a href="/Hammer.com/confirmacion/{{ i[0] }}"><button type="button" class="btn btn-success">Confirmar</button></a></td>
+                                <td><a href="/Hammer.com/declinacion/{{ i[0] }}"><button type="button" class="btn btn-danger">Rechazar</button></a></td>                   
                               </tr>
                               {% endfor %}                                             
                             </tbody>                          
@@ -115,8 +153,6 @@
         </div>
         </div>
     </div>
-
-    
 </body>
 
 {% endblock %}

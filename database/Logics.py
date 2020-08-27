@@ -195,7 +195,7 @@ class adminClientes(DatabaseZ):
         else:
             sql = """INSERT INTO hermes.clientes 
             (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Departamento`, `Municipio`, `Foto`, `Genero` ) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
 
             val = ( dui, nombre, apellido, celular, direccion, correo, contrasena, departamento, municipio, foto, genero)
 
@@ -312,13 +312,11 @@ class adminTrabajadores(DatabaseZ):
     def __init__(self):
         self.database = DatabaseZ()
 
-    def insert( self, dui, nombre, apellido, celular, direccion, correo, contrasena, descripcion, departamento, municipio, genero, aceptado, membresia="AAAA-0000-0000", foto=None,):
-        """ Inserta los componentes de un cliente en la base de datos
-        -------
-        Devuelve True si se ejecutó con éxito y false si no se hicieron cambios"""
+    def insert( self, dui, nombre, apellido, celular, direccion, correo, contrasena, descripcion, departamento, municipio, genero, aceptado, membresia="AAAA-0000-0000", foto=None):
+
         success = False
         fecha = date.today()
-        fechaF = fecha.strftime("%d-%m-%Y")
+        fechaF = fecha.strftime("%Y-%m-%d")
         if foto == "":
             sql = """INSERT INTO `hermes`.`trabajadores` 
             (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Descripcion`, `Departamento`, `Municipio`, `Genero`, `Aceptado`, `Membresia`, `fechaDeEntrada`) 
@@ -327,7 +325,7 @@ class adminTrabajadores(DatabaseZ):
         else:
             sql = """INSERT INTO `hermes`.`trabajadores` 
             (`DUI`, `Nombre`, `Apellido`, `Celular`, `Direccion`, `Correo`, `Contrasena`, `Descripcion`, `Departamento`, `Municipio`, `Genero`, `Aceptado`, `Membresia`, `Foto`, `fechaDeEntrada`) 
-            VALUES (%s, s, %s, %s, %s, s, %s, %s, %s, %s, %s, %s, %s, %s );"""
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
             val = (
                 dui,
                 nombre,
@@ -349,7 +347,6 @@ class adminTrabajadores(DatabaseZ):
         database = self.database
         success = database.executeMany(sql, val)
         return success
-
     # metodos para Servicio Activo
 
     def ServicioActivo(self, idTrabajador):
@@ -383,6 +380,27 @@ class adminTrabajadores(DatabaseZ):
                     inner join hermes.municipios on municipios.idMunicipio = trabajadores.Municipio
                     inner join hermes.membresias on membresias.idMembresias = trabajadores.Membresia
                     where trabajadores.Correo = '{correo}'
+                    limit 1;"""
+        data = database.executeQuery(sql)
+        lista = {}
+        if len(data) > 0:
+            lista = self.convertTuplaToDicc(data[0], picture)
+        return lista
+        
+    def getWorkerbyId(self, idT, picture = True):
+
+        """Debuele una lista con los datos del usuario con ese correo"""
+        database = self.database
+        select = "trabajadores.idTrabajadores, trabajadores.DUI, trabajadores.Nombre, trabajadores.Apellido, trabajadores.Celular, trabajadores.Direccion, trabajadores.Correo, trabajadores.Contrasena, trabajadores.Descripcion, trabajadores.Genero, trabajadores.Foto, trabajadores.Aceptado,  membresias.Membresia, departamentos.nombre as depa, municipios.nombre as mun, trabajadores.trabajos, membresias.vigencia"
+
+        sql = f"""  SELECT distinct {select}
+                    FROM categoriatrabajadores 
+                    right join trabajadores on trabajadores.idTrabajadores = categoriatrabajadores.Trabajador
+                    left join categoria on categoria.idCategoria = categoriatrabajadores.Categoria
+                    inner join hermes.departamentos on departamentos.idDepartamento = trabajadores.Departamento
+                    inner join hermes.municipios on municipios.idMunicipio = trabajadores.Municipio
+                    inner join hermes.membresias on membresias.idMembresias = trabajadores.Membresia
+                    where trabajadores.idTrabajadores = '{idT}'
                     limit 1;"""
         data = database.executeQuery(sql)
         lista = {}
@@ -568,14 +586,25 @@ class adminTrabajadores(DatabaseZ):
                         for x in y["Categoría"]:
                             if x == categoria:
                                 listaFiltrada.append(y)
-        return listaFiltrada 
+        listaFiltrada1=self.eliminarBusquedaRepetida(listaFiltrada)
+        return listaFiltrada1 
+    
+    def eliminarBusquedaRepetida(self,lista):
+        """Elimina camos repetidos en la busqueda de trabajadores filtrados"""
+        listaFinal=[]
+        listaids=[]
+        for i in lista:
+            if i["id"] not in listaids:
+                listaids.append(i["id"])
+                listaFinal.append(i)
+        return listaFinal
 
     def HistorialTrabajadores(self, idTrabajador):
         database = self.database
         sql = f"""select citas.Fecha, citas.Hora, citas.DescripcionTrabajo, clientes.Nombre, clientes.Apellido, clientes.Celular 
                     from citas inner join clientes on
                         citas.Cliente = clientes.idClientes
-                    where citas.Finalizada = 'False' and citas.Confirmacion = 'True' and citas.Trabajador = '{idTrabajador}'
+                    where citas.Finalizada = 'True' and citas.Confirmacion = 'True' and citas.Trabajador = '{idTrabajador}'
                     order by citas.Fecha""" 
         data = database.executeQuery(sql)
         return data
@@ -594,7 +623,7 @@ class adminTrabajadores(DatabaseZ):
     def citasPorMes(self, idTrabajador):
         database = self.database
         sql = f"""select month(Fecha), count(*) from citas
-        where Trabajador = '{idTrabajador}'
+        where Trabajador = '{idTrabajador}' and Confirmacion = 'True'
         group by month(Fecha)
         limit 5"""  
         data = database.executeQuery(sql)
@@ -615,7 +644,7 @@ class adminTrabajadores(DatabaseZ):
 
     def citasConfirmadas(self, idTrabajador):
         database = self.database
-        sql = f"""select clientes.Nombre, clientes.Apellido, clientes.Celular, citas.Fecha, citas.Hora
+        sql = f"""select clientes.Nombre, clientes.Apellido, clientes.Celular, citas.Fecha, citas.Hora, citas.DescripcionTrabajo
                     from citas inner join clientes on
                         citas.Cliente = clientes.idClientes
                     where citas.Finalizada = 'False' and citas.Confirmacion = 'True' and citas.Trabajador = '{idTrabajador}'
@@ -625,13 +654,36 @@ class adminTrabajadores(DatabaseZ):
 
     def citasNoConfirmadas(self, idTrabajador):
         database = self.database
-        sql = f"""select clientes.Nombre, clientes.Apellido, clientes.Celular, citas.Fecha, citas.Hora
+        sql = f"""select citas.idCitas, clientes.Nombre, clientes.Apellido, clientes.Celular, citas.Fecha, citas.Hora, citas.DescripcionTrabajo
                     from citas inner join clientes on
                         citas.Cliente = clientes.idClientes
                     where citas.Finalizada = 'False' and citas.Confirmacion = 'False' and citas.Trabajador = '{idTrabajador}'
                     order by citas.Fecha"""  
         data = database.executeQuery(sql)
         return data
+
+    def confirmarCita(self, idCita):
+        database = self.database
+        sql = f"""UPDATE citas SET Confirmacion = 'True' 
+                WHERE idCitas = '{idCita}'"""
+        data = database.executeNonQueryBool(sql)
+        return data
+
+    def declinarCita(self, idCita):
+        database = self.database
+        sql = f"""DELETE FROM citas
+                WHERE idCitas = '{idCita}'"""
+
+        data = database.executeNonQueryBool(sql)
+        return data
+
+    def setAcceso(self, idT, value):
+        database = self.database
+        sql = f"""UPDATE `hermes`.`trabajadores` SET `Aceptado` = '{value}' WHERE (`idTrabajadores` = '{idT}');"""
+        print(sql)
+        succes = database.executeNonQueryBool(sql)
+        return sql
+
 
 class adminCategorias(DatabaseZ):
     
