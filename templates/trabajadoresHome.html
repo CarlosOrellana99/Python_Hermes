@@ -73,6 +73,20 @@
                           <div class="col-lg-9 col-md-8">
 
                             <h1 class="font-weight-bold mb-0">Bienvenido {{worker['nombre']}}</h1>
+                            {% if worker['aceptado'] == 0:  %}
+                              <h4 style="color: red;">Aún no has sido aceptado. Contácte con nosotros a nuestro emal para proceder a la entrevista.</h4>
+                              <h6 style="color: red;">Mientras no estés aceptado, tus clientes no podrán verte.</h6>
+                            {% else %}
+                              {% if worker['membresia'] == 'AAAA-0000-0000': %}
+                              <form action="/generarMembership" method="POST">
+                                <p2 class="font-weight-bold mb-0">No tienes mebresía :( </p2>
+                                <button type="submit" class="btn btn-danger"">¡Créala aquí!</button>
+                                <input type="hidden" value="{{worker['id']}}" name="idT">
+                              </form>
+                              {% else %}
+                              <h5>Tu membresía es {{worker['membresia']}}</h5>
+                              {% endif %}
+                            {% endif %}
                             <div class="col-md-4">
                                 <img src="data:;base64,{{ worker['foto'] }}" class="card-img" alt="Image" style="overflow:hidden ;height: 180px; width:180px">
                             </div>
