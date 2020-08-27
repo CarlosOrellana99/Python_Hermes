@@ -69,7 +69,7 @@
                   <div class="container">
                       <div class="row">
                           <div class="col-lg-9 col-md-8">
-                            <h1 class="font-weight-bold mb-0">Perfil</h1>
+                            <h1 class="font-weight-bold mb-0">Configuracion</h1>
                           </div>
                       </div>
                   </div>
@@ -81,16 +81,16 @@
                             <div class="col-lg-8 my-3">
                                 <div class="card rounded-0">
                                     <div class="card-header bg-light">
-                                      <h6 class="font-weight-bold mb-0">Información</h6>
+                                      <h6 class="font-weight-bold mb-0">Configuracion de perfil</h6>
                                     </div>
-                                <form name="form1" action="/Hammer.com/configuracion">
-                                  <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Nombre: </h6></label> <input type="text" name="nombre" value= {{worker["nombre"]}} ></input> <br>
-                                  <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Apellido: </h6></label> <input type="text" name="apellido" value= {{worker["apellido"]}} ></input><br>
-                                  <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Telefono: </h6></label> <input type="text" name="telefono" value= {{worker["telefono"]}} ></input><br>
-                                  <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Direccion: </h6></label> <input type="text" name="direccion" value= {{worker["direccion"]}} ></input><br>
-                                  <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Correo: </h6></label> <input type="text" name="correo" value= {{worker["correo"]}} ></input><br>
-                                  <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Descripcion: </h6></label> <input type="text" name="descripcion" value= {{worker["descripcion"]}} ></input><br>
-                                  <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Genero: </h6></label> <input type="text" name="genero" value= {{worker["genero"]}} ></input><br>
+                                <form name="form1" action="/Hammer.com/configuracion" method="POST">
+                                  <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Nombre: </h6></label> <input type="text" name="nombre" value= '{{worker["nombre"]}}' ></input> <br>
+                                  <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Apellido: </h6></label> <input type="text" name="apellido" value= '{{worker["apellido"]}}' ></input><br>
+                                  <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Telefono: </h6></label> <input type="text" name="telefono" value= '{{worker["telefono"]}}' ></input><br>
+                                  <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Direccion: </h6></label> <input type="text" name="direccion" value= '{{worker["direccion"]}}' ></input><br>
+                                  <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Correo: </h6></label> <input type="text" name="correo" value= '{{worker["correo"]}}' ></input><br>
+                                  <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Descripcion: </h6></label> <input type="text" name="descripcion" value= '{{worker["descripcion"]}}' ></input><br>
+                                  <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Genero: </h6></label> <input type="text" name="genero" value= '{{worker["genero"]}}' ></input><br>
                                   <div class="card-body pt-2">
                                     <button class="btn btn-primary w-100" type="submit">Guardar Cambios</button>
                                 </div>
@@ -103,11 +103,26 @@
                             <div class="col-lg-4 my-3">
                               <div class="card rounded-0">      
                                   <div class="card-header bg-light">
-                                      <h6 class="font-weight-bold mb-0">Foto</h6>
+                                      <h6 class="font-weight-bold mb-0"> Cambiar foto</h6>
                                   </div>
-                                  <div class="card-body pt-2" >
-                                    <img src="data:;base64,{{ worker['foto'] }}" class="card-img" alt="Image" style="overflow:hidden ;height: 180px; width:180px">
-                                  </div>
+                                  <form action="/Hammer.com/cambiarFoto" method="POST" enctype="multipart/form-data">
+                                    <div class="card-body pt-2" >
+                                        <img src="data:;base64,{{ worker['foto'] }}" class="card-img" alt="Image" style="overflow:hidden ;height: 180px; width:180px">
+                                      </div>
+                                      <div class="input-group mb-3">
+                                          <div class="custom-file">
+                                              <input type="file" class="custom-file-input" id="imagen" name="imagen" aria-describedby="inputGroupFileAddon01">
+                                              <label class="custom-file-label" for="imagen">Elija un archivo</label>
+                                          </div>
+                                      </div>
+                                      <script type="application/javascript">
+                                          $('input[type="file" name="foto"]').change(function(e){
+                                              var fileName = e.target.files[0].name;
+                                              $('.custom-file-label').html(fileName);
+                                          });
+                                      </script>
+                                      <button class="btn btn-primary w-100" type="submit">Cambiar foto</button>
+                                </form>
                               </div>
                             </div>
                         </div>

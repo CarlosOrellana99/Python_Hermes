@@ -469,6 +469,17 @@ def workerConfiguracion():
     trabajador= adminT.getWorkerbyCorreo(worker['correo'])
     return render_template("workerConfiguracion.html", worker= trabajador)
 
+@app.route("/Hammer.com/cambiarFoto", methods=['POST'])    
+def workerCambiarFoto():
+    adminT=adminTrabajadores()
+    worker = session['user']
+    trabajador= adminT.getWorkerbyCorreo(worker['correo'])
+    foto= request.form.get('foto')
+    idWorker= trabajador['id']
+    cambiarFoto= adminT.cambiarFoto(idWorker,foto)
+    trabajador2=adminT.getWorkerbyCorreo(worker['correo'])
+    return render_template("workerConfiguracion.html", worker= trabajador2)
+
 @app.route("/Hammer.com/perfil")    
 def workerPerfil():
     adminT=adminTrabajadores()
