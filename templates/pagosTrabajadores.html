@@ -1,0 +1,97 @@
+{% extends 'sidebarWorker.html' %}
+
+<!doctype html>
+<html lang="en">
+
+{% block body %}
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="static/css/workStyle.css">
+
+    <!-- Google fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,700&display=swap" rel="stylesheet">
+
+    <!-- Ionic icons -->
+    <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+
+
+    <title>Pagos</title>
+</head>
+
+<body>
+    
+    
+
+         <!-- Navbar -->
+         <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+            <div class="container">
+    
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+    
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                  <li class="nav-item dropdown">
+                    <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{worker['nombre']}} {{worker["apellido"]}}
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item" href="/Hammer.com/perfil">Mi perfil</a>
+                      <a class="dropdown-item" href="/Hammer.com/configuracion">Configuración</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="/Hammer.com/salirU">Cerrar sesión</a>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+          <!-- Fin Navbar -->
+
+        <!-- Page Content -->
+        <div id="content" class="bg-grey w-100">
+
+              <section class="bg-light py-3">
+                  <div class="container">
+                      <div class="row">
+                          <div class="col-lg-9 col-md-8">
+                            <h1 class="font-weight-bold mb-0">Bienvenido {{worker['nombre']}}</h1>
+                            <div class="col-md-4">
+                                <img src="data:;base64,{{ worker['foto'] }}" class="card-img" alt="Image" style="overflow:hidden ;height: 180px; width:180px">
+                            </div>
+                            <p class="lead text-muted">No olvides pagar a tiempo tu membresía para que no te quedes sin ofrecer tus serviecios.</p>
+                          </div>
+                      </div>
+                  </div>
+              </section>
+
+              <section>
+                <form action="/anadeTarjeta"></form>
+                
+              </section>
+              
+
+
+              
+        </div>
+        </div>
+        </div>
+    </div>
+</body>
+
+{% endblock %}
+
+</html>

@@ -528,6 +528,16 @@ def workerHistorial():
     historial = adminT.HistorialTrabajadores(idTrabajador)
     return render_template("trabajadoresHistorial.html", historial=historial, worker=trabajador)
 
+@app.route('/Hammer.com/workePpagos')
+def workerPagos():
+    adminT=adminTrabajadores()
+    worker = session['user']
+    trabajador= adminT.getWorkerbyCorreo(worker['correo'])
+    idTrabajador = worker['id']
+    return render_template("pagosTrabajadores.html", worker = trabajador )
+
+@app.route('anadirTarjeta', methods=['POST'])
+
 @app.route("/Hammer.com/citasWorker")
 def workerCitas():
     adminT=adminTrabajadores()
@@ -588,6 +598,9 @@ def finalizarServicio(idCliente=None):
     idCita= idCliente
     finalizar= adminT.finalizarServicio(idCita)
     return redirect("/Hammer.com/servicioActivo")
+
+
+
 
 
 if __name__=='__main__':
