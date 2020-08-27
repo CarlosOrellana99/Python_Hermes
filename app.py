@@ -492,6 +492,13 @@ def workerUpdatePerfil():
 
     return redirect("/Hammer.com/perfil")
 
+@app.route("/generarMembership", methods=['POST'])
+def createMembership():
+    idT = request.form.get('idT')
+    adminA = adminTrabajadores()
+    adminA.generarMembresiaEnTrabajador(idT)
+    return redirect('/Hammer.com/worker')
+    
 
 @app.route("/Hammer.com/cambiarFoto", methods=['POST'])    
 def workerCambiarFoto():
