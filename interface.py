@@ -499,9 +499,8 @@ def workerCambiarFoto():
     worker = session['user']
     image = request.files['foto']
     foto = image.read()
-    foto2 = foto[1].remove()
     idWorker= worker['id']
-    cambiarFoto= adminT.cambiarFoto(idWorker, foto2)
+    cambiarFoto= adminT.cambiarFoto(idWorker, foto)
     trabajador2=adminT.getWorkerbyCorreo(worker['correo'])
     return redirect("/Hammer.com/configuracion")
 
