@@ -466,8 +466,39 @@ def workerServicioActivo():
 def workerConfiguracion():
     adminT=adminTrabajadores()
     worker = session['user']
+    idWorker= worker['id']
     trabajador= adminT.getWorkerbyCorreo(worker['correo'])
+    servicio= adminT.ServicioActivo(idWorker)
     return render_template("workerConfiguracion.html", worker= trabajador)
+
+@app.route("/Hammer.com/updatePerfil",methods=['POST'])    
+def workerUpdatePerfil():
+    adminT=adminTrabajadores()
+    worker = session['user']
+    idWorker= worker['id']
+    trabajador= adminT.getWorkerbyCorreo(worker['correo'])
+
+    print(type(idWorker))
+    nombre= request.form.get('nombre')
+    apellido= request.form.get('apellido')
+    telefono= request.form.get('telefono')
+    direccion= request.form.get('direccion')
+    correo= request.form.get('correo')
+    descripcion= request.form.get('descripcion')
+    genero= request.form.get('genero')
+
+    print(nombre)
+    print(apellido)
+    print(telefono)
+    print(direccion)
+    print(correo)
+    print(descripcion)
+    print(genero)
+
+    update= adminT.updateWorker(idWorker,nombre,apellido,telefono,direccion,correo,descripcion,genero)
+
+    return redirect("/Hammer.com/perfil")
+
 
 @app.route("/Hammer.com/cambiarFoto", methods=['POST'])    
 def workerCambiarFoto():
