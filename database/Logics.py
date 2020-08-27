@@ -392,6 +392,30 @@ class adminTrabajadores(DatabaseZ):
         success = database.executeNonQueryBool(sql)
         return success
 
+    def pagarMes(self, idT, idTarjeta):
+        database = self.database
+        sql = f"""UPDATE `hermes`.`membresias`  inner join trabajadores on trabajadores.membresia = membresias.idMembresias
+                SET `membresias`.`Vigencia` = '1', membresias.UltimoPago = now()
+                WHERE (trabajadores.idTrabajadores = '{idT}');"""
+        success1 = database.executeNonQueryBool(sql)
+
+        sql = f"""SELECT trabajadores.membresia FROM hermes.trabajadores where trabajadores.idTrabajadores = '{idT}' limit 1;"""
+        data = database.executeQuery(sql)
+        idMembresia = data[0][0]
+
+        sql = f"""INSERT INTO `hermes`.`pagos` (`Targeta`, `Fecha`, `Monto`, `Membresia`) VALUES ({idTarjeta}, now(), {14.99}, {idMembresia});"""
+        success2 = database.executeNonQueryBool(sql)
+
+        return success2
+
+    def getDeuda(self, idT):
+        sql = f"""SELECT datediff( date(now()), membresias.ultimoPago) as dias FROM hermes.membresias 
+        inner join trabajadores on trabajadores.membresia = membresias.idMembresias where trabajadores.idTrabajadores = '{idT}';"""
+        data = self.database.executeQuery(sql)
+        debe = data[0][0]
+        boolean = debe > 31
+        return boolean
+
     def finalizarServicio(self, idCita):
         database = self.database
         sql = f"""UPDATE `hermes`.`citas` SET `Finalizada` = 'True' WHERE (`idCitas` = {idCita});"""
