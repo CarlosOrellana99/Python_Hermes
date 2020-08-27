@@ -536,7 +536,7 @@ def workerPagos():
     idTrabajador = worker['id']
     return render_template("pagosTrabajadores.html", worker = trabajador )
 
-@app.route('anadirTarjeta', methods=['POST'])
+@app.route('/anadirTarjeta', methods=['POST'])
 def anadirTarjeta():
     pass
 

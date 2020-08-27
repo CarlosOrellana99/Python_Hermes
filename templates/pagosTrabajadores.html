@@ -78,10 +78,84 @@
                   </div>
               </section>
 
-            <section>
-                
-
-            </section>
+              <section>
+                  <div class="row mb-2">
+                      <div class="col-md-4">
+                          <div class="card">
+                              <p><strong> Nombre del propietario: </strong> Propietario </p>
+                              <p><strong> Tipo de tarjeta de credito: </strong> Tipo </p>
+                              <p><strong> Numero de tarjeta de credito: </strong> Numero </p>
+                              <p><strong> Codigo de seguridad: </strong> Codigo </p>
+                          </div>
+                      </div>
+                      <div class="col-md-4">
+                        <section>
+                          <div class="title is-parent">
+                            <p>Registre una nueva tarjeta de credito:</p>
+                          </div>
+            
+                          <div class="box" style="border: lightgray 2px inset">
+                            <form method="get" action="Finanzas">
+            
+                                <label for="owner">Dueño de la tarjeta de crédito</label>
+                                <input type="text" class="form-control" id="Dueno" name="Dueno" placeholder="" required>
+                                <br><br>
+                                <label for="Tipo">Tipo de tarjeta de crédito</label>
+            
+                              <div class="select is-info">
+                                  <select  id="Tipo" name="Tipo" required>
+                                  <option value="Visa">Visa</option>
+                                  <option value="American Express">American Express</option>
+                                  <option value="Mastercard">Mastercard</option>
+                                  </select>
+                                <br>
+                              </div>
+                              <br><br>
+            
+                              <label for="numero">Número de la tarjeta de crédito</label>
+                              <input type="text" class="form-control" id="numero" name="numero" pattern=".{16,16}" placeholder="0000000000000000" required>
+                              <br><br>
+            
+                              <label for="código">Código de la tarjeta de crédito</label>
+                              <input type="text" class="form-control" id="codigo" name="codigo" pattern=".{4,4}" placeholder="0000" required>
+                              <br><br>
+            
+                              <label for="mes">Mes de vencimieto</label>
+                              <select name="mes" id="mes" required>
+                              <option value="<%= i + 1 %>"><%= meses[i] %></option>
+                              </select>
+                              <br><br>
+            
+                              <label for="anno">Año de vencimieto</label>
+            
+                              <select name="anno" id="anno" required>
+                                <option value="<%= annos[i] + 20 %>"> <%= annos[i] + 20 %> </option>
+                              </select>
+                              <br><br>
+                              <input type ="hidden" value ="3" name="formid" id="formid">
+                              <input type="hidden" value="<%= usuario.getIdUsuario() %>" name="idCliente" id="idCliente">
+                              <div>
+                                <button  type="submit" class="button is-link">Ingresar tarjeta de crédito</button>
+                              </div>
+                            </form>
+                          </div>
+                        </section>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="title is-parent">
+                            <p>Pago</p>
+                        </div>
+                        <form method="get">
+                          <select  id="Tipo" name="Tipo" required>
+                              <option value="Visa">Código de la tarjeta</option>
+                              <div style="text-align:center;">
+                                <a><button type="button" class="btn btn-outline-info">Realizar pago</button></a>
+                              </div>
+                        </form>
+                        
+                      </div>
+                  </div>
+              </section>
             
 
 
