@@ -499,6 +499,7 @@ def workerCambiarFoto():
     worker = session['user']
     image = request.files['foto']
     foto = image.read()
+    print(foto)
     idWorker= worker['id']
     cambiarFoto= adminT.cambiarFoto(idWorker, foto)
     trabajador2=adminT.getWorkerbyCorreo(worker['correo'])

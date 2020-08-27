@@ -140,25 +140,25 @@
                                   <form action="/Hammer.com/cambiarFoto" method="POST" enctype="multipart/form-data">
                                     <div class="card-body pt-2" >
                                         <img src="data:;base64,{{ worker['foto'] }}" class="card-img" alt="Image" style="overflow:hidden ;height: 180px; width:180px">
+                                    </div>
+                                    <div class="input-group mb-3">
+                                      <div class="input-group-prepend">
+                                          <span class="input-group-text" id="inputGroupFileAddon01">Update</span>
                                       </div>
-                                      <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="inputGroupFileAddon01">Update</span>
-                                </div>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="foto" name="foto" aria-describedby="inputGroupFileAddon01">
-                                    <label class="custom-file-label" for="imagen">Elija un archivo</label>
-                                </div>
-                            </div>
-                            <script type="application/javascript">
-                                $('input[type="file"]').change(function(e){
-                                    var fileName = e.target.files[0].name;
-                                    $('.custom-file-label').html(fileName);
-                                });
-                            </script>
-                            <br>
+                                      <div class="custom-file">
+                                          <input type="file" class="custom-file-input" id="foto" name="foto" aria-describedby="inputGroupFileAddon01" required>
+                                          <label class="custom-file-label" for="imagen">Elija un archivo</label>
+                                      </div>
+                                    </div>
+                                    <script type="application/javascript">
+                                        $('input[type="file"]').change(function(e){
+                                            var fileName = e.target.files[0].name;
+                                            $('.custom-file-label').html(fileName);
+                                        });
+                                    </script>
+                                      <br>
                                       <button class="btn btn-primary w-100" type="submit">Cambiar foto</button>
-                                </form>
+                                  </form>
                               </div>
                             </div>
                         </div>
