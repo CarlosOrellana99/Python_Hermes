@@ -1,247 +1,135 @@
 {% extends "baseadmin.html" %}
 {% block title %}Hammer - {% endblock %}
 {% block contenidoInicioAdmin %}
-<section style="margin-left: 10px; margin-right: 10px">
-    <h1 class="title"> Pago con tarjeta de crédito </h1>
-    <div class="col-container">
-        <div class="col" style="border: green 10px inset;width: 50%">
-            <div class="title is-ancestor">
-                <p></p>
-            </div>
-            <div class="payment" >
-                <div class="title is-parent">
-                    <p>Seleccione su tarjeta de credito:</p>
+<div id="content" class="bg-grey w-100">
+    <section class="bg-light py-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 col-md-8">
+                    <h1 class="font-weight-bold mb-0">Perfil</h1>
                 </div>
-                <section>
-
-                <%  
-if (cantTarjetas > 0) {
-    int n;
-while(iteTarjetas.hasNext()){
-tarjeta = iteTarjetas.next();
-n = tarjeta.getIdTarjeta();
-
-               %>
-                    <div class="box" style="border: lightgray 2px inset" >
-                        <article class="media">
-                            <div class="media-content">
-                                <div class="content">      
-                                    
-                                        <p><strong> Nombre del propietario: </strong> <%= tarjeta.getPropietario() %> </p>
-                                        <p><strong> Tipo de tarjeta de credito: </strong> <%= tarjeta.getTipo() %> </p>
-                                        <p><strong> Numero de tarjeta de credito: </strong> <%= tarjeta.getCodigoHidden()%> </p>
-                                        <p><strong> Codigo de seguridad: </strong> <%= tarjeta.getCodigoS()%> </p>
-
-                                        <div class="control" >
-                                                                                            <input type="button" class="button modal-button" data-target="#Modal<%= n %>" aria-haspopup="true" style="background-color: chartreuse" value="Utilizar esta tarjeta"></input>
-                                        </div>
-                                                                                        <div class="modal" id="Modal<%= n %>">
-                                                                                            <div class="modal-background"></div>
-                                                                                            
-                                                                                            <div class="modal-card">
-                                                                                                
-                                                                                                    <header class="modal-card-head">
-                                                                                                        <p class="modal-card-title">Confirmar Pago</p>
-                                                                                                        <button class="delete" aria-label="close"></button>
-                                                                                                    </header>
-                                                                                                    <section class="modal-card-body">
-
-                                                                                                        <p><strong>Datos del producto a facturar</strong></p>
-                                                                                                        <br>
-                                                                                                        <div class="field">
-                                                                                                            <label>Nombre del producto: <%= producto.getNombre() %> </label>
-                                                                                                        </div>
-                                                                                                        <br>
-                                                                                                        <div class="field">
-                                                                                                            <label>Cantidad: <%= precios.getCantidad() %> </label>
-                                                                                                        </div>
-                                                                                                        <br>
-                                                                                                        <div class="field">
-                                                                                                            <label>Total a pagar: <%= precios.getTotalPagar() %> </label>
-                                                                                                        </div>
-                                                                                                        <br>
-                                                                                                        <p><strong>Datos de la tarjeta</strong></p>
-                                                                                                        <br>
-                                                                                                        <div class="field">
-                                                                                                            <label>Tipo de tarjeta: <%= tarjeta.getTipo() %> </label>
-                                                                                                        </div>
-                                                                                                        <br>
-                                                                                                        <div class="field">
-                                                                                                            <label>Número de tarjeta: <%= tarjeta.getCodigoHidden()%> </label>
-                                                                                                        </div>
-                                                                                                        <br>
-                                                                                                        <div class="field">
-                                                                                                            <label>Propietario de tarjeta: <%= tarjeta.getPropietario()%> </label>
-                                                                                                        </div>
-                                                                                                        <br>
-                                                                                                        <p><strong>Datos de facturación:</strong></p>
-
-                                                                                                        <p>Presiona confirmar para adquirir este producto, además, recivirás un correo electrónico a la dirección: <%= usuario.getCorreo() %></p>
-                                                                                                    
-                                                                                                    <footer>
-                                                                                                        <form action="Finanzas" name="pago<%= tarjeta.getIdTarjeta() %>" id="pago<%= tarjeta.getIdTarjeta() %>">
-                                                                                                            <input type="hidden" id="formid" name="formid" value="4">
-                                                                                                            <input type="hidden" id="idTarjeta" name="idTarjeta" value="<%= tarjeta.getIdTarjeta() %>">
-                                                                                                            <button class="button is-success" >Comprar</button>
-                                                                                                            
-                                                                                                        </form>  
-                                                                                                            <br>
-                                                                                                            <button class="button is-delete" >Cancelar</button>
-                                                                                                    </footer>
-                                                                                                 </section>
-                                                                                                </div>
-                                                                                            
-                                                                                        </div>
-                                                                                        
-                                                                                        
-
-                                    </form>
-                                </div>
+            </div>
+        </div>
+        <br>
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 my-3">
+                        <div class="card rounded-0">
+                            <div class="card-header bg-light">
+                                <h6 class="font-weight-bold mb-0">Información</h6>
                             </div>
-                        </article>
-                    </div>
-               <% 
-} %>
+                            <form name="form1" >
+                                <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Nombre: </h6></label> {{worker["nombre"]}}<br>
+                                <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Apellido: </h6></label> {{worker["apellido"]}}<br>
+                                <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Teléfono: </h6></label> {{worker["telefono"]}}<br>
+                                <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Dirección: </h6></label> {{worker["direccion"]}}<br>
+                                <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Correo: </h6></label> {{worker["correo"]}}<br>
+                                <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Descripción: </h6></label> {{worker["descripcion"]}}<br>
+                                <label for="fname" style="padding-top: 20px; padding-left: 20px"><h6 class="font-weight-bold">Género: </h6></label> {{worker["genero"]}}<br>
+                            </form>
 
-                                                <script>
-                                                    document.querySelectorAll('.modal-button').forEach(function(el) {
-                                                    el.addEventListener('click', function() {
-                                                        var target = document.querySelector(el.getAttribute('data-target'));
+                            <div class="card-body">     
+                                <canvas id="myChart" width="300" height="150"></canvas>
+                            </div>
+                            <form action="/Hammer.com/admin/servlet" method="POST">
+                                <div>
+                                    {% if worker['aceptado']== 0: %}
+                                    <button>Dar acceso</button>
+                                    <input type="hidden" value="2" id="id" name="id">
+                                    <input type="hidden" value="{{worker['id']}}" id="idT" name="idT">
+                                    {% else %}
+                                    <button>Revocar acceso</button>
+                                    <input type="hidden" value="3" id="id" name="id">
+                                    <input type="hidden" value="{{worker['id']}}" id="idT" name="idT">
+                                    {% endif %}
+                                </div>
+                            </form>
+                            
 
-                                                        target.classList.add('is-active');
-
-                                                        target.querySelector('.delete').addEventListener('click',   function() {
-                                                            target.classList.remove('is-active');
-
-                                                            });
-                                                        
-                                                        target.querySelector('.is-delete').addEventListener('click',   function() {
-                                                            target.classList.remove('is-active');
-
-                                                            });
-                                                        });
-                                                    });
-
-                                                    </script>                                                                                                          
-                                                
-<%
-                                                                                           } else {
-
-               %>
-
-                    <div class="media-content">
-                        <div class="content">
-                            <label>No tienes ninguna tarjeta agregada aún ¡agrégala!</label>
                         </div>
                     </div>
-
-               <% 
-}
-               %>
-                </section>
-                <br><br>
-                <section>
-                    <div class="title is-parent">
-                        <p>Registre una nueva tarjeta de credito:</p>
-                    </div>
-
-                    <div class="box" style="border: lightgray 2px inset">
-                        <form method="get" action="Finanzas">
-
-                                <label for="owner">Dueño de la tarjeta de crédito</label>
-                                <input type="text" class="form-control" id="Dueno" name="Dueno" placeholder="<%= usuario.getNombre()%>" required>
-                                <br><br>
-                                <label for="Tipo">Tipo de tarjeta de crédito</label>
-
-                            <div class="select is-info">
-                                                                    <select  id="Tipo" name="Tipo" required>
-                                    <option value="Visa">Visa</option>
-                                    <option value="American Express">American Express</option>
-                                    <option value="Mastercard">Mastercard</option>
-                                </select>
-                                <br>
+                    <div class="col-lg-4 my-3">
+                        <div class="card rounded-0">      
+                            <div class="card-header bg-light">
+                                <h6 class="font-weight-bold mb-0">Foto</h6>
                             </div>
-                            <br><br>
-
-                            <label for="numero">Número de la tarjeta de crédito</label>
-                            <input type="text" class="form-control" id="numero" name="numero" pattern=".{16,16}" placeholder="0000000000000000" required>
-                            <br><br>
-
-                            <label for="código">Código de la tarjeta de crédito</label>
-                            <input type="text" class="form-control" id="codigo" name="codigo" pattern=".{4,4}" placeholder="0000" required>
-                            <br><br>
-
-                            <label for="mes">Mes de vencimieto</label>
-                            <select name="mes" id="mes" required>
-<% 
-for (int i = 0; i <12; i++){
-%>
-                                                                    <option value="<%= i + 1 %>"><%= meses[i] %></option>
-<%
-}
-%>
-                            </select>
-                            <br><br>
-
-                            <label for="anno">Año de vencimieto</label>
-
-                            <select name="anno" id="anno" required>
-                                <% 
-for(int i = 0; i < canAnnos ; i++ ){
-            if(annos[i]  > 1999 ){
-%>
-                                <option value="<%= annos[i] + 20 %>"> <%= annos[i] + 20 %> </option>
-<%
-            }
-        }
-%>  
-                            </select>
-                            <br><br>
-                            <input type ="hidden" value ="3" name="formid" id="formid">
-                            <input type="hidden" value="<%= usuario.getIdUsuario() %>" name="idCliente" id="idCliente">
-                            <div>
-                                <button  type="submit" class="button is-link">Ingresar tarjeta de crédito</button>
+                            <div class="card-body pt-2" >
+                                <img src="data:;base64,{{ worker['foto'] }}" class="card-img" alt="Image" style="overflow:hidden ;height: 180px; width:180px">
                             </div>
-                        </form>
-                                                        <div>
-                                                            <a href="Buscadores?formid=7&cantidad=1"><button class="button is-link is-light">Cancelar</button></a>
-                                                        </div>
+                        </div>
                     </div>
-                </section>
+                    {% if worker['aceptado']== 1: %}
+                    <div>
+                        <section class="bg-mix py-2">
+                            <div class="container">
+                                <div class="card rounded-0">
+                                    <div class="card-body"> 
+                                      <table class="egt" width="100%"  cellspacing="10" cellpadding="10">
+                                        <thead>
+                                          <tr>                         
+                                            <th><h6 class="text-muted">Fecha</h6></th>                          
+                                            <th><h6 class="text-muted">Hora</h6></th>                            
+                                            <th><h6 class="text-muted">Descripcion</h6></th>   
+                                            <th><h6 class="text-muted">Cliente</h6></th>                            
+                                            <th><h6 class="text-muted">Direccion</h6></th>                        
+                                          </tr>                          
+                                        </thead>                          
+                                        <tbody>                          
+                                          {% for i in servicio: %}
+                                          <tr class="mx-auto" style="width: 200px;">                          
+                                            <td><h6 class="font-weight-bold">{{ i[1] }}</h6></td>                          
+                                            <td><h6 class="font-weight-bold">{{ i[2] }}</h6></td>                          
+                                            <td><h6 class="font-weight-bold">{{ i[6] }}</h6></td>
+                                            <td><h6 class="font-weight-bold">{{ i[8] }} {{ i[9] }}</h6></td>
+                                            <td><h6 class="font-weight-bold">{{ i[10] }}</h6></td>
+                                            <td><a href="/Hammer.com/finalizarServicio/{{ i[0] }}"><button type="button" class="btn btn-warning">Finalizar</button></a></td>                    
+                                          </tr>
+                                          {% endfor %}                                             
+                                        </tbody>                          
+                                      </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div>
+                        <section class="bg-mix py-2">
+                            <div class="container">
+                                <div class="card rounded-0">
+                                    <div class="card-body"> 
+                                      <table class="egt" width="100%"  cellspacing="10" cellpadding="10">
+                                        <thead>
+                                          <tr>                         
+                                            <th><h6 class="text-muted">Fecha</h6></th>                          
+                                            <th><h6 class="text-muted">Hora</h6></th>                            
+                                            <th><h6 class="text-muted">Descripcion</h6></th>   
+                                            <th><h6 class="text-muted">Cliente</h6></th>                            
+                                            <th><h6 class="text-muted">Celular</h6></th>                        
+                                          </tr>                          
+                                        </thead>                          
+                                        <tbody>                          
+                                          {% for i in historial: %}
+                                          <tr class="mx-auto" style="width: 200px;">                          
+                                            <td><h6 class="font-weight-bold">{{ i[0] }}</h6></td>                          
+                                            <td><h6 class="font-weight-bold">{{ i[1] }}</h6></td>                          
+                                            <td><h6 class="font-weight-bold">{{ i[2] }}</h6></td>
+                                            <td><h6 class="font-weight-bold">{{ i[3] }} {{ i[4] }}</h6></td>
+                                            <td><h6 class="font-weight-bold">{{ i[5] }}</h6></td>                   
+                                          </tr>
+                                          {% endfor %}                                             
+                                        </tbody>                          
+                                      </table>
+                                    </div>
+                                </div>
+                            </div>
+            
+                        </section>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
-        </div>
-                        
-        <div class="col" style="border: green 10px inset">
-            <form class="Pago" id="CalcularPrecios" method="get" action="Buscadores">
-                <div class="box" style="border: lightgray 2px inset">
-                    <label class="label">Unidades a facturar:</label>
-                    <div class="control">
-                            <p class="subtitle"><%= precios.getCantidad() %></p>
-                    </div>
-                </div>
-            </form>
-                    <br>
-            <form class="Pago" id="NuevaCompraForm" method="get" action="Finanzas">
-                <div class="box" style="border: lightgray 2px inset">
-                    <label class="label">Precio Unitario:</label>
-                    <div class="control">
-                            <p class="subtitle"><%= precios.getPrecioUnitario() %></p>
-                    </div>
-                </div>
-                <div class="box" style="border: lightgray 2px inset">
-                    <label class="label">Cargo por Envío:</label>
-                    <div class="control">
-                            <p class="subtitle"><%= precios.getCargoEnvio() %></p>
-                    </div>
-                </div>
-                <div class="box" style="border: lightgray 2px inset">
-                    <label class="label">Total a Pagar:</label>
-                    <div class="control">
-                        <p class="subtitle"><%= precios.getTotalPagar() %></p>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</section>
+        </section>
+    </section>
+</div>
 {% endblock %}

@@ -365,6 +365,23 @@ class adminTrabajadores(DatabaseZ):
         sql = f"""UPDATE `hermes`.`citas` SET `Finalizada` = 'True' WHERE (`idCitas` = {idCita});"""
         data = database.executeNonQueryBool(sql)
         return data
+    
+    def cambiarFoto(self, idWorker, foto=None):
+        database = self.database
+        if foto=="":
+            data = False
+        else:
+            sql = f""" UPDATE trabajadores SET Foto = {foto} 
+                        WHERE idTrabajadores = '{idWorker}' """
+            data = database.executeNonQueryBool(sql)
+        
+        return data
+
+    def updateWorker(self, idWorker, nombre, apellido, telefono, direccion, correo, descripcion, genero):
+        database = self.database
+        sql = f"""UPDATE `hermes`.`trabajadores` SET `Nombre` = '{nombre}', `Apellido` = '{apellido}', `Celular` = '{telefono}', `Direccion` = '{direccion}', `Correo` = '{correo}', `Descripcion` = '{descripcion}', `Genero` = '{genero}' WHERE (`idTrabajadores` = {idWorker});"""
+        data = database.executeNonQueryBool(sql)
+        return data
 
     def getWorkerbyCorreo(self, correo, picture = True):
 
@@ -380,6 +397,27 @@ class adminTrabajadores(DatabaseZ):
                     inner join hermes.municipios on municipios.idMunicipio = trabajadores.Municipio
                     inner join hermes.membresias on membresias.idMembresias = trabajadores.Membresia
                     where trabajadores.Correo = '{correo}'
+                    limit 1;"""
+        data = database.executeQuery(sql)
+        lista = {}
+        if len(data) > 0:
+            lista = self.convertTuplaToDicc(data[0], picture)
+        return lista
+        
+    def getWorkerbyId(self, idT, picture = True):
+
+        """Debuele una lista con los datos del usuario con ese correo"""
+        database = self.database
+        select = "trabajadores.idTrabajadores, trabajadores.DUI, trabajadores.Nombre, trabajadores.Apellido, trabajadores.Celular, trabajadores.Direccion, trabajadores.Correo, trabajadores.Contrasena, trabajadores.Descripcion, trabajadores.Genero, trabajadores.Foto, trabajadores.Aceptado,  membresias.Membresia, departamentos.nombre as depa, municipios.nombre as mun, trabajadores.trabajos, membresias.vigencia"
+
+        sql = f"""  SELECT distinct {select}
+                    FROM categoriatrabajadores 
+                    right join trabajadores on trabajadores.idTrabajadores = categoriatrabajadores.Trabajador
+                    left join categoria on categoria.idCategoria = categoriatrabajadores.Categoria
+                    inner join hermes.departamentos on departamentos.idDepartamento = trabajadores.Departamento
+                    inner join hermes.municipios on municipios.idMunicipio = trabajadores.Municipio
+                    inner join hermes.membresias on membresias.idMembresias = trabajadores.Membresia
+                    where trabajadores.idTrabajadores = '{idT}'
                     limit 1;"""
         data = database.executeQuery(sql)
         lista = {}
@@ -652,8 +690,16 @@ class adminTrabajadores(DatabaseZ):
         database = self.database
         sql = f"""DELETE FROM citas
                 WHERE idCitas = '{idCita}'"""
+
         data = database.executeNonQueryBool(sql)
         return data
+
+    def setAcceso(self, idT, value):
+        database = self.database
+        sql = f"""UPDATE `hermes`.`trabajadores` SET `Aceptado` = '{value}' WHERE (`idTrabajadores` = '{idT}');"""
+        print(sql)
+        succes = database.executeNonQueryBool(sql)
+        return sql
 
 
 class adminCategorias(DatabaseZ):
