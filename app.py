@@ -535,15 +535,17 @@ def workerPagos():
     trabajador= adminT.getWorkerbyCorreo(worker['correo'])
     idTrabajador = worker['id']
     tarjetas = adminT.buscarTarjetas(idTrabajador)
-    dias = range(1,32)
-    meses = range(1,13)
-
-    return render_template("pagosTrabajadores.html", worker = trabajador, tarjetas = tarjetas, dias = dias, meses = meses)
+    dias = range(1,13)
+    meses = range(2020,2036)
+    return render_template("pagosTrabajadores.html", worker = trabajador, tarjetas = tarjetas, meses = dias, annos = meses)
 
 @app.route('/anadirTarjeta', methods=['POST'])
 def anadirTarjeta():
     # def crearTarjeta(self, idTrabajador, numero, dia, mes, cvv, tipo, titular):
-    idT = request.form.get('idT')
+    adminT=adminTrabajadores()
+    worker = session['user']
+    trabajador= adminT.getWorkerbyCorreo(worker['correo'])
+    idT = worker['id']
     numero = request.form.get('numero')
     dia = request.form.get('dia')
     mes = request.form.get('mes')
@@ -554,6 +556,9 @@ def anadirTarjeta():
     adminT.crearTarjeta(idT, numero, dia, mes, cvv, tipo, titular)
     return redirect('/Hammer.com/workePpagos')
 
+@app.route('/pagar', methods=['POST'])
+def pagar():
+    return "pagado"
 
 @app.route("/Hammer.com/citasWorker")
 def workerCitas():
