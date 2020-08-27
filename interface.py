@@ -467,7 +467,7 @@ def workerConfiguracion():
     adminT=adminTrabajadores()
     worker = session['user']
     trabajador= adminT.getWorkerbyCorreo(worker['correo'])
-    idTrabajador = worker['id']
+    return render_template("workerConfiguracion.html", worker= trabajador)
 
 @app.route("/Hammer.com/perfil")    
 def workerPerfil():
