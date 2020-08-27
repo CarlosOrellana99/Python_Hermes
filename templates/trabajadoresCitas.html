@@ -137,8 +137,8 @@
                               <tr class="mx-auto" style="width: 200px;">                          
                                 <td><h6 class="font-weight-bold">{{ i[1] }} {{ i[2] }}</h6></td>                          
                                 <td><h6 class="font-weight-bold">{{ i[3] }}</h6></td>                       
-                                <td><input type="text" id="UpdateFecha" value="{{i[4]}}" name="UpdateFecha" size="20" required class="form-control"></td>
-                                <td><input type="text" id="UpdateHora" value="{{i[5]}}" name="UpdateHora" size="20" required class="form-control"></td>
+                                <td><input type="date" id="UpdateFecha" value="{{i[4]}}" name="UpdateFecha" size="20" required class="form-control" min="2020-01-01" max="2022-01-01"></td>
+                                <td><input type="time" id="UpdateHora" value="{{i[5]}}" name="UpdateHora" size="20" required class="form-control" min="01:00" max="24:00"></td>
                                 <td><h6 class="font-weight-bold">{{ i[6] }}</h6></td>
                                 <input type="hidden" id="Updateid" value="{{i[0]}}" name="Updateid" size="20" required class="form-control">
                                 <td><button type="submit" class="btn btn-success">Aceptar</button></a></td>
