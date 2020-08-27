@@ -7,6 +7,7 @@ colorama==0.4.3
 Flask==1.1.2
 Flask-Login==0.5.0
 Flask-WTF==0.14.3
+gunicorn==20.0.4
 isort==4.3.21
 itsdangerous==1.1.0
 Jinja2==2.11.2
@@ -26,3 +27,4 @@ toml==0.10.1
 typed-ast==1.4.1
 Werkzeug==1.0.1
 wrapt==1.12.1
+WTForms==2.3.1
