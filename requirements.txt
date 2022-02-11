@@ -17,7 +17,7 @@ mccabe==0.6.1
 mysql-connector==2.2.9
 mysql-connector-python==8.0.20
 pathspec==0.8.0
-protobuf==3.12.2
+protobuf==3.15.0
 pycodestyle==2.6.0
 pylint==2.5.2
 PyMySQL==0.9.3
